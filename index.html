@@ -103,7 +103,16 @@ footer{flex:0 0 auto}
 
 /* ===== v24 每条回复的 token 数 ===== */
 .msg .meta{font-size:11px;color:var(--dim);margin-top:6px;opacity:.85;letter-spacing:.2px}
-</style></head><body><header><div class="brand">艾瑟瑞亚 <small>· 网页 TRPG 引擎</small></div><div class="spacer"></div><button id="btnNew">新游戏</button><button id="btnSum">压缩历史</button><button id="btnDrawer">设置 / 规则</button></header><div id="chatWrap"><div id="chat"></div></div><footer><div id="quick"></div><div class="bar"><div class="modes"><button data-mode="act" class="on">行动 / 言语</button><button data-mode="inner">心声</button><button data-mode="ooc">旁白 OOC</button><button data-mode="god" title="主神模式：你说的话即敕令，GM 必须执行">主神</button></div><button id="btnQuickToggle" title="显示 / 隐藏面板快捷按钮">面板 ▾</button><button id="btnStop" disabled>停止</button><button id="btnClear" class="ghost">清空对话</button></div><div id="inputRow"><textarea id="input" placeholder="写下你的行动、台词…（回车发送，Shift+回车换行）"></textarea><button id="btnSend" class="primary">发送</button></div><div class="status"><span id="stModel">未配置接口</span><span id="stTokens">上下文 ≈ 0 字</span><span id="stMsg">0 条</span><span id="stState">就绪</span></div></footer><div class="pmodal" id="panelModal"><div class="box">
+
+/* ===== v25 版本号 ===== */
+#stVer{opacity:.7;letter-spacing:.3px}
+
+/* ===== v26 防聚焦缩放 ===== */
+@media(max-width:640px){
+  /* iOS / 部分安卓：输入框字号 <16px 时聚焦会自动放大整页 —— 统一抬到 16px */
+  textarea#input,input[type=text],input[type=password],input[type=number],select,textarea{font-size:16px}
+}
+</style></head><body><header><div class="brand">艾瑟瑞亚 <small>· 网页 TRPG 引擎</small></div><div class="spacer"></div><button id="btnNew">新游戏</button><button id="btnSum">压缩历史</button><button id="btnDrawer">设置 / 规则</button></header><div id="chatWrap"><div id="chat"></div></div><footer><div id="quick"></div><div class="bar"><div class="modes"><button data-mode="act" class="on">行动 / 言语</button><button data-mode="inner">心声</button><button data-mode="ooc">旁白 OOC</button><button data-mode="god" title="主神模式：你说的话即敕令，GM 必须执行">主神</button></div><button id="btnQuickToggle" title="显示 / 隐藏面板快捷按钮">面板 ▾</button><button id="btnStop" disabled>停止</button><button id="btnClear" class="ghost">清空对话</button></div><div id="inputRow"><textarea id="input" placeholder="写下你的行动、台词…（回车发送，Shift+回车换行）"></textarea><button id="btnSend" class="primary">发送</button></div><div class="status"><span id="stModel">未配置接口</span><span id="stTokens">上下文 ≈ 0 字</span><span id="stMsg">0 条</span><span id="stState">就绪</span><span id="stVer" title="引擎版本"></span></div></footer><div class="pmodal" id="panelModal"><div class="box">
   <h3>面板 · 点卡片直接查看</h3>
   <div class="sub">本页面板从「角色速记 + 对话记录 + 已载入的规则书」直接读取：不花 token、不推进时间、NPC 毫不知情。需要判定的（名声/好感/伙伴/调教）再点「问 GM」。</div>
   <div class="pgrid" id="panelGrid"></div>
@@ -122,6 +131,7 @@ footer{flex:0 0 auto}
       </div>
       <label class="f" style="margin-top:14px">常用敕令（点一下填入输入框）</label>
       <div id="godQuick" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+          <div class="hint" id="engineVerLine" style="margin-top:14px;border-top:1px solid var(--line);padding-top:8px;opacity:.8"></div>
     </div>    <div class="tabpane" data-pane="rules">      <div class="card">        <b style="color:var(--gold2)">加载规则书</b>        <div class="hint">上传《艾瑟瑞亚》规则书 txt／xml，程序会自动修掉被换行截断的标签，并按顶层模块分块。</div>        <div class="row" style="margin-top:8px"><input type="file" id="fRules" accept=".txt,.xml,.md" /></div>        <div class="row" style="margin-top:8px">          <button id="btnAll">全选</button>          <button id="btnNone">全不选</button>          <button id="btnCore">仅核心</button>          <button id="btnDrop">清除已载入</button>        </div>      </div>      <div class="chunklist" id="chunkList"><div class="hint">尚未载入规则书，正在使用内置精简规则。</div></div>      <div class="hint" id="chunkStat" style="margin:8px 0"></div>      <div class="row">        <button id="btnPreview" class="primary">预览完整系统提示词</button>        <button id="btnUseBuiltin">使用内置精简规则</button>      </div>      <label class="f">附加规则／屋规（优先级高于规则书，冲突以这里为准）</label>      <textarea id="cExtra" rows="10"></textarea>      <div class="hint" id="previewBox" style="white-space:pre-wrap;max-height:280px;overflow:auto;display:none;border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:10px"></div>    </div>    <div class="tabpane" data-pane="char">      <div class="hint">这里的内容会随每次请求一起发给 GM，用来钉死角色数据，防止久聊之后跑偏或被改数。</div>      <label class="f">角色卡速记</label>      <textarea id="cSheet" rows="16" placeholder="例：黎澈｜男｜人类｜战斗·盗贼＋身份·艺人体质4／力2／感知4／敏捷4／智力4／运气7金钱：94金9银24铜技能：舞蹈 精通42／200｜潜行 熟练15／50在办：答应铁匠铺的工（每日上午）｜白瓶药铺识字"></textarea>    </div>    <div class="tabpane" data-pane="save">      <div class="row">        <button id="btnSaveAs" class="primary">另存为新档</button><button id="btnSaveCur">保存到当前档</button>        <button id="btnExport">导出全量备份</button>        <input type="file" id="fImport" accept=".json" />      </div>      <label class="f" style="display:flex;align-items:center;gap:8px;margin-top:10px"><input type="checkbox" id="cAutoSave" style="width:auto"> 每回合自动存档（<b>默认关闭</b>：只有你手动保存才会记档）</label><div class="hint">关闭时：不再每回合写档（但手动保存 / 读档 / 云端下载仍会记下进度）。<br>开启时：每次对话后覆盖「自动存档」档位，打开页面时自动恢复它。<br>换电脑：把导出的 json 拷过去，用这个「选择文件」导入一次，除 API Key 外全部恢复（含规则书与勾选）。</div>      <div class="slots" id="slotList" style="margin-top:10px"></div>    </div>    <div class="tabpane" data-pane="look">
       <div class="hint">只影响显示，不影响规则；改完立即生效并自动保存。</div>
       <label class="f">主题</label>
@@ -2039,4 +2049,13 @@ function fillCfg(){  $('#cBase').value=cfg.baseUrl; $('#cKey').value=cfg.apiKey
   if(!ks.length) bad=true;
   for(i=0;i<ks.length;i++){ if(Number(ks[i]) >= chunks.length){ bad=true; break; } }
   if(bad){ cfg.selected=autoSelect(); saveCfg(); renderChunks(); }
-})();(function boot(){var o=allSaves();var isNoticeMsg=function(m){return m&&m.kind==='sys'&&/^(已恢复上次的自动存档|已载入上次的进度)/.test(m.text||'');};if(o['__auto']&&o['__auto'].msgs&&o['__auto'].msgs.length){var keep=[];for(var bi=0;bi<o['__auto'].msgs.length;bi++){ if(!isNoticeMsg(o['__auto'].msgs[bi])) keep.push(o['__auto'].msgs[bi]); }state={msgs:keep,summary:o['__auto'].summary||'',title:o['__auto'].title||''};renderAll();if(keep.length>1){ pushMsg({role:'assistant',kind:'sys',text:'已载入上次的进度（'+keep.length+' 条）。若要重新开始，点上方「新游戏」。'}); }}else{ pushMsg({role:'assistant',kind:'sys',text:'欢迎来到艾瑟瑞亚。请先在右上「设置 / 规则」填写接口与 Key，并在「规则书」页上传规则书 txt；完成后点「新游戏」开始创建角色。'}); if(!cfg.autoSave) flash('自动存档已关闭：玩完记得在「存档 / 备份」页点「保存」'); }})();})();</script></body></html>
+})();(function boot(){var o=allSaves();var isNoticeMsg=function(m){return m&&m.kind==='sys'&&/^(已恢复上次的自动存档|已载入上次的进度)/.test(m.text||'');};if(o['__auto']&&o['__auto'].msgs&&o['__auto'].msgs.length){var keep=[];for(var bi=0;bi<o['__auto'].msgs.length;bi++){ if(!isNoticeMsg(o['__auto'].msgs[bi])) keep.push(o['__auto'].msgs[bi]); }state={msgs:keep,summary:o['__auto'].summary||'',title:o['__auto'].title||''};renderAll();if(keep.length>1){ pushMsg({role:'assistant',kind:'sys',text:'已载入上次的进度（'+keep.length+' 条）。若要重新开始，点上方「新游戏」。'}); }}else{ pushMsg({role:'assistant',kind:'sys',text:'欢迎来到艾瑟瑞亚。请先在右上「设置 / 规则」填写接口与 Key，并在「规则书」页上传规则书 txt；完成后点「新游戏」开始创建角色。'}); if(!cfg.autoSave) flash('自动存档已关闭：玩完记得在「存档 / 备份」页点「保存」'); }})();})();
+/* ===== v25 版本号（显示用） ===== */
+(function(){
+  var v='v26', date='2026-09-17';
+  var s=document.getElementById('stVer');
+  if(s){ s.textContent=v; s.title='艾瑟瑞亚网页引擎 '+v+'（'+date+'）'; }
+  var d=document.getElementById('engineVerLine');
+  if(d) d.textContent='艾瑟瑞亚网页引擎 '+v+' · '+date+' · 载入自 durasc.github.io/aetheria';
+})();
+</script></body></html>
