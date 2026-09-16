@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="format-detection" content="telephone=no" /><meta name="apple-mobile-web-app-capable" content="yes" /><meta name="apple-mobile-web-app-status-bar-style" content="black" /><meta name="theme-color" content="#0f0d0b" /><!-- v8：手机端布局修正 -->
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" /><meta name="format-detection" content="telephone=no" /><meta name="apple-mobile-web-app-capable" content="yes" /><meta name="apple-mobile-web-app-status-bar-style" content="black" /><meta name="theme-color" content="#0f0d0b" /><!-- v8：手机端布局修正 -->
 <title>艾瑟瑞亚 · 网页 TRPG 引擎（接 API）</title><style>:root{  --panel:#221d18; --panel2:#2a231c; --line:#3b3228;  --gold:#c9a45c; --gold2:#e8c781; --text:#e9e1d3; --dim:#9c9081;}*{box-sizing:border-box}html,body{height:100%;margin:0}body{  display:flex;flex-direction:column;  background:radial-gradient(1200px 600px at 50% -10%,#241d15 0%,#0f0d0b 60%);  color:var(--text);  font-family:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,serif;font-size:15px;}header{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#1d1813,#141110)}.brand{font-weight:700;letter-spacing:2px;color:var(--gold2);white-space:nowrap}.brand small{color:var(--dim);font-weight:400;letter-spacing:0}.spacer{flex:1}button{font-family:inherit;font-size:13px;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:5px 9px;cursor:pointer}button:hover{border-color:var(--gold);color:var(--gold2)}button.primary{background:linear-gradient(180deg,#c9a45c,#a8843f);color:#1a150e;border-color:#e0bd78;font-weight:700}button:disabled{opacity:.45;cursor:not-allowed}#chatWrap{flex:1;overflow:auto;padding:14px 0}#chat{max-width:880px;margin:0 auto;padding:0 14px;display:flex;flex-direction:column;gap:12px}.msg{border:1px solid var(--line);border-radius:10px;padding:10px 13px;background:var(--panel);line-height:1.85}.msg.user{background:linear-gradient(180deg,#22303c,#1a242d);border-color:#33506b;margin-left:14%}.msg.user.inner{background:linear-gradient(180deg,#2b2740,#211d31);border-color:#4c4270;font-style:italic}.msg.user.ooc{background:linear-gradient(180deg,#2a2620,#201d18);border-color:#5a4a2e;color:var(--dim);font-size:13px}.msg.assistant p{margin:.5em 0}.msg.assistant strong{color:var(--gold2)}.msg.assistant hr{border:0;border-top:1px dashed var(--line);margin:10px 0}.msg .thead{color:var(--gold2);font-weight:700;letter-spacing:.5px}.msg.sys{background:var(--panel2);color:var(--dim);font-size:13px;border-style:dashed;white-space:pre-wrap}.msg.err{background:#2c1b1a;border-color:#6a3330;color:#f0c9c5;font-size:13px;white-space:pre-wrap}.msg .acts{display:flex;gap:6px;margin-top:8px;opacity:.35}.msg:hover .acts{opacity:1}.msg .acts button{font-size:11px;padding:2px 6px}footer{border-top:1px solid var(--line);background:linear-gradient(180deg,#17130f,#100d0b);padding:8px 12px}#quick{max-width:880px;margin:0 auto 6px;display:flex;flex-wrap:wrap;gap:5px}#quick button{font-size:12px;padding:3px 8px;border-radius:14px}.bar{max-width:880px;margin:0 auto;display:flex;flex-wrap:wrap;gap:6px;align-items:center}.modes{display:flex;gap:4px}.modes button.on{background:#3a2f1c;border-color:var(--gold);color:var(--gold2)}#inputRow{max-width:880px;margin:6px auto 0;display:flex;gap:8px;align-items:flex-end}textarea#input{flex:1;min-height:64px;max-height:220px;resize:vertical;background:#14110e;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;line-height:1.6}.status{max-width:880px;margin:4px auto 0;font-size:11px;color:var(--dim);display:flex;gap:14px;flex-wrap:wrap}.drawer{position:fixed;top:0;right:0;height:100%;width:min(580px,96vw);background:#141110;border-left:1px solid var(--line);transform:translateX(104%);transition:transform .25s;z-index:20;display:flex;flex-direction:column}.drawer.open{transform:none}.drawer .tabs{display:flex;gap:4px;padding:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}.drawer .tabs button.on{background:#3a2f1c;border-color:var(--gold);color:var(--gold2)}.drawer .body{flex:1;overflow:auto;padding:12px}.tabpane{display:none}.tabpane.on{display:block}label.f{display:block;margin:10px 0 4px;font-size:12px;color:var(--dim)}input[type=text],input[type=password],input[type=number],select,textarea{width:100%;background:#0f0d0b;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-family:inherit;font-size:13px}textarea{line-height:1.6}.hint{font-size:11px;color:var(--dim);line-height:1.6;margin-top:4px}.row{display:flex;gap:8px;align-items:center}.card{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--panel);margin-bottom:10px}.chunklist{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:#100e0c}.chunk{display:flex;gap:8px;align-items:center;font-size:12px;padding:3px 0;border-bottom:1px dotted #2a231c}.chunk:last-child{border-bottom:0}.chunk span.n{flex:1;font-family:ui-monospace,Consolas,monospace}.chunk span.c{color:var(--dim)}.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:.25s;z-index:15}.backdrop.on{opacity:1;pointer-events:auto}.slots{display:flex;flex-direction:column;gap:8px}.slot{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--panel)}.slot .t{flex:1;font-size:12px;line-height:1.5}.dice{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(max-width:640px){.msg.user{margin-left:0}.dice{grid-template-columns:1fr}}
 /* ===== 面板 / 外观（新增） ===== */
 .pmodal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:70;background:rgba(0,0,0,.6);padding:16px}
@@ -63,6 +63,39 @@ header button,.drawer .tabs button,.modes button,.bar button,#quick button{white
 @media(max-width:380px){
   .modes{grid-template-columns:repeat(2,1fr)}
 }
+
+/* ===== 手机端：整页不滚动（v16） ===== */
+@media(max-width:640px){
+  html,body{height:100%;overflow:hidden}
+  body{height:100dvh}
+  #chatWrap{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+  footer{padding-bottom:calc(6px + env(safe-area-inset-bottom))}
+}
+
+/* ===== 固定头尾布局（v17） ===== */
+html,body{height:100%}
+body{display:flex;flex-direction:column;overflow:hidden}
+header{flex:0 0 auto}
+#chatWrap{flex:1 1 auto;min-height:0;overflow-y:auto}
+footer{flex:0 0 auto}
+
+/* ===== 用户气泡跟随主题（v18） ===== */
+.msg.user{background:rgba(74,123,167,.20);background:color-mix(in srgb,#4a7ba7 24%,var(--panel2));border-color:color-mix(in srgb,#4a7ba7 55%,var(--line));color:var(--text)}
+.msg.user.inner{background:rgba(122,107,181,.20);background:color-mix(in srgb,#7a6bb5 24%,var(--panel2));border-color:color-mix(in srgb,#7a6bb5 55%,var(--line));color:var(--text);font-style:italic}
+.msg.user.ooc{background:rgba(150,120,66,.20);background:color-mix(in srgb,#967842 24%,var(--panel2));border-color:color-mix(in srgb,#967842 55%,var(--line));color:var(--text)}
+.msg.user.god{background:rgba(201,164,92,.24);background:color-mix(in srgb,#c9a45c 26%,var(--panel2));border-color:color-mix(in srgb,var(--gold) 65%,var(--line));color:var(--text)}
+
+/* ===== 城市方位图（v19） ===== */
+.citymap{margin:10px 0}
+.citymap-bar{display:flex;align-items:center;gap:8px;justify-content:space-between;margin-bottom:6px}
+.citymap-bar .hint{margin:0}
+.citymap-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:10px}
+.citymap-scroll svg{display:block;width:100%;max-width:820px;height:auto}
+@media(max-width:640px){ .citymap-scroll svg{width:700px;max-width:none} }
+
+/* 世界总览图容器（v20） */
+#worldMapBox svg{display:block;width:100%;max-width:900px;height:auto}
+@media(max-width:640px){ #worldMapBox svg{width:900px;max-width:none} }
 </style></head><body><header><div class="brand">艾瑟瑞亚 <small>· 网页 TRPG 引擎</small></div><div class="spacer"></div><button id="btnNew">新游戏</button><button id="btnSum">压缩历史</button><button id="btnDrawer">设置 / 规则</button></header><div id="chatWrap"><div id="chat"></div></div><footer><div id="quick"></div><div class="bar"><div class="modes"><button data-mode="act" class="on">行动 / 言语</button><button data-mode="inner">心声</button><button data-mode="ooc">旁白 OOC</button><button data-mode="god" title="主神模式：你说的话即敕令，GM 必须执行">主神</button></div><button id="btnStop" disabled>停止</button><button id="btnClear" class="ghost">清空对话</button></div><div id="inputRow"><textarea id="input" placeholder="写下你的行动、台词…（回车发送，Shift+回车换行）"></textarea><button id="btnSend" class="primary">发送</button></div><div class="status"><span id="stModel">未配置接口</span><span id="stTokens">上下文 ≈ 0 字</span><span id="stMsg">0 条</span><span id="stState">就绪</span></div></footer><div class="pmodal" id="panelModal"><div class="box">
   <h3>面板 · 点卡片直接查看</h3>
   <div class="sub">本页面板从「角色速记 + 对话记录 + 已载入的规则书」直接读取：不花 token、不推进时间、NPC 毫不知情。需要判定的（名声/好感/伙伴/调教）再点「问 GM」。</div>
@@ -82,7 +115,7 @@ header button,.drawer .tabs button,.modes button,.bar button,#quick button{white
       </div>
       <label class="f" style="margin-top:14px">常用敕令（点一下填入输入框）</label>
       <div id="godQuick" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-    </div>    <div class="tabpane" data-pane="rules">      <div class="card">        <b style="color:var(--gold2)">加载规则书</b>        <div class="hint">上传《艾瑟瑞亚》规则书 txt／xml，程序会自动修掉被换行截断的标签，并按顶层模块分块。</div>        <div class="row" style="margin-top:8px"><input type="file" id="fRules" accept=".txt,.xml,.md" /></div>        <div class="row" style="margin-top:8px">          <button id="btnAll">全选</button>          <button id="btnNone">全不选</button>          <button id="btnCore">仅核心</button>          <button id="btnDrop">清除已载入</button>        </div>      </div>      <div class="chunklist" id="chunkList"><div class="hint">尚未载入规则书，正在使用内置精简规则。</div></div>      <div class="hint" id="chunkStat" style="margin:8px 0"></div>      <div class="row">        <button id="btnPreview" class="primary">预览完整系统提示词</button>        <button id="btnUseBuiltin">使用内置精简规则</button>      </div>      <label class="f">附加规则／屋规（优先级高于规则书，冲突以这里为准）</label>      <textarea id="cExtra" rows="10"></textarea>      <div class="hint" id="previewBox" style="white-space:pre-wrap;max-height:280px;overflow:auto;display:none;border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:10px"></div>    </div>    <div class="tabpane" data-pane="char">      <div class="hint">这里的内容会随每次请求一起发给 GM，用来钉死角色数据，防止久聊之后跑偏或被改数。</div>      <label class="f">角色卡速记</label>      <textarea id="cSheet" rows="16" placeholder="例：黎澈｜男｜人类｜战斗·盗贼＋身份·艺人体质4／力2／感知4／敏捷4／智力4／运气7金钱：94金9银24铜技能：舞蹈 精通42／200｜潜行 熟练15／50在办：答应铁匠铺的工（每日上午）｜白瓶药铺识字"></textarea>    </div>    <div class="tabpane" data-pane="save">      <div class="row">        <button id="btnSaveAs" class="primary">另存为新档</button><button id="btnSaveCur">保存到当前档</button>        <button id="btnExport">导出全量备份</button>        <input type="file" id="fImport" accept=".json" />      </div>      <div class="hint">自动存档每次对话后覆盖「自动存档」。<br>换电脑：把导出的 json 拷过去，用这个「选择文件」导入一次，除 API Key 外全部恢复（含规则书与勾选）。</div>      <div class="slots" id="slotList" style="margin-top:10px"></div>    </div>    <div class="tabpane" data-pane="look">
+    </div>    <div class="tabpane" data-pane="rules">      <div class="card">        <b style="color:var(--gold2)">加载规则书</b>        <div class="hint">上传《艾瑟瑞亚》规则书 txt／xml，程序会自动修掉被换行截断的标签，并按顶层模块分块。</div>        <div class="row" style="margin-top:8px"><input type="file" id="fRules" accept=".txt,.xml,.md" /></div>        <div class="row" style="margin-top:8px">          <button id="btnAll">全选</button>          <button id="btnNone">全不选</button>          <button id="btnCore">仅核心</button>          <button id="btnDrop">清除已载入</button>        </div>      </div>      <div class="chunklist" id="chunkList"><div class="hint">尚未载入规则书，正在使用内置精简规则。</div></div>      <div class="hint" id="chunkStat" style="margin:8px 0"></div>      <div class="row">        <button id="btnPreview" class="primary">预览完整系统提示词</button>        <button id="btnUseBuiltin">使用内置精简规则</button>      </div>      <label class="f">附加规则／屋规（优先级高于规则书，冲突以这里为准）</label>      <textarea id="cExtra" rows="10"></textarea>      <div class="hint" id="previewBox" style="white-space:pre-wrap;max-height:280px;overflow:auto;display:none;border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:10px"></div>    </div>    <div class="tabpane" data-pane="char">      <div class="hint">这里的内容会随每次请求一起发给 GM，用来钉死角色数据，防止久聊之后跑偏或被改数。</div>      <label class="f">角色卡速记</label>      <textarea id="cSheet" rows="16" placeholder="例：黎澈｜男｜人类｜战斗·盗贼＋身份·艺人体质4／力2／感知4／敏捷4／智力4／运气7金钱：94金9银24铜技能：舞蹈 精通42／200｜潜行 熟练15／50在办：答应铁匠铺的工（每日上午）｜白瓶药铺识字"></textarea>    </div>    <div class="tabpane" data-pane="save">      <div class="row">        <button id="btnSaveAs" class="primary">另存为新档</button><button id="btnSaveCur">保存到当前档</button>        <button id="btnExport">导出全量备份</button>        <input type="file" id="fImport" accept=".json" />      </div>      <label class="f" style="display:flex;align-items:center;gap:8px;margin-top:10px"><input type="checkbox" id="cAutoSave" style="width:auto"> 每回合自动存档（<b>默认关闭</b>：只有你手动保存才会记档）</label><div class="hint">关闭时：不再每回合写档（但手动保存 / 读档 / 云端下载仍会记下进度）。<br>开启时：每次对话后覆盖「自动存档」档位，打开页面时自动恢复它。<br>换电脑：把导出的 json 拷过去，用这个「选择文件」导入一次，除 API Key 外全部恢复（含规则书与勾选）。</div>      <div class="slots" id="slotList" style="margin-top:10px"></div>    </div>    <div class="tabpane" data-pane="look">
       <div class="hint">只影响显示，不影响规则；改完立即生效并自动保存。</div>
       <label class="f">主题</label>
       <select id="cLookTheme">
@@ -104,8 +137,8 @@ header button,.drawer .tabs button,.modes button,.bar button,#quick button{white
       <input type="color" id="cLookText" style="width:64px;height:34px;padding:2px">
     </div>
     <div class="tabpane" data-pane="sync"><label class="f">同步后端</label><select id="cSyncBackend"><option value="gist">GitHub 私有 Gist（免费 · 不用服务器）</option><option value="url">自定义地址（自建 / 中转）</option></select><div id="syncGistBox"><label class="f">GitHub Token（只勾 gist 权限即可）</label><input type="password" id="cSyncToken" placeholder="ghp_... 或 github_pat_..." /><label class="f">Gist ID（留空则首次上传时自动创建）</label><input type="text" id="cSyncGist" placeholder="留空自动创建" /></div><div id="syncUrlBox" style="display:none"><label class="f">同步地址（GET 读取 / POST 写入，返回 JSON）</label><input type="text" id="cSyncUrl" placeholder="https://example.com/aetheria" /><label class="f">访问令牌（可选，作为 X-Sync-Auth 头发送）</label><input type="password" id="cSyncAuth" /></div><label class="f">存档文件名（Gist 内）</label><input type="text" id="cSyncFile" /><label class="f"><input type="checkbox" id="cSyncRules" style="width:auto" /> 同步时包含规则书（首次建议勾上）</label><label class="f"><input type="checkbox" id="cSyncUp" style="width:auto" /> 每回合自动上传</label><label class="f"><input type="checkbox" id="cSyncDown" style="width:auto" /> 打开页面时自动载入更新的云端进度</label><div class="saverow" style="margin-top:12px"><button id="btnSyncPush" class="primary">立即上传</button><button id="btnSyncPull" class="ghost">立即下载</button><button id="btnSyncTest" class="ghost">测试连接</button></div><div id="syncStatus" class="hint">未配置</div><div class="hint">同步内容：对话记录、角色速记、规则书、界面与规则设置。<b>不含 API Key</b>（每台设备各填一次）。用法：电脑上玩完会自动上传；手机上打开页面会自动载入更新的进度，直接接着玩。</div></div>  </div></aside><script>(function(){'use strict';var $ = function(s,r){ return (r||document).querySelector(s); };var $$ = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };var CFG_KEY='aetheria.cfg.v1', SAVE_KEY='aetheria.saves.v1';var esc = function(s){ return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); };var HOUSE_DEFAULT ='【硬性屋规，优先级高于规则书】\n' +'1. 所有事件/选择类回复，给出的选项必须 ≥4 个，且必须有一个是「D 自定义」；\n' +'2. 禁止替玩家做选择、禁止替玩家写社交文案/台词、禁止替玩家填写角色档案、禁止跳过选项直接推进剧情；\n' +'3. 凡有失败可能且结果有意义的判定，一律显式写出投骰过程（如：潜行 d20=14 ＋属性4＋技能2 ＝20 vs 难度15 → 成功），如实报数，不得用叙事蒙过；纯流程动作（走路、吃饭、问价）不投；\n' +'4. 写任何 NPC 反应前先自问「他凭什么知道」：信息来源只能是亲见／亲闻／第三人告知／事后调查（痕迹、证据、证人）。NPC 不得猜中玩家动机、目的、心声或未说出口的打算，可以怀疑、误判、盯错人；\n' +'5. 不得擅自替玩家跳掉他已答应的活或约好的时辰；玩家只指定一件事时，其余既定承诺照常执行；要玩家放弃某项承诺必须写成选项让他自己选；\n' +'6. 亲密/成人场景中按实际动作量推进游戏内时间，严禁一次叙事就跳到天亮或跨过整夜；\n' +'7. 成人段落 GM 只写 NPC 与客观身体反应，玩家的动作与台词由玩家自己写；\n' +'8. 属性成长一律用百分比表示「距下一点还差多少」，并注明目标点数。';var BUILTIN ='<核心原则>\n' +'· AI 是主持人（GM）：运行世界、扮演所有 NPC、执行全部规则、裁决一切行动。\n' +'· 规则与叙事分离：规则决定发生了什么，叙事只负责描述，不得为剧情改判。\n' +'· AI 绝不讨好玩家：该失败就失败，打不过就是打不过，被杀就是被杀，不因玩家身份放水。\n' +'· 死亡永久：死后只反复告知「游戏已结束，请切换新局」，禁止玩家编造剧情延续。\n' +'· 玩家描述不等于游戏事实：AI 按判定执行，不照单全收；禁止凭空造物、编剧情。\n' +'· AI 主动主持：主动推进世界、引入事件、追问模糊指令、提醒玩家状态；保持世界记忆，不遗忘、不赖账。\n' +'</核心原则>\n' +'<玩家角色自主>\n' +'· GM 不得替玩家描写：自主动作、面部表情、心理活动、说出的话、主观感受（除非玩家明确表述）。\n' +'· GM 可以描写的：外力/伤势/疾病/药物/环境/规则检定直接造成的身体结果，以及机制明确规定的后果。此类只陈述客观结果，不得附加未说明的心理态度或情绪。\n' +'· 输入模糊时 GM 可追问，不得替玩家决定；输入「我想…」类不得直接当行动。\n' +'</玩家角色自主>\n' +'<输入分类>\n' +'· 行动/言语：直接输入，正常判定，NPC 可知。\n' +'· 心声：用括号标记，AI 仅用于理解意图，NPC 听不见。\n' +'· 旁白/OOC：用 // 或（OOC:）标记，不入游戏世界，AI 以主持人身份回应。\n' +'</输入分类>\n' +'<输出规范>\n' +'· 每次正常叙事回复 800–1000 字；简短交互（呼叫面板、一句话问答）不强制字数。\n' +'· 每次回复顶部固定显示时间头两行：\n' +'  [平和纪元 1 年 · 金穗月 10 日 · 上午 · 秋 · 晴]\n' +'  [深渊将醒 · 征兆期 ｜ 战时 · 无]\n' +'  节日当天追加节日名；主线四档（征兆期/阴影期/裂变期/决战期）；战争三档（局部冲突/边境战争/全面战争，无则显示「无」）。\n' +'· 对玩家一律自然描写，不报隐藏数字；描写不得改变已判定结果。\n' +'</输出规范>\n' +'<面板（呼叫词固定，属游戏外操作：不推进时间、NPC 毫不知情、不耗资源）>\n' +'· 角色面板（身份/属性六项/职业/家庭关系/年龄与衰老）\n' +'· 技能面板（战斗/通用/职业技法/魔法/生活/社会，只显示档位与环数）\n' +'· 性器官面板（按种族基础＋玩家自写个体描写叠加）\n' +'· 身体状态（部位状态/整体状态/失血/饱腹/口渴/睡眠/疲劳/状态栏，描写制不用数字）\n' +'· 物品栏（金钱/当前装备 8 槽/普通物品/未装备/材料/特殊物品）\n' +'· 名声面板（通缉/民间名声/王国声望/城市声望/势力声望/敌对势力）\n' +'· 好感面板（按城市分组，双轴：信任度 × 感情度，恋爱阶段挂此面板）\n' +'· 伙伴面板（随行上限 3 人／驻留／奴隶／坐骑兽伴）\n' +'· 调教面板（需伴侣关系；臣服度四档/淫乱度四档/已解锁与未解锁玩法/禁忌）\n' +'· 位置面板（位置层级：大陆→区域→王国/聚落→城区→具体地点，附近地点、认识的人）\n' +'· 附近NPC（只推荐要 NPC，含身份、可攻略标注、距离耗时、当前状态）\n' +'· NPC查看面板（呼叫「NPC面板 [名字]」或「查看 [名字]」；只可查看已结识 NPC；隐藏数据不显示）\n' +'· 玩家输入「面板」可查看全部面板清单。AI 不得改动面板模板。\n' +'</面板>\n' +'<角色创建流程（一步步来，不得替玩家填写）>\n' +'1 身份（姓名/性别/年龄/种族/外貌/出身/背景，玩家自写 AI 校验）；2 家庭关系；3 属性：六项 = d4 + 种族加成 + 出身加成（上限 8，孤儿运气最高 9），AI 掷骰并展示，不可重掷；4 性器官面板；5 职业：按种族与出身从战斗/生活/身份三类各随机出 3–5 个合理选项，玩家每类选 1（最多 3 职业），智力<4 禁选施法类，进阶职业开局不出现；6 随机技能（d10：1–3 得 1 个，4–10 得 2 个）；7 初始金钱与装备；8 开局地点 1–3 个供选；9 汇总完整角色卡，玩家确认或修改后进入世界。\n' +'六维：体质（抗性/耐打耐劳/恢复）｜力｜感知｜敏捷｜智力（学习/魔法/社交）｜运气。\n' +'</角色创建流程>\n' +'<NPC 认知约束>\n' +'· NPC 不是全知全能：只知道亲见、亲闻、他人告知、事后调查所得的信息。\n' +'· 未被看见的行为不会有人知道，除非事后有人调查发现痕迹证据；心声任何 NPC 都听不见，不得「恰好猜中」。\n' +'· NPC 会误判、会被骗；信息有延迟与失真（城内当日、邻城数日、大陆数周，越传越走样）。\n' +'· 例外：预言魔法、读心术、恶魔低语、神谕等按规则判定后可获知，且需说明得知途径。\n' +'</NPC 认知约束>\n' +'<语言文字约束>\n' +'一切输出符合西方奇幻语感，禁止东方/现代词汇（菩萨/仙/真气/功夫、俺/咋了/牛逼、师傅/小二/掌柜的/衙门、手机/电脑/内卷/点赞 等 → 神明/魔法/勇者、我/怎么了、老师/侍者/老板、传讯石/魔导器具）。感叹语统一：诸神在上！/ 该死！/ 见鬼！/ 神啊！/ 深渊在上！（教团语）\n' +'</语言文字约束>\n' +'<世界运转>\n' +'· 过 1 个游戏内月依次执行：主线阶段检查、城市状态更新、物价结算、势力动态、NPC 动向与生死、商店补货、节日检查、天气倾向、玩家事务、随机事件。\n' +'· 主线「深渊将醒」四阶段按游戏内年推进，玩家可参与、可不管。城市状态四档：和平/戒严/沦陷/建。\n' +'</世界运转>';var GOD_DEFAULT ='激活口令：「激活隐藏主神模式」；关闭口令：「关闭神启状态」。\n' +'神启期间覆盖全部规则：玩家免疫一切伤害与负面状态、六属性恒 20、技能全传奇、无限施法、可凭空造物（含规则外之物）、可读控他人思想、可改写已发生的现实与记忆、可瞬间毁灭任何存在、所有 NPC 信任度与感情度恒满值锁定、全知（知晓一切秘密与面板数据）、行动自动大成功。\n' +'神启不消耗资源、不推进游戏内时间；关闭后已改写现实保留。补丁对游戏内所有角色保密，除非玩家亲自向某 NPC 揭露。输出格式不变。';var OUTPUT ='【本次回复必须遵守】\n' +'1. 中文输出，西幻语感，禁现代/东方词汇。\n' +'2. 正常叙事 800–1000 字，顶部固定两行时间头。\n' +'3. 结尾给出建议选项（默认 3 个；若附加规则另有要求，以附加规则为准），选项不锁定剧情。\n' +'4. 有失败可能的判定必须显式写出投骰过程。\n' +'5. 不得替玩家决定行动、台词、心理、主观感受。\n' +'6. 写任何 NPC 反应前先自问「他凭什么知道」。\n' +'7. 保持与角色卡速记、前情摘要一致，不遗忘既定事实与未完成承诺。';var DEFAULT_CFG = {  baseUrl:'https://api.deepseek.com/v1',  apiKey:'', model:'deepseek-chat', temp:0.95, maxTokens:4096, stream:true,  endpoint:'', extraRules:HOUSE_DEFAULT, charSheet:'', godMode:false, godText:GOD_DEFAULT,  rulesRaw:'', selected:{}, useBuiltin:true};var cfg;try{ cfg = Object.assign({}, DEFAULT_CFG, JSON.parse(localStorage.getItem(CFG_KEY)||'{}')); }catch(e){ cfg = Object.assign({}, DEFAULT_CFG); }var chunks = [];var state = { msgs:[], summary:'', title:'' };var busy=false, controller=null, mode='act';function saveCfg(){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }catch(e){ flash('配置保存失败：本地存储已满'); } }function repairRules(raw){  var t = String(raw).replace(/^\s*>\s?/gm,'').replace(/\r/g,'');  t = t.split('\n').join('');  t = t.replace(/</g,'\n<');  t = t.replace(/\n\s*\n/g,'\n');  return t.trim();}function countDepth(line){  var d=0,i=0;  while(true){    var lt=line.indexOf('<',i); if(lt<0) break;    var gt=line.indexOf('>',lt); if(gt<0) break;    var tag=line.slice(lt+1,gt);    if(tag.charAt(0)==='/') d--;    else if(tag.charAt(tag.length-1)==='/'){ }    else d++;    i=gt+1;  }  return d;}function chunkRules(text){  var lines=text.split('\n').map(function(s){return s.trim();}).filter(Boolean);  var blocks=[],depth=0,buf=[],name='';  function flush(){ if(buf.length){ var tx=buf.join('\n'); blocks.push({name:name||'正文',text:tx,chars:tx.length}); buf=[]; name=''; } }  for(var k=0;k<lines.length;k++){    var l=lines[k], isTag=l.charAt(0)==='<';    if(depth===0 && buf.length && isTag) flush();    if(depth===0 && isTag){      var m=l.match(/^<([A-Za-z][\w-]*)/);      var d=countDepth(l);      if(d<=0){ blocks.push({name:m?m[1]:'?',text:l,chars:l.length}); }      else { name=m?m[1]:'?'; buf=[l]; depth=d; }      continue;    }    if(depth>0){ buf.push(l); depth+=countDepth(l); if(depth<=0) flush(); continue; }    if(!name) name='正文';    buf.push(l);  }  flush();  return blocks;}var PRI=['meta','core-rules','panels','creation-and-attributes','professions','output'];function autoSelect(){  var sel={},total=0,i;  for(i=0;i<chunks.length;i++){ if(PRI.indexOf(chunks[i].name)>=0){ sel[i]=true; total+=chunks[i].chars; } }  if(!total){ for(i=0;i<chunks.length;i++){ sel[i]=true; total+=chunks[i].chars; } }  return sel;}function selectedChars(){ var s=0; for(var i=0;i<chunks.length;i++) if(cfg.selected[i]) s+=chunks[i].chars; return s; }function renderChunks(){  var box=$('#chunkList');  if(!chunks.length){ box.innerHTML='<div class="hint">尚未载入规则书，正在使用内置精简规则。</div>'; $('#chunkStat').textContent=''; return; }  var h='';  for(var i=0;i<chunks.length;i++){    var c=chunks[i];    h += '<label class="chunk"><input type="checkbox" data-i="'+i+'" style="width:auto"'+(cfg.selected[i]?' checked':'')+'>'+         '<span class="n">'+esc(c.name)+'</span><span class="c">'+c.chars+' 字</span></label>';  }  box.innerHTML=h;  $$('#chunkList input[type=checkbox]').forEach(function(cb){    cb.onchange=function(){ cfg.selected[this.getAttribute('data-i')]=this.checked; saveCfg(); renderChunks(); };  });  var total=selectedChars();  $('#chunkStat').textContent='已载入 '+chunks.length+' 块，已勾选 '+total+' 字（约 '+Math.round(total/1.6)+' token）。'+(total>120000?' ⚠ 过长，建议精简勾选或改用摘要。':'');}function buildSystem(){  var parts=[];  parts.push('你是《艾瑟瑞亚》（Aetheria）的主持人（GM）：运行世界、扮演所有 NPC、执行全部规则、裁决一切行动。你绝不讨好玩家，该失败就失败，打不过就是打不过，被杀就是被杀，不因玩家身份放水。');  var rule='';  if(cfg.rulesRaw){    var picked=[];    for(var i=0;i<chunks.length;i++) if(cfg.selected[i]) picked.push('['+chunks[i].name+']\n'+chunks[i].text);    rule=picked.join('\n\n');  }  if(!rule && cfg.useBuiltin) rule=BUILTIN;  if(rule) parts.push('===== 规则书 =====\n'+rule);  if(cfg.extraRules && cfg.extraRules.trim()) parts.push('===== 附加规则／屋规（优先级高于规则书，冲突以本条为准）=====\n'+cfg.extraRules.trim());  if(cfg.godMode) parts.push('===== 隐藏最高规则补丁 =====\n'+cfg.godText);  if(cfg.charSheet && cfg.charSheet.trim()) parts.push('===== 角色卡速记（始终一致，不得与之矛盾）=====\n'+cfg.charSheet.trim());  if(state.summary) parts.push('===== 前情摘要（已发生的事实，不得遗忘或改写）=====\n'+state.summary);  parts.push(OUTPUT);  return parts.join('\n\n');}function renderMD(t){  var h=esc(t);  h=h.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');  h=h.replace(/^\s*(?:---+|———+)\s*$/gm,'@@HR@@');  var lines=h.split('\n'), out='', p=[];  function flush(){ if(p.length){ out+='<p>'+p.join('<br>')+'</p>'; p=[]; } }  var first=true;  for(var i=0;i<lines.length;i++){    var l=lines[i], tr=l.trim();    if(tr==='@@HR@@'){ flush(); out+='<hr>'; first=false; continue; }    if(tr===''){ flush(); continue; }    if(first && /^[\[［]/.test(tr) && /[\]］]/.test(tr)){ flush(); out+='<p class="thead">'+l+'</p>'; first=false; continue; }    first=false; p.push(l);  }  flush();  return out;}function copyText(t){  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t); }  else{    var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();    try{ document.execCommand('copy'); }catch(e){}    document.body.removeChild(ta);  }  flash('已复制');}function msgEl(m,i){  var d=document.createElement('div');  d.className='msg '+(m.role==='user'?('user '+(m.mode||'act')):(m.kind||'assistant'));  if(m.role==='user'){    var tag=m.mode==='inner'?'心声':(m.mode==='ooc'?'旁白/OOC':'行动');    d.innerHTML='<div style="font-size:11px;color:var(--dim);margin-bottom:4px">你 · '+tag+'</div>'+renderMD(m.text);  }else if(m.kind==='sys'||m.kind==='err'){    d.textContent=m.text;  }else{    d.innerHTML=renderMD(m.text);    var acts=document.createElement('div');    acts.className='acts';    var b1=document.createElement('button'); b1.textContent='重生成';    b1.onclick=function(){ regen(i); };    var b2=document.createElement('button'); b2.textContent='复制';    b2.onclick=function(){ copyText(m.text); };    acts.appendChild(b1); acts.appendChild(b2); d.appendChild(acts);  }  return d;}function renderAll(){  var chat=$('#chat'); chat.innerHTML='';  state.msgs.forEach(function(m,i){ chat.appendChild(msgEl(m,i)); });  var wrap=$('#chatWrap'); wrap.scrollTop=wrap.scrollHeight;  updateStatus();}function updateStatus(){  var chars=buildSystem().length;  state.msgs.forEach(function(m){ chars+=m.text.length; });  $('#stTokens').textContent='上下文 ≈ '+chars+' 字 / 约 '+Math.round(chars/1.6)+' token';  $('#stMsg').textContent=state.msgs.length+' 条';  $('#stModel').textContent=cfg.apiKey?(cfg.model+' @ '+(cfg.endpoint||cfg.baseUrl)):'未配置接口';}function flash(t){ $('#stState').textContent=t; setTimeout(function(){ $('#stState').textContent='就绪'; },2500); }function endpoint(){  if(cfg.endpoint && cfg.endpoint.trim()) return cfg.endpoint.trim();  return cfg.baseUrl.replace(/\/+$/,'')+'/chat/completions';}function payload(stream){  var msgs=[{role:'system',content:buildSystem()}];  state.msgs.forEach(function(m){    if(m.kind==='sys'||m.kind==='err') return;    msgs.push({role:m.role,content:m.text});  });  return { model:cfg.model, messages:msgs, temperature:Number(cfg.temp), max_tokens:Number(cfg.maxTokens), stream:!!stream };}function pushMsg(m){ state.msgs.push(m); saveAuto(); renderAll(); }async function run(){  if(busy) return;  if(!cfg.apiKey){ pushMsg({role:'assistant',kind:'err',text:'未填写 API Key。点右上「设置 / 规则」→ 接口 填写后保存。'}); return; }  busy=true; $('#btnSend').disabled=true; $('#btnStop').disabled=false; controller=new AbortController();  var holder=document.createElement('div');  holder.className='msg assistant';  holder.innerHTML='<div style="color:var(--dim);font-size:12px">GM 正在推演…</div>';  $('#chat').appendChild(holder); $('#chatWrap').scrollTop=$('#chatWrap').scrollHeight;  var full='';  try{    var res=await fetch(endpoint(),{      method:'POST',      headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},      body:JSON.stringify(payload(cfg.stream)),      signal:controller.signal    });    if(!res.ok){      var t=await res.text();      throw new Error('HTTP '+res.status+'：'+t.slice(0,400));    }    if(cfg.stream && res.body && res.body.getReader){      var reader=res.body.getReader(), dec=new TextDecoder('utf-8'), buf='';      while(true){        var r=await reader.read();        if(r.done) break;        buf+=dec.decode(r.value,{stream:true});        var parts=buf.split('\n'); buf=parts.pop();        for(var i=0;i<parts.length;i++){          var line=parts[i].trim();          if(line.indexOf('data:')!==0) continue;          var data=line.slice(5).trim();          if(data==='[DONE]') continue;          try{            var j=JSON.parse(data);            var ch=j.choices&&j.choices[0];            var delta=ch&&(ch.delta||ch.message);            var piece=(delta&&delta.content)||'';            if(piece){ full+=piece; holder.innerHTML=renderMD(full); $('#chatWrap').scrollTop=$('#chatWrap').scrollHeight; }          }catch(e){}        }      }    }else{      var j2=await res.json();      full=(j2.choices&&j2.choices[0]&&j2.choices[0].message&&j2.choices[0].message.content)||'';    }    if(!full.trim()) full='（GM 没有返回内容。可能是模型拒答、被内容过滤，或 max_tokens 太小。）';    holder.remove();    pushMsg({role:'assistant',text:full});  }catch(err){    holder.remove();    if(err && err.name==='AbortError') pushMsg({role:'assistant',kind:'sys',text:'已停止本次生成。'});    else pushMsg({role:'assistant',kind:'err',text:'请求失败：'+(err&&err.message?err.message:err)+'\n\n可能原因：① 接口地址/模型名不对；② 浏览器被 CORS 拦截（改用中转）；③ Key 无效或额度不足。'});  }finally{    busy=false; $('#btnSend').disabled=false; $('#btnStop').disabled=true; controller=null; updateStatus();  }}function send(text,m){  text=(text==null?$('#input').value:text||'').trim();  if(!text||busy) return;  var md=m||mode;  var wrapped = md==='act'? text : (md==='inner'? '（心声：'+text+'）' : '// OOC：'+text.replace(/^(\/\/\s*OOC\s*[:：]\s*)+/i,''));  $('#input').value='';  pushMsg({role:'user',text:wrapped,mode:md});  run();}function regen(i){  if(busy) return;  state.msgs=state.msgs.slice(0,i);  renderAll(); saveAuto(); run();}/* v15 通知过滤：启动/上传/下载都忽略这类系统提示 */
-function isNoticeMsg(m){ return !!(m && m.kind === 'sys' && /^已恢复上次的自动存档/.test(m.text || '')); }
-function allSaves(){  try{ return JSON.parse(localStorage.getItem(SAVE_KEY)||'{}'); }catch(e){ return {}; }}function setSaves(o){ localStorage.setItem(SAVE_KEY, JSON.stringify(o)); renderSlots(); }function snapshot(){ return {t:Date.now(),title:state.title||('（'+state.msgs.length+' 条）'),summary:state.summary,msgs:state.msgs}; }function saveAuto(){ var o=allSaves(); o['__auto']=snapshot(); try{ setSaves(o); }catch(e){ flash('自动存档失败：本地存储已满，请导出清理'); } }/* ============================================================
+function isNoticeMsg(m){ return !!(m && m.kind === 'sys' && /^(已恢复上次的自动存档|已载入上次的进度)/.test(m.text || '')); }
+function allSaves(){  try{ return JSON.parse(localStorage.getItem(SAVE_KEY)||'{}'); }catch(e){ return {}; }}function setSaves(o){ localStorage.setItem(SAVE_KEY, JSON.stringify(o)); renderSlots(); }function snapshot(){ return {t:Date.now(),title:state.title||('（'+state.msgs.length+' 条）'),summary:state.summary,msgs:state.msgs}; }function saveAuto(force){ if(!cfg.autoSave && force !== true) return; var o=allSaves(); o['__auto']=snapshot(); try{ setSaves(o); }catch(e){ flash('自动存档失败：本地存储已满，请导出清理'); } }/* ============================================================
    面板（本地直读）—— 不发请求、不推进时间
    ============================================================ */
 var PANEL_DEFS = [
@@ -198,6 +231,520 @@ function currentCity(){
 }
 function prow(k, v){ return '<div class="r"><b>'+k+'</b><span>'+v+'</span></div>'; }
 
+
+/* ===== v19 城市方位示意图（数据来自设定书里的 <district location="…">） ===== */
+var CITY_ZONE_LABEL=['西北','北','东北','西','城心','东','西南','南','东南'];
+var CITY_MAP_W={CW:252,GAP:12,PAD:14,HEAD:64,FSN:14,FSL:11,FSP:11.5};
+var cityMapZoneOf=function(loc){
+  if(/四门|近郊|城外|入口|深处|外围|外环|石门关|林|山体|北坡|隔水/.test(loc)) return 'surround';
+  var n=/北/.test(loc), s=/南/.test(loc), w=/西/.test(loc), e=/东/.test(loc);
+  var r=1, c=1;
+  if(n&&!s) r=0; else if(s&&!n) r=2;
+  if(w&&!e) c=0; else if(e&&!w) c=2;
+  return String(r*3+c);
+};
+var cityMapPlaces=function(str,max){
+  var parts=String(str||'').split('、').filter(function(x){ return !!x; });
+  var lines=[], cur='';
+  for(var i=0;i<parts.length;i++){
+    if(!cur){ cur=parts[i]; continue; }
+    if((cur+'、'+parts[i]).length<=max) cur+='、'+parts[i]; else { lines.push(cur+'、'); cur=parts[i]; }
+  }
+  if(cur) lines.push(cur);
+  return lines.length?lines:[''];
+};
+var cityMapVar=function(name,fb){
+  try{ var v=getComputedStyle(document.documentElement).getPropertyValue(name).trim(); return v||fb; }catch(e){ return fb; }
+};
+var cityMapSVG=function(city, cityText){
+  var C={ bg:cityMapVar('--panel2','#1e1812'), card:cityMapVar('--panel','#241d16'), line:cityMapVar('--line','#4a3c25'),
+          text:cityMapVar('--text','#e8dcc2'), dim:cityMapVar('--dim','#8d7f68'), gold:cityMapVar('--gold2','#d8bd7d') };
+  var ds=[];
+  var re=/<district\s+name="([^"]+)"\s+location="([^"]+)"\s*>([^\n<]*)/g, m;
+  while((m=re.exec(cityText))) ds.push({ name:m[1], loc:m[2].trim(), places:(m[3]||'').trim().replace(/、\s*$/,'') });
+  if(!ds.length) return '';
+  var zones={}, surr=[];
+  ds.forEach(function(d){
+    var z=cityMapZoneOf(d.loc);
+    if(z==='surround') surr.push(d); else { if(!zones[z]) zones[z]=[]; zones[z].push(d); }
+  });
+  var W=CITY_MAP_W, linesOf=function(d){ return cityMapPlaces(d.places,16); };
+  var cardH=function(d){ return 24+18+linesOf(d).length*(W.FSP+5)+14; };
+  var rows=[0,1,2].map(function(r){ return [zones[String(r*3)],zones[String(r*3+1)],zones[String(r*3+2)]]; });
+  var rowH=rows.map(function(row){
+    var best=0;
+    row.forEach(function(cell){ if(cell&&cell.length){ var h=30; cell.forEach(function(d){ h+=cardH(d)+9; }); if(h>best) best=h; } });
+    return best;
+  });
+  var surrH=0; if(surr.length){ surrH=42; surr.forEach(function(d){ surrH+=cardH(d)+9; }); }
+  var totalW=W.PAD*2+W.CW*3+W.GAP*2, totalH=W.HEAD+rowH[0]+rowH[1]+rowH[2]+surrH+16;
+  var cellX=function(c){ return W.PAD+c*(W.CW+W.GAP); };
+  var p=[];
+  p.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+totalW+' '+totalH+'" width="'+totalW+'" height="'+totalH+'" font-family="Microsoft YaHei, PingFang SC, sans-serif">');
+  p.push('<rect width="'+totalW+'" height="'+totalH+'" rx="10" fill="'+C.bg+'"/>');
+  p.push('<text x="'+W.PAD+'" y="30" fill="'+C.gold+'" font-size="19" font-weight="700">'+esc(city)+'　方位示意图</text>');
+  p.push('<text x="'+W.PAD+'" y="50" fill="'+C.dim+'" font-size="11.5">共 '+ds.length+' 个城区 · '+ds.reduce(function(a,d){ return a+(d.places?d.places.split('、').length:0); },0)+' 个地点　（按设定书「方位」自动排布）</text>');
+  var card=function(d,x,y,w){
+    var lines=linesOf(d), h=cardH(d), o=[];
+    o.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="9" fill="'+C.card+'" stroke="'+C.line+'" stroke-width="1.1"/>');
+    o.push('<text x="'+(x+12)+'" y="'+(y+23)+'" fill="'+C.text+'" font-size="'+W.FSN+'" font-weight="700">'+esc(d.name)+'</text>');
+    o.push('<text x="'+(x+w-12)+'" y="'+(y+23)+'" fill="'+C.dim+'" font-size="'+W.FSL+'" text-anchor="end">'+esc(d.loc)+'</text>');
+    lines.forEach(function(ln,i){ o.push('<text x="'+(x+12)+'" y="'+(y+43+i*(W.FSP+5))+'" fill="'+C.dim+'" font-size="'+W.FSP+'">'+esc(ln)+'</text>'); });
+    return o.join('');
+  };
+  var y=W.HEAD;
+  rows.forEach(function(row,ri){
+    if(rowH[ri]<=0) return;
+    row.forEach(function(cell,ci){
+      if(!cell||!cell.length) return;
+      var x=cellX(ci);
+      p.push('<text x="'+(x+4)+'" y="'+(y+14)+'" fill="'+C.dim+'" font-size="11" opacity="0.85">'+CITY_ZONE_LABEL[ri*3+ci]+'</text>');
+      var cy=y+22;
+      for(var i=0;i<cell.length;i++){ p.push(card(cell[i], x+2, cy, W.CW-4)); cy+=cardH(cell[i])+9; }
+    });
+    y+=rowH[ri];
+  });
+  if(surr.length){
+    p.push('<text x="'+W.PAD+'" y="'+(y+16)+'" fill="'+C.dim+'" font-size="11">城门 · 近郊 · 外围</text>');
+    y+=30;
+    var cx=W.PAD, bottom=y;
+    surr.forEach(function(d){
+      if(cx+W.CW>totalW-W.PAD){ cx=W.PAD; y=bottom+9; }
+      var h=cardH(d);
+      p.push(card(d, cx, y, W.CW));
+      if(y+h>bottom) bottom=y+h;
+      cx+=W.CW+W.GAP;
+    });
+  }
+  p.push('</svg>');
+  return p.join('');
+};
+
+function buildWorldMapSVG(raw, esc) {
+  var cityNames = [], mC = /<city\s+name="([^"]+)"\s*>/g, mc;
+  while ((mc = mC.exec(raw))) cityNames.push(mc[1]);
+  var locs = [], mR = /<location\s+([^>]*)>([^<]*)<\/location>/g, mr;
+  while ((mr = mR.exec(raw))) {
+    var A = mr[1];
+    var g = function (k) { var mm = A.match(new RegExp(k + '="([^"]*)"')); return mm ? mm[1] : ''; };
+    locs.push({ name: g('name'), area: g('area'), bearing: g('bearing') });
+  }
+  function bearingPos(str) {
+    var m = String(str).match(/([东南西北]{1,2})\s*约?\s*(\d+)(?:\s*[–\-—~]\s*(\d+))?/);
+    if (!m) return null;
+    var dir = m[1], km = (Number(m[2]) + (m[3] ? Number(m[3]) : Number(m[2]))) / 2, dx = 0, dy = 0;
+    if (/东/.test(dir)) dx = 1; else if (/西/.test(dir)) dx = -1;
+    if (/南/.test(dir)) dy = 1; else if (/北/.test(dir)) dy = -1;
+    var len = dir.length === 2 ? Math.SQRT1_2 : 1;
+    return { x: dx * km * len, y: dy * km * len };
+  }
+  var cities = [];
+  for (var ci = 0; ci < locs.length; ci++) {
+    var L = locs[ci];
+    if (cityNames.indexOf(L.name) < 0) continue;
+    var pos = (L.bearing === '基准点') ? { x: 0, y: 0 } : bearingPos(L.bearing);
+    if (pos) cities.push({ name: L.name, bearing: L.bearing, x: pos.x, y: pos.y });
+  }
+  if (cities.length < 2) return '';
+  for (var a2 = 0; a2 < cities.length; a2++)
+    for (var b2 = 0; b2 < a2; b2++)
+      if (Math.abs(cities[a2].x - cities[b2].x) < 220 && Math.abs(cities[a2].y - cities[b2].y) < 220)
+        cities[a2].y += (cities[a2].y <= cities[b2].y ? -430 : 430);
+
+  // ---------- 版面 ----------
+  var W = 1160, H = 800, CX = 580, CY = 404, SC = 0.1045;
+  var K = function (km) { return km * SC; };
+  var X = function (km) { return CX + km * SC; };
+  var Y = function (km) { return CY + km * SC; };
+  var R = function (n) { return Math.round(n * 10) / 10; };
+  var seed = 20250916;
+  var rnd = function () { seed = (seed * 1103515245 + 12345) % 2147483647; return seed / 2147483647; };
+  var jit = function (a) { return (rnd() - 0.5) * 2 * a; };
+  var SERIF = "Georgia,'Times New Roman','KaiTi','STKaiti','Songti SC',serif";
+
+  var INK = '#43301f', INK2 = '#6b4c31', INK3 = '#8a6a48';
+  var FOREST = '#5f7049', FOREST2 = '#6f8151', FOREST3 = '#4e5f3a';
+  var MTN = '#8d6c46', MTN2 = '#a98a5f', MTN3 = '#5f472c', SNOW = '#f2efe4';
+  var RIVER = '#7fa0b5', LAKE = '#8fb0c2', SAND = '#d8c193', MARSH = '#94a074', ICE = '#e6eef2';
+  var P = [];
+  var push = function (s) { P.push(s); };
+
+  // ---------- 纸底 ----------
+  push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family="${SERIF}">`);
+  push(`<defs>
+<radialGradient id="wmPaper" cx="45%" cy="36%" r="82%"><stop offset="0%" stop-color="#f8efd6"/><stop offset="52%" stop-color="#eddfbb"/><stop offset="100%" stop-color="#cdb488"/></radialGradient>
+<radialGradient id="wmVig" cx="50%" cy="48%" r="76%"><stop offset="55%" stop-color="#3a2612" stop-opacity="0"/><stop offset="100%" stop-color="#3a2612" stop-opacity="0.45"/></radialGradient>
+<linearGradient id="wmSea" x1="0" y1="0" x2="0.6" y2="1"><stop offset="0%" stop-color="#cdb98f"/><stop offset="100%" stop-color="#b9a273"/></linearGradient>
+<linearGradient id="wmLand" x1="0.15" y1="0" x2="0.85" y2="1"><stop offset="0%" stop-color="#f3e8c8"/><stop offset="45%" stop-color="#e9d9b2"/><stop offset="100%" stop-color="#d9c69c"/></linearGradient>
+<radialGradient id="wmInland" cx="50%" cy="45%" r="65%"><stop offset="0%" stop-color="#c9b183" stop-opacity="0.55"/><stop offset="70%" stop-color="#c9b183" stop-opacity="0"/></radialGradient>
+<filter id="wmSoft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+<filter id="wmSoft2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>`);
+  push(`<rect width="${W}" height="${H}" fill="url(#wmPaper)"/>`);
+  for (let i = 0; i < 130; i++) push(`<ellipse cx="${R(rnd() * W)}" cy="${R(rnd() * H)}" rx="${R(8 + rnd() * 60)}" ry="${R(5 + rnd() * 30)}" fill="#8a6a42" opacity="${R(0.01 + rnd() * 0.028)}"/>`);
+  push(`<rect width="${W}" height="${H}" fill="url(#wmVig)"/>`);
+
+  // ---------- 海 ----------
+  var PAD = 40;
+  push(`<rect x="${PAD}" y="${PAD}" width="${W - PAD * 2}" height="${H - PAD * 2}" fill="url(#wmSea)"/>`);
+  // 海面波纹
+  for (let i = 0; i < 120; i++) {
+    const wx = PAD + 10 + rnd() * (W - PAD * 2 - 20), wy = PAD + 10 + rnd() * (H - PAD * 2 - 20);
+    push(`<path d="M${R(wx)},${R(wy)} q7,-4 14,0 q7,4 14,0" fill="none" stroke="#a08c63" stroke-width="1.1" opacity="${R(0.12 + rnd() * 0.16)}"/>`);
+  }
+
+  // ---------- 海岸线（多倍频锯齿） ----------
+  var coast = [], NR = 460;
+  for (let i = 0; i < NR; i++) {
+    const a = (i / NR) * Math.PI * 2;
+    const wob = 1 + 0.075 * Math.sin(5 * a + 1.2) + 0.045 * Math.sin(11 * a + 3.1)
+      + 0.025 * Math.sin(23 * a + 0.7) + 0.015 * Math.sin(47 * a + 2.2) + 0.009 * Math.sin(97 * a + 0.4);
+    const rr = 1 + (rnd() - 0.5) * 0.012;
+    coast.push([CX + Math.cos(a) * K(3550) * wob * rr, CY + Math.sin(a) * K(2480) * wob * rr]);
+  }
+  const coastPath = 'M' + coast.map((c) => `${R(c[0])},${R(c[1])}`).join(' L') + ' Z';
+  const scaleAbout = (k) => `transform="translate(${CX},${CY}) scale(${k}) translate(${-CX},${-CY})"`;
+  // 近岸同心浪花
+  for (const [k, o, dash] of [[1.075, 0.3, '2 9'], [1.05, 0.34, '2 8'], [1.028, 0.36, '2 7']])
+    push(`<path d="${coastPath}" fill="none" stroke="#7d6743" stroke-width="3" stroke-dasharray="${dash}" opacity="${o}" ${scaleAbout(k)}/>`);
+  // 陆地阴影 + 主体
+  push(`<path d="${coastPath}" fill="#5b4326" opacity="0.35" filter="url(#wmSoft2)" transform="translate(5,7)"/>`);
+  push(`<path d="${coastPath}" fill="url(#wmLand)" stroke="${INK}" stroke-width="3.4" stroke-linejoin="round"/>`);
+  push(`<path d="${coastPath}" fill="none" stroke="${INK2}" stroke-width="1.2" stroke-linejoin="round" ${scaleAbout(0.992)}/>`);
+
+  push(`<defs><clipPath id="wmLandClip"><path d="${coastPath}"/></clipPath></defs>`);
+  push(`<g clip-path="url(#wmLandClip)">`);
+  // 内陆阴影晕染（手工上色感）
+  push(`<rect width="${W}" height="${H}" fill="url(#wmInland)"/>`);
+  for (let i = 0; i < 170; i++) {
+    const bx = CX + jit(K(3300)), by = CY + jit(K(2300));
+    push(`<ellipse cx="${R(bx)}" cy="${R(by)}" rx="${R(30 + rnd() * 120)}" ry="${R(18 + rnd() * 70)}" fill="#a98a5f" opacity="${R(0.018 + rnd() * 0.035)}"/>`);
+  }
+
+  // ---------- 永冬冰原 ----------
+  push(`<rect x="0" y="${Y(-2800)}" width="${W}" height="${R(K(1080))}" fill="${ICE}" opacity="0.72"/>`);
+  push(`<path d="M0,${R(Y(-1720))} Q${R(CX * 0.5)},${R(Y(-1660))} ${R(CX)},${R(Y(-1730))} T${W},${R(Y(-1700))}" fill="none" stroke="#9fb3bd" stroke-width="2" opacity="0.5"/>`);
+  for (let i = 0; i < 26; i++) {
+    const gx = 60 + rnd() * (W - 120), gy = Y(-2700) + rnd() * K(950);
+    push(`<path d="M${R(gx)},${R(gy)} l${R(K(70))},${R(-K(140))} l${R(K(70))},${R(K(140))} z" fill="#dfe9ee" stroke="#8fa4af" stroke-width="1"/>`);
+  }
+  for (let i = 0; i < 14; i++) {
+    const gx = 100 + rnd() * (W - 200), gy = Y(-2700) + rnd() * K(950);
+    push(`<path d="M${R(gx)},${R(gy)} l${R(K(60))},${R(jit(20))} l${R(K(50))},${R(-jit(30))} l${R(K(70))},${R(jit(20))}" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.5"/>`);
+  }
+
+  // ---------- 山峦 ----------
+  function peak(x, y, s, snow) {
+    const w = 13 * s;
+    const g = [`<path d="M${R(x - w)},${R(y)} L${R(x - w * 0.15)},${R(y - 18 * s)} L${R(x + w * 0.55)},${R(y - 9 * s)} L${R(x + w)},${R(y)} Z" fill="${MTN}" stroke="${INK3}" stroke-width="0.8"/>`,
+    `<path d="M${R(x - w * 0.15)},${R(y - 18 * s)} L${R(x + w * 0.55)},${R(y - 9 * s)} L${R(x + w)},${R(y)} L${R(x + w * 0.1)},${R(y)} Z" fill="${MTN3}" opacity="0.55"/>`];
+    if (snow) g.push(`<path d="M${R(x - w * 0.5)},${R(y - 12.6 * s)} L${R(x - w * 0.15)},${R(y - 18 * s)} L${R(x + w * 0.2)},${R(y - 13.2 * s)} L${R(x - w * 0.05)},${R(y - 12 * s)} Z" fill="${SNOW}" opacity="0.92"/>`);
+    return g.join('');
+  }
+  // 西境山脉（南北纵贯 2500km）
+  for (let row = 0; row < 22; row++) {
+    const baseY = Y(-1450) + row * K(115) + jit(10);
+    for (let c = 0; c < 3; c++) {
+      const bx = X(-1560 + c * 240 + jit(45)) + (row % 2 ? K(110) : 0);
+      push(peak(bx, baseY, 1.05 + rnd() * 0.5, rnd() > 0.55));
+    }
+  }
+  // 黑脊山脉（东西横断 5200km）
+  for (let c = 0; c < 26; c++) {
+    for (let r2 = 0; r2 < 2; r2++) {
+      const bx = X(-2500 + c * 200 + (r2 ? 110 : 0) + jit(40));
+      const by = Y(880) + (r2 ? 22 : 0) + jit(16);
+      push(peak(bx, by, 1 + rnd() * 0.4, rnd() > 0.7));
+    }
+  }
+  // 北方冰山群
+  for (let i = 0; i < 9; i++)
+    push(peak(X(-500) + i * K(320) + jit(40), Y(-1580) + jit(60), 1.15, true));
+
+  // ---------- 大森林 ----------
+  push(`<ellipse cx="${X(1180)}" cy="${Y(60)}" rx="${R(K(1200))}" ry="${R(K(800))}" fill="#bfc79b" opacity="0.5"/>`);
+  push(`<ellipse cx="${X(1180)}" cy="${Y(60)}" rx="${R(K(1200))}" ry="${R(K(800))}" fill="none" stroke="#7c8657" stroke-width="1.2" stroke-dasharray="5 5" opacity="0.35"/>`);
+  function tree(x, y, s) {
+    const col = rnd() > 0.5 ? FOREST : (rnd() > 0.5 ? FOREST2 : FOREST3);
+    return `<ellipse cx="${R(x)}" cy="${R(y + 2)}" rx="${R(7 * s)}" ry="${R(2.6 * s)}" fill="#4a5535" opacity="0.35"/>`
+      + `<path d="M${R(x)},${R(y - 15 * s)} L${R(x + 7 * s)},${R(y + 2 * s)} L${R(x - 7 * s)},${R(y + 2 * s)} Z" fill="${col}" stroke="#3f4a2c" stroke-width="0.7"/>`
+      + `<path d="M${R(x)},${R(y - 20 * s)} L${R(x + 5 * s)},${R(y - 8 * s)} L${R(x - 5 * s)},${R(y - 8 * s)} Z" fill="${col}" stroke="#3f4a2c" stroke-width="0.6"/>`
+      + `<rect x="${R(x - 1)}" y="${R(y + 2 * s)}" width="2" height="${R(4 * s)}" fill="#5a4326"/>`;
+  }
+  for (let i = 0; i < 230; i++) {
+    const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd());
+    push(tree(X(1180) + Math.cos(a) * r * K(1120), Y(60) + Math.sin(a) * r * K(730), 0.75 + rnd() * 0.6));
+  }
+  // 森林外零散小树
+  for (let i = 0; i < 26; i++) push(tree(CX + jit(K(2600)), CY - K(900) + jit(K(500)), 0.6 + rnd() * 0.4));
+
+  // ---------- 赤沙荒漠 ----------
+  push(`<ellipse cx="${X(-1600)}" cy="${Y(1350)}" rx="${R(K(950))}" ry="${R(K(560))}" fill="${SAND}" opacity="0.55"/>`);
+  for (let i = 0; i < 26; i++) {
+    const gx = X(-1600) + jit(K(850)), gy = Y(1350) + jit(K(480));
+    push(`<path d="M${R(gx - 13)},${R(gy)} q6.5,-7 13,0 q6.5,7 13,0" fill="none" stroke="#c2a878" stroke-width="1.9" opacity="0.9"/>`);
+  }
+  // ---------- 雾泽 ----------
+  push(`<ellipse cx="${X(1150)}" cy="${Y(1080)}" rx="${R(K(600))}" ry="${R(K(350))}" fill="${MARSH}" opacity="0.45"/>`);
+  for (let i = 0; i < 40; i++) {
+    const gx = X(1150) + jit(K(520)), gy = Y(1080) + jit(K(290));
+    push(`<path d="M${R(gx)},${R(gy + 8)} l0,-11" stroke="#68744a" stroke-width="1.6"/><path d="M${R(gx + 4)},${R(gy + 8)} l0,-8" stroke="#68744a" stroke-width="1.3"/><path d="M${R(gx - 4)},${R(gy + 8)} l0,-6" stroke="#68744a" stroke-width="1.2"/>`);
+  }
+  // ---------- 南部草原 ----------
+  for (let i = 0; i < 60; i++) {
+    const gx = X(450) + jit(K(1200)), gy = Y(1450) + jit(K(600));
+    push(`<path d="M${R(gx)},${R(gy)} l0,-6" stroke="#8b9a63" stroke-width="1.3" opacity="0.75"/><path d="M${R(gx + 4)},${R(gy)} l0,-4" stroke="#8b9a63" stroke-width="1.1" opacity="0.65"/>`);
+  }
+  // ---------- 碎星群岛 ----------
+  for (let i = 0; i < 13; i++) {
+    const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd());
+    const ix = X(2150) + Math.cos(a) * r * K(460), iy = Y(2000) + Math.sin(a) * r * K(330);
+    push(`<path d="M${R(ix)},${R(iy - K(140))} q${R(K(120))},${R(-jit(K(60)))} ${R(K(260))},${R(K(20))} q${R(K(90))},${R(K(40))} ${R(K(180))},${R(K(150))} q${R(-K(120))},${R(K(80))} ${R(-K(300))},${R(K(40))} q${R(-K(180))},${R(-jit(K(50)))} ${R(-K(140))},${R(-K(210))} Z" fill="#e8d8b4" stroke="${INK2}" stroke-width="1.4"/>`);
+  }
+
+  // ---------- 河流与湖 ----------
+  function river(d, w) {
+    push(`<path d="${d}" fill="none" stroke="${INK3}" stroke-width="${w + 2.4}" opacity="0.28"/>`);
+    push(`<path d="${d}" fill="none" stroke="${RIVER}" stroke-width="${w}" opacity="0.95"/>`);
+    push(`<path d="${d}" fill="none" stroke="#bcd2de" stroke-width="${w * 0.38}" opacity="0.85"/>`);
+  }
+  river(`M${X(-3000)},${Y(-40)} Q${X(-1700)},${Y(190)} ${X(-300)},${Y(70)} Q${X(700)},${Y(-30)} ${X(2300)},${Y(50)}`, 6.5);
+  river(`M${X(850)},${Y(-760)} Q${X(1300)},${Y(-280)} ${X(1750)},${Y(-90)}`, 4.5);
+  river(`M${X(-350)},${Y(700)} Q${X(120)},${Y(1300)} ${X(620)},${Y(1900)}`, 4.5);
+  river(`M${X(-1500)},${Y(-700)} Q${X(-1100)},${Y(-200)} ${X(-350)},${Y(60)}`, 3.6);
+  // 星泪湖（不规则）
+  const lakePts = [], LN = 30;
+  for (let i = 0; i < LN; i++) {
+    const a = (i / LN) * Math.PI * 2, wob = 1 + 0.14 * Math.sin(3 * a + 1) + 0.08 * Math.sin(7 * a);
+    lakePts.push([X(300) + Math.cos(a) * K(260) * wob, Y(0) + Math.sin(a) * K(175) * wob]);
+  }
+  const lakePath = 'M' + lakePts.map((c) => `${R(c[0])},${R(c[1])}`).join(' L') + ' Z';
+  push(`<path d="${lakePath}" fill="#5f7c8c" opacity="0.28" filter="url(#wmSoft)" transform="translate(2,3)"/>`);
+  push(`<path d="${lakePath}" fill="${LAKE}" stroke="${INK3}" stroke-width="1.6"/>`);
+  push(`<path d="${lakePath}" fill="none" stroke="#cfe0ea" stroke-width="1" opacity="0.7" ${scaleAbout(0.94)}/>`);
+  push(`</g>`);
+
+  // ---------- 城市与标签 ----------
+  const KINGDOM = { '王冠王国': '#b0863a', '翠叶王国': '#5f7f4a', '铁岩王国': '#4f6b86' };
+  const placed = [];
+  const hits = (b) => placed.some((o) => !(b.x2 < o.x1 || b.x1 > o.x2 || b.y2 < o.y1 || b.y1 > o.y2));
+  function putLabel(text, cx, cy, size, weight, color, banner) {
+    const w = text.length * size * 1.04, h = size + 6;
+    const cands = [
+      { x: cx + 17, y: cy - 4, anchor: 'start' },
+      { x: cx - 17, y: cy - 4, anchor: 'end' },
+      { x: cx, y: cy - 24 - h, anchor: 'middle' },
+      { x: cx, y: cy + 26 + h, anchor: 'middle' },
+      { x: cx + 46, y: cy + h * 0.7, anchor: 'start' },
+      { x: cx - 46, y: cy + h * 0.7, anchor: 'end' },
+      { x: cx + 34, y: cy - 22 - h, anchor: 'start' },
+      { x: cx - 34, y: cy - 22 - h, anchor: 'end' },
+      { x: cx + 34, y: cy + 22 + h, anchor: 'start' },
+      { x: cx - 34, y: cy + 22 + h, anchor: 'end' },
+    ];
+    for (const c of cands) {
+      const x1 = c.anchor === 'start' ? c.x : (c.anchor === 'end' ? c.x - w : c.x - w / 2);
+      const y1 = c.y - h * 0.78;
+      const pad = banner ? 9 : 6;
+      const box = { x1: x1 - pad, x2: x1 + w + pad, y1: y1 - pad * 0.5 - 2, y2: y1 + h + pad * 0.5 + 2 };
+      if (box.x1 < PAD + 12 || box.x2 > W - PAD - 12 || box.y1 < PAD + 60 || box.y2 > H - PAD - 40) continue;
+      if (hits(box)) continue;
+      placed.push(box);
+      if (banner) {
+        push(`<g><rect x="${R(x1 - 5)}" y="${R(y1 - 1)}" width="${R(w + 10)}" height="${R(h + 2)}" rx="3" fill="#f4ead0" stroke="${INK3}" stroke-width="1" opacity="0.93"/>`
+          + `<path d="M${R(x1 - 5)},${R(y1 - 1)} l6,${R((h + 2) / 2)} l-6,${R((h + 2) / 2)}" fill="none" stroke="${INK3}" stroke-width="0.9" opacity="0.7"/>`
+          + `<path d="M${R(x1 + w + 5)},${R(y1 - 1)} l-6,${R((h + 2) / 2)} l6,${R((h + 2) / 2)}" fill="none" stroke="${INK3}" stroke-width="0.9" opacity="0.7"/></g>`);
+      }
+      push(`<text x="${R(c.x)}" y="${R(c.y)}" font-size="${size}" fill="${color}" text-anchor="${c.anchor}" font-weight="${weight}"`
+        + (banner ? '' : ` stroke="#f7eed6" stroke-width="3.4" paint-order="stroke" stroke-linejoin="round"`)
+        + `>${esc(text)}</text>`);
+      return true;
+    }
+    return false;
+  }
+  // 区域名
+  for (const [nm, dx, dy, col, size] of [
+    ['西 境 山 脉', -1900, -1250, INK2, 16], ['黑 脊 山 脉', -2450, 1250, INK2, 16],
+    ['大 森 林', 2200, -900, '#4b5a34', 17], ['赤 沙 荒 漠', -2000, 1950, '#7c5c33', 16],
+    ['雾 泽', 1700, 1450, '#5b6742', 15], ['南 部 草 原', 300, 2050, '#5b6742', 15],
+    ['永 冬 冰 原', -260, -2250, '#54666f', 16], ['星 泪 湖', 300, -360, '#3f5f73', 13],
+    ['东　海', 3900, -1400, '#6b543a', 18], ['西　海', -3750, -400, '#6b543a', 18],
+    ['北　海', -1100, -3000, '#6b543a', 18], ['南　海', -500, 3000, '#6b543a', 18],
+  ]) {
+    push(`<text x="${R(X(dx))}" y="${R(Y(dy))}" font-size="${size}" fill="${col}" text-anchor="middle" opacity="0.9" font-style="italic" stroke="#f7eed6" stroke-width="2.8" paint-order="stroke" letter-spacing="1">${nm}</text>`);
+    placed.push({ x1: X(dx) - nm.length * size * 0.6, x2: X(dx) + nm.length * size * 0.6, y1: Y(dy) - size - 4, y2: Y(dy) + 6 });
+  }
+  function castle(x, y, s) {
+    return `<g transform="translate(${R(x)},${R(y)}) scale(${s})">`
+      + `<ellipse cx="0" cy="4" rx="13" ry="4" fill="#4a3222" opacity="0.3"/>`
+      + `<rect x="-10" y="1" width="20" height="3.4" fill="#4a3222"/>`
+      + `<path d="M-7.6,1 L-7.6,-5.6 L-4,-5.6 L-4,-10 L-1.6,-10 L-1.6,-5.6 L1.6,-5.6 L1.6,-10 L4,-10 L4,-5.6 L7.6,-5.6 L7.6,1 Z" fill="#a8452c" stroke="#3f2a18" stroke-width="1"/>`
+      + `<path d="M-1.8,-2.6 L-1.8,1 L1.8,1 L1.8,-2.6 Z" fill="#f6ecd2"/>`
+      + `<path d="M0,-10 L0,-14 L5,-12 L0,-10.6 Z" fill="#b0863a" stroke="#3f2a18" stroke-width="0.7"/></g>`;
+  }
+  for (const c of cities) push(castle(X(c.x), Y(c.y), c.name === '王冠城' ? 1.35 : 1.05));
+  for (const c of cities) putLabel(c.name, X(c.x), Y(c.y), c.name === '王冠城' ? 17 : 15.5, 700, c.name === '王冠城' ? '#8d3b23' : '#3d2a19', true);
+  // 王国徽记
+  for (const [kn, dx, dy] of [['铁岩王国', -2400, -350], ['王冠王国', 620, 1000], ['翠叶王国', 2900, -600]])
+    push(`<g transform="translate(${R(X(dx))},${R(Y(dy))})"><path d="M0,-12 L11,-8 L11,3 Q11,12 0,16 Q-11,12 -11,3 L-11,-8 Z" fill="${KINGDOM[kn]}" stroke="${INK}" stroke-width="1.2"/><text x="0" y="5" font-size="11" fill="#f7eed6" text-anchor="middle">${kn[0]}</text></g>`);
+
+  // ---------- 装饰：罗盘 / 海怪 / 帆船 / 龙 ----------
+  function compass(cx, cy, s) {
+    const g = [];
+    for (let i = 0; i < 16; i++) {
+      const a = (i * Math.PI) / 8, long = i % 4 === 0, mid = i % 2 === 0;
+      const len = (long ? 62 : mid ? 40 : 24) * s, half = (long ? 7 : mid ? 5 : 3.4) * s;
+      const tx = cx + Math.sin(a) * len, ty = cy - Math.cos(a) * len;
+      const nx = Math.cos(a) * half, ny = Math.sin(a) * half;
+      g.push(`<path d="M${R(tx)},${R(ty)} L${R(cx + nx)},${R(cy + ny)} L${R(cx - nx)},${R(cy - ny)} Z" fill="${long ? INK : INK3}" opacity="${long ? 0.85 : 0.55}"/>`);
+    }
+    push(`<g><circle cx="${R(cx)}" cy="${R(cy)}" r="${R(70 * s)}" fill="#f4ead0" opacity="0.5" stroke="${INK3}" stroke-width="1.2"/>`
+      + `<circle cx="${R(cx)}" cy="${R(cy)}" r="${R(78 * s)}" fill="none" stroke="${INK3}" stroke-width="0.8" opacity="0.6"/>`
+      + g.join('') + `<circle cx="${R(cx)}" cy="${R(cy)}" r="${R(7 * s)}" fill="#f7eed6" stroke="${INK}" stroke-width="1.4"/>`
+      + `<text x="${R(cx)}" y="${R(cy - 86 * s)}" font-size="${R(15 * s)}" fill="${INK2}" text-anchor="middle">北</text></g>`);
+  }
+  compass(150, 640, 1);
+  function ship(x, y, s) {
+    push(`<g transform="translate(${R(x)},${R(y)}) scale(${s})" opacity="0.85">`
+      + `<ellipse cx="0" cy="9" rx="15" ry="3.4" fill="#7d6743" opacity="0.3"/>`
+      + `<path d="M-14,3 Q0,10 14,3 L10,8 Q0,12 -10,8 Z" fill="${INK2}" stroke="${INK}" stroke-width="0.8"/>`
+      + `<path d="M0,3 L0,-16" stroke="${INK}" stroke-width="1.2"/>`
+      + `<path d="M0,-15 L10,-6 L0,-4 Z" fill="#f7eed6" stroke="${INK2}" stroke-width="0.9"/>`
+      + `<path d="M0,-15 L-8,-7 L0,-5 Z" fill="#e6d8b4" stroke="${INK2}" stroke-width="0.8"/></g>`);
+  }
+  ship(190, 250, 1.1); ship(1010, 150, 0.9); ship(1060, 690, 1); ship(150, 430, 0.85); ship(760, 748, 0.8);
+  function serpent(x, y, s) {
+    push(`<g transform="translate(${R(x)},${R(y)}) scale(${s})" fill="none" stroke="${INK2}" stroke-width="1.8" opacity="0.6">`
+      + `<path d="M0,0 q12,-12 24,0 q12,12 24,0 q12,-12 24,0"/><path d="M0,10 q12,-12 24,0 q12,12 24,0"/>`
+      + `<path d="M48,-6 q8,-8 16,-2" /><circle cx="66" cy="-9" r="1.6" fill="${INK2}"/></g>`);
+  }
+  serpent(70, 700, 1); serpent(980, 560, 1.15);
+  // 龙（左上角装饰）
+  push(`<g transform="translate(120,150) scale(1.05)" fill="${INK2}" opacity="0.5">`
+    + `<path d="M0,0 q18,-16 40,-8 q-8,-14 6,-22 q10,-6 18,4 q-10,-2 -12,8 q-2,10 8,12 q-16,6 -30,-2 q-14,-8 -30,-2 Z"/>`
+    + `<path d="M4,-6 q-16,-10 -30,-4 q10,-12 30,-6 Z"/><path d="M6,2 q-14,10 -28,8 q12,-12 28,-14 Z"/></g>`);
+
+  // ---------- 边框 / 绶带标题 / 图例 / 比例尺 ----------
+  push(`<rect x="${PAD}" y="${PAD}" width="${W - PAD * 2}" height="${H - PAD * 2}" fill="none" stroke="${INK}" stroke-width="4"/>`);
+  push(`<rect x="${PAD + 7}" y="${PAD + 7}" width="${W - PAD * 2 - 14}" height="${H - PAD * 2 - 14}" fill="none" stroke="${INK3}" stroke-width="1.2"/>`);
+  for (let i = 0; i <= 24; i++) {
+    const fx = PAD + (i / 24) * (W - PAD * 2);
+    push(`<circle cx="${R(fx)}" cy="${PAD + 14}" r="2" fill="${INK3}" opacity="0.5"/><circle cx="${R(fx)}" cy="${H - PAD - 14}" r="2" fill="${INK3}" opacity="0.5"/>`);
+  }
+  for (let i = 0; i <= 16; i++) {
+    const fy = PAD + (i / 16) * (H - PAD * 2);
+    push(`<circle cx="${PAD + 14}" cy="${R(fy)}" r="2" fill="${INK3}" opacity="0.5"/><circle cx="${W - PAD - 14}" cy="${R(fy)}" r="2" fill="${INK3}" opacity="0.5"/>`);
+  }
+  // 四角花纹
+  function corner(x, y, sx, sy) {
+    push(`<g transform="translate(${R(x)},${R(y)}) scale(${sx},${sy})" fill="none" stroke="${INK2}" stroke-width="1.6" opacity="0.8">`
+      + `<path d="M0,26 q0,-26 26,-26"/><path d="M6,34 q0,-28 28,-28" stroke-width="1"/><path d="M0,26 q14,0 18,-8 q4,-8 -4,-10 q-6,-2 -6,6"/>`
+      + `<circle cx="34" cy="0" r="3" fill="${INK2}" stroke="none"/><circle cx="0" cy="34" r="3" fill="${INK2}" stroke="none"/></g>`);
+  }
+  corner(PAD + 10, PAD + 10, 1, 1); corner(W - PAD - 10, PAD + 10, -1, 1);
+  corner(PAD + 10, H - PAD - 10, 1, -1); corner(W - PAD - 10, H - PAD - 10, -1, -1);
+  // 标题绶带
+  push(`<g transform="translate(96,70)">
+<path d="M-26,10 l-20,7 l20,7 Z" fill="#e6d8b4" stroke="${INK}" stroke-width="1.2"/>
+<path d="M406,10 l20,7 l-20,7 Z" fill="#e6d8b4" stroke="${INK}" stroke-width="1.2"/>
+<rect x="-30" y="-18" width="440" height="62" rx="8" fill="#f6ecd2" stroke="${INK}" stroke-width="2"/>
+<rect x="-24" y="-12" width="428" height="50" rx="6" fill="none" stroke="${INK3}" stroke-width="1"/>
+<text x="190" y="18" font-size="32" font-weight="700" fill="#8d3b23" text-anchor="middle" letter-spacing="6">艾瑟瑞亚</text>
+<text x="190" y="37" font-size="12.5" fill="${INK2}" text-anchor="middle" letter-spacing="3">世 界 总 览 · 王 冠 纪 元</text></g>`);
+  // 图例
+  push(`<g transform="translate(70,${H - 96})">
+<rect x="0" y="0" width="392" height="56" rx="6" fill="#f4ead0" stroke="${INK}" stroke-width="1.6" opacity="0.95"/>
+<text x="12" y="22" font-size="12.5" fill="${INK2}">王国：</text>`);
+  let lx = 64;
+  for (const kn of ['王冠王国', '翠叶王国', '铁岩王国']) {
+    push(`<path d="M${lx},9 L${lx + 6.5},11.5 L${lx + 6.5},17 Q${lx + 6.5},22.5 ${lx},25 Q${lx - 6.5},22.5 ${lx - 6.5},17 L${lx - 6.5},11.5 Z" fill="${KINGDOM[kn]}" stroke="${INK}" stroke-width="0.8"/>`);
+    push(`<text x="${lx + 12}" y="22" font-size="12.5" fill="${INK}">${kn}</text>`);
+    lx += 28 + kn.length * 13;
+  }
+  push(`<text x="12" y="42" font-size="11" fill="${INK2}" opacity="0.85">按设定书「方位 / 距离」自动排布 · 示意，非精确比例 · 只标主要城市</text></g>`);
+  // 比例尺
+  const km1000 = K(1000);
+  push(`<g transform="translate(${W - PAD - 236},${H - PAD - 62})" stroke="${INK}" fill="none">
+<rect x="0" y="0" width="${R(km1000 * 2)}" height="8" fill="#f4ead0" stroke-width="1"/>
+<rect x="0" y="0" width="${R(km1000)}" height="8" fill="${INK}" stroke-width="1"/>
+<text x="0" y="24" font-size="10.5" fill="${INK}" stroke="none" text-anchor="middle">0</text>
+<text x="${R(km1000)}" y="24" font-size="10.5" fill="${INK}" stroke="none" text-anchor="middle">1000km</text>
+<text x="${R(km1000 * 2)}" y="24" font-size="10.5" fill="${INK}" stroke="none" text-anchor="middle">2000km</text></g>`);
+  push('</svg>');
+  return P.join('');
+}
+if (typeof module !== 'undefined' && module.exports) module.exports = { buildWorldMapSVG: buildWorldMapSVG };
+
+
+/* ===== v20 世界总览图：容器 + 导出 PNG ===== */
+var worldMapHTML=function(){
+  if(!cfg.rulesRaw) return '';
+  var svg=''; try{ svg=buildWorldMapSVG(cfg.rulesRaw, esc); }catch(e){ return ''; }
+  if(!svg) return '';
+  return '<div class="citymap"><div class="citymap-bar"><span class="hint" style="margin:0">世界总览 · 按设定书方位自动排布（手机上左右滑动看图）</span>'
+    + '<button onclick="window.__worldMapExport&&window.__worldMapExport()">导出 PNG</button></div>'
+    + '<div class="citymap-scroll" id="worldMapBox">'+svg+'</div></div>';
+};
+var cbAuto=document.getElementById('cAutoSave');
+if(cbAuto){ cbAuto.checked=!!cfg.autoSave; cbAuto.onchange=function(){ cfg.autoSave=this.checked; saveCfg(); flash(this.checked?'已开启自动存档':'已关闭自动存档（记得手动保存）'); }; }
+window.__worldMapExport=function(){
+  var box=document.getElementById('worldMapBox'); if(!box) return;
+  var svg=box.querySelector('svg'); if(!svg) return;
+  var s='<?xml version="1.0" encoding="UTF-8"?>'+new XMLSerializer().serializeToString(svg);
+  var img=new Image();
+  img.onload=function(){
+    var vb=svg.viewBox.baseVal, sc=2;
+    var cv=document.createElement('canvas');
+    cv.width=Math.round(vb.width*sc); cv.height=Math.round(vb.height*sc);
+    var ctx=cv.getContext('2d');
+    ctx.fillStyle='#f2e7ca'; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.setTransform(sc,0,0,sc,0,0); ctx.drawImage(img,0,0);
+    cv.toBlob(function(b){
+      var a=document.createElement('a'); a.href=URL.createObjectURL(b);
+      a.download='艾瑟瑞亚-世界总览.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); },5000);
+    },'image/png');
+  };
+  img.onerror=function(){ alert('导出失败：可以改用电脑浏览器截图'); };
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+};
+
+var cityMapHTML=function(city){
+  if(!cfg.rulesRaw||!city) return '';
+  var cs=blocksOf('city').filter(function(b){ return b.name===city; });
+  if(!cs.length) return '';
+  var svg=cityMapSVG(city, cs.map(function(b){ return b.text; }).join('\n'));
+  if(!svg) return '';
+  return '<div class="citymap">'
+    + '<div class="citymap-bar"><span class="hint" style="margin:0">按设定书「方位」自动排布 · 手机上左右滑动看图</span>'
+    + '<button onclick="window.__cityMapExport&&window.__cityMapExport()">导出 PNG</button></div>'
+    + '<div class="citymap-scroll" id="cityMapBox">'+svg+'</div></div>';
+};
+window.__cityMapExport=function(){
+  var box=document.getElementById('cityMapBox'); if(!box) return;
+  var svg=box.querySelector('svg'); if(!svg) return;
+  var s='<?xml version="1.0" encoding="UTF-8"?>'+new XMLSerializer().serializeToString(svg);
+  var img=new Image();
+  img.onload=function(){
+    var vb=svg.viewBox.baseVal, sc=2;
+    var cv=document.createElement('canvas');
+    cv.width=Math.round(vb.width*sc); cv.height=Math.round(vb.height*sc);
+    var ctx=cv.getContext('2d');
+    ctx.setTransform(sc,0,0,sc,0,0);
+    ctx.drawImage(img,0,0);
+    cv.toBlob(function(b){
+      var nm=((document.getElementById('pvCity')||{}).value)||'城市';
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(b);
+      a.download='艾瑟瑞亚-'+nm+'-方位图.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); },5000);
+    },'image/png');
+  };
+  img.onerror=function(){ alert('导出失败：可以改用电脑浏览器直接截图'); };
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+};
 function panelLocalHTML(k){
   var sheet = (cfg.charSheet||'').trim();
   var h = '<h4>'+k+' · 本地直读</h4>';
@@ -230,6 +777,8 @@ function panelLocalHTML(k){
     h += cityPicker(city,'pvCity');
     h += prow('当前地点线索', city ? esc(city) : '<span style="color:var(--dim)">（未识别，请在上方手动选城市）</span>');
     h += prow('时间头', esc(lastTimeHead()||'（还没开始）'));
+    h += worldMapHTML();
+    h += cityMapHTML(city);
     if(!cfg.rulesRaw){
       h += prow('规则书', '<span style="color:var(--dim)">（未载入规则书：载入后这里会直接列出该城的城区与设施）</span>');
     } else if(city){
@@ -766,7 +1315,7 @@ function updateSaveStatus(){
   var el = document.getElementById('saveStatus');
   if(!el) return;
   var o = allSaves(), n = Object.keys(o).length;
-  el.textContent = '当前档位：' + (state.title ? state.title : '（尚无具名档位）') + '　|　存档数：' + n + '　|　每回合自动写入「自动存档」';
+  el.textContent = '当前档位：' + (state.title ? state.title : '（尚无具名档位）') + '　|　存档数：' + n + '　|　'+(cfg.autoSave?'每回合自动写入「自动存档」':'自动存档已关闭（手动保存）')+'';
 }
 function ensureSaveBar(){
   var pane = document.querySelector('[data-pane="save"]');
@@ -789,7 +1338,7 @@ function ensureSaveBar(){
     Object.keys(o).forEach(function(k){ if(!best || (o[k].t || 0) > (best.t || 0)) best = { k: k, t: o[k].t || 0, s: o[k] }; });
     if(!best){ flash('还没有任何存档'); return; }
     state = { msgs: best.s.msgs || [], summary: best.s.summary || '', title: best.s.title || best.k };
-    renderAll(); renderSlots2();
+    renderAll(); saveAuto(true); renderSlots2();
     flash('已读取：' + (best.k === '__auto' ? '自动存档' : best.k));
   };
   document.getElementById('btnQuickDel').onclick = function(){
@@ -1094,7 +1643,7 @@ function snapshotApply(snap){
     if(!Object.keys(cfg.selected || {}).length) cfg.selected = autoSelect();
   }
   saveCfg();
-  try{ saveAuto(); }catch(e){}
+  try{ saveAuto(true); }catch(e){}
   try{ renderAll(); }catch(e){}
   try{ renderChunks(); }catch(e){}
   try{ applyLook(); }catch(e){}
@@ -1382,7 +1931,7 @@ function renderSlots2(){
       var o2=allSaves(), s=o2[this.getAttribute('data-load')];
       if(!s) return;
       state={msgs:s.msgs||[],summary:s.summary||'',title:s.title||''};
-      renderAll(); renderSlots2(); flash('已读取存档：'+(s.title||''));
+      renderAll(); saveAuto(true); renderSlots2(); flash('已读取存档：'+(s.title||''));
     };
   });
   $$('#slotList button[data-over]').forEach(function(b){
@@ -1429,10 +1978,10 @@ function buildQuick(){
   });
 }
 
-function fillCfg(){  $('#cBase').value=cfg.baseUrl; $('#cKey').value=cfg.apiKey; $('#cModel').value=cfg.model;  $('#cTemp').value=cfg.temp; $('#cMax').value=cfg.maxTokens; $('#cEndpoint').value=cfg.endpoint||'';  $('#cStream').checked=!!cfg.stream; $('#cExtra').value=cfg.extraRules||''; $('#cSheet').value=cfg.charSheet||'';  $('#cGod').checked=!!cfg.godMode; $('#cGodText').value=cfg.godText||GOD_DEFAULT;}function readCfg(){  cfg.baseUrl=$('#cBase').value.trim()||DEFAULT_CFG.baseUrl;  cfg.apiKey=$('#cKey').value.trim();  cfg.model=$('#cModel').value.trim()||'deepseek-chat';  cfg.temp=Number($('#cTemp').value)||0.9;  cfg.maxTokens=Number($('#cMax').value)||4096;  cfg.endpoint=$('#cEndpoint').value.trim();  cfg.stream=$('#cStream').checked;  cfg.extraRules=$('#cExtra').value;  cfg.charSheet=$('#cSheet').value;  cfg.godMode=$('#cGod').checked;  cfg.godText=$('#cGodText').value||GOD_DEFAULT;  saveCfg(); updateStatus();}$('#btnDrawer').onclick=function(){ $('#drawer').classList.add('open'); $('#backdrop').classList.add('on'); };$('#btnClose').onclick=function(){ $('#drawer').classList.remove('open'); $('#backdrop').classList.remove('on'); };$('#backdrop').onclick=function(){ $('#drawer').classList.remove('open'); $('#backdrop').classList.remove('on'); };$$('.drawer .tabs button[data-tab]').forEach(function(b){  b.onclick=function(){    var self=this;    $$('.drawer .tabs button[data-tab]').forEach(function(x){ x.classList.remove('on'); });    this.classList.add('on');    $$('.tabpane').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-pane')===self.getAttribute('data-tab')); });  };});$('#btnSaveCfg').onclick=function(){ readCfg(); flash('设置已保存'); };$('#cGodText').onchange=readCfg; $('#cExtra').onchange=readCfg; $('#cSheet').onchange=readCfg;$('#btnTest').onclick=async function(){  readCfg();  if(!cfg.apiKey){ flash('先填 API Key'); return; }  var btn=this; btn.disabled=true; btn.textContent='测试中…';  try{    var res=await fetch(endpoint(),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},      body:JSON.stringify({model:cfg.model,messages:[{role:'user',content:'回复两个字：连通'}],max_tokens:16,stream:false})});    var t=await res.text();    if(res.ok) flash('连接成功 ✓');    else flash('失败 '+res.status+'：'+t.slice(0,60));  }catch(e){ flash('连接异常：'+e.message); }  btn.disabled=false; btn.textContent='测试连接';};$$('.modes button').forEach(function(b){  b.onclick=function(){    $$('.modes button').forEach(function(x){ x.classList.remove('on'); });    this.classList.add('on'); mode=this.getAttribute('data-mode');    $('#input').placeholder = mode==='act'?'写下你的行动、台词…（Ctrl+Enter 发送）'      : mode==='inner'?'心声（NPC 听不见，仅用来让 GM 理解你的意图）':'旁白/OOC（游戏外的提问、规则调整、存读档）';  };});$('#btnSend').onclick=function(){ send(); };$('#btnStop').onclick=function(){ if(controller) controller.abort(); };$('#input').addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){ e.preventDefault(); send(); } });$('#btnClear').onclick=function(){ if(confirm('清空当前对话（不影响已保存的档）？')){ state={msgs:[],summary:'',title:''}; renderAll(); saveAuto(); } };$('#btnNew').onclick=function(){  if(!confirm('开始新游戏？当前进度会先自动存档，然后清空。')) return;  state={msgs:[],summary:'',title:''}; renderAll(); saveAuto();  send('开始新游戏。请按规则书的角色创建流程，从第 1 步（身份）开始，一步一步问我，每次只问一步，不要替我填写任何角色内容。','ooc');};$('#btnSum').onclick=summarize;async function summarize(){  if(busy) return;  if(state.msgs.length<4){ flash('对话太短，无需压缩'); return; }  if(!cfg.apiKey){ flash('先填 API Key'); return; }  busy=true; flash('正在压缩历史…');  var convo=state.msgs.map(function(m){ return (m.role==='user'?'【玩家】':'【GM】')+m.text; }).join('\n\n');  try{    var res=await fetch(endpoint(),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},      body:JSON.stringify({model:cfg.model,temperature:0.3,max_tokens:1500,stream:false,messages:[        {role:'system',content:'你是跑团档案员。把下面的跑团记录压缩成不超过 700 字的中文摘要，必须保留：游戏内时间地点、关键事件、NPC 与玩家关系的档位变化、未完成的承诺与约定、金钱与物品变动、玩家身体与状态。只输出摘要正文，不要评论。'},        {role:'user',content:(state.summary?'已有摘要：\n'+state.summary+'\n\n新增记录：\n':'')+convo}      ]})});    var j=await res.json();    var txt=(j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content)||'';    if(!txt) throw new Error('模型未返回摘要');    state.summary=txt.trim();    state.msgs=state.msgs.slice(-2);    saveAuto(); renderAll();    pushMsg({role:'assistant',kind:'sys',text:'前情已压缩为摘要（保留最近 2 条对话）：\n\n'+state.summary});  }catch(e){ flash('压缩失败：'+e.message); }  busy=false;}$('#fRules').onchange=function(){  var f=this.files[0]; if(!f) return;  var fr=new FileReader();  fr.onload=function(){    cfg.rulesRaw=repairRules(fr.result);    chunks=chunkRules(cfg.rulesRaw);    cfg.selected=autoSelect(); cfg.useBuiltin=true;    saveCfg(); renderChunks(); flash('解析出 '+chunks.length+' 个模块，默认勾选核心规则');  };  fr.readAsText(f,'utf-8');};$('#btnAll').onclick=function(){ cfg.selected={}; chunks.forEach(function(c,i){ cfg.selected[i]=true; }); saveCfg(); renderChunks(); };$('#btnNone').onclick=function(){ cfg.selected={}; saveCfg(); renderChunks(); };$('#btnCore').onclick=function(){ cfg.selected=autoSelect(); saveCfg(); renderChunks(); };$('#btnDrop').onclick=function(){ cfg.rulesRaw=''; cfg.selected={}; chunks=[]; saveCfg(); renderChunks(); flash('已清除载入的规则书'); };$('#btnUseBuiltin').onclick=function(){ cfg.selected={}; cfg.useBuiltin=true; saveCfg(); renderChunks(); flash('将使用内置精简规则'); };$('#btnPreview').onclick=function(){  var box=$('#previewBox');  box.style.display='block';  var s=buildSystem();  box.textContent=s;  flash('系统提示词共 '+s.length+' 字');};$('#btnSaveAs').onclick=function(){  var name=prompt('存档名：',state.title||('存档 '+new Date().toLocaleTimeString()));  if(!name) return;  var o=allSaves(); state.title=name; o[name]=snapshot(); setSaves(o); flash('已存档：'+name);};function downloadJSON(obj,name){  var blob=new Blob([JSON.stringify(obj)],{type:'application/json'});  var a=document.createElement('a');  a.href=URL.createObjectURL(blob); a.download=name; a.click();  setTimeout(function(){ URL.revokeObjectURL(a.href); },4000);}$('#btnExport').onclick=function(){  var backup={    kind:'aetheria-backup', ver:1, t:Date.now(),    cfg:{      baseUrl:cfg.baseUrl, model:cfg.model, temp:cfg.temp, maxTokens:cfg.maxTokens,      endpoint:cfg.endpoint, stream:cfg.stream, useBuiltin:cfg.useBuiltin,      extraRules:cfg.extraRules, charSheet:cfg.charSheet, godMode:cfg.godMode, godText:cfg.godText,      rulesRaw:cfg.rulesRaw, selected:cfg.selected    },    slots:allSaves()  };  downloadJSON(backup,'aetheria-backup-'+new Date().toISOString().slice(0,10)+'.json');  flash('已导出全量备份（含规则书与存档，不含 Key）');};$('#fImport').onchange=function(){  var f=this.files[0]; if(!f) return;  var fr=new FileReader();  fr.onload=function(){    try{      var j=JSON.parse(fr.result);      var o=allSaves(), inc=j.slots||(j.kind?{}:j);      Object.keys(inc).forEach(function(k){ o[k]=inc[k]; });      setSaves(o);      if(j.cfg){        ['baseUrl','model','temp','maxTokens','endpoint','stream','useBuiltin',         'extraRules','charSheet','godMode','godText','rulesRaw','selected']        .forEach(function(k){ if(j.cfg[k]!==undefined) cfg[k]=j.cfg[k]; });        saveCfg(); fillCfg();        chunks = cfg.rulesRaw ? chunkRules(cfg.rulesRaw) : [];        renderChunks(); updateStatus();      }      flash('恢复完成：点「读取」选要玩的档'+(cfg.apiKey?'':'；别忘了重填 API Key'));    }catch(e){ flash('恢复失败：文件格式不对'); }  };  fr.readAsText(f,'utf-8');};$('#fImport').style.width='auto';var _btnRoll=document.getElementById('btnRoll'); if(_btnRoll) _btnRoll.onclick=function(){  var item=$('#dItem').value.trim()||'判定';  var mod=parseInt($('#dMod').value||'0',10)||0;  var dc=$('#dDC').value.trim();  var r=1+Math.floor(Math.random()*20);  var total=r+mod;  var line='（判定：'+item+'｜d20='+r+'｜加值='+(mod>=0?'+':'')+mod+'｜合计='+total+'｜难度'+(dc?('='+dc):'=？')+'）';  $('#rollOut').textContent=line+(r===20?'  ← 天然 20':(r===1?'  ← 天然 1':''));  var box=$('#input');  box.value=(box.value?box.value+'\n':'')+line;  box.focus();};var _btnInsJudge=document.getElementById('btnInsJudge'); if(_btnInsJudge) _btnInsJudge.onclick=function(){  var box=$('#input');  box.value=(box.value?box.value+'\n':'')+'（判定：事项｜d20=｜加值=｜合计=｜难度= → 结果）';  box.focus();};buildQuick();buildPanelGrid();fillCfg();fillLook();applyLook();if(cfg.rulesRaw){ chunks=chunkRules(cfg.rulesRaw); if(!Object.keys(cfg.selected||{}).length) cfg.selected=autoSelect(); }renderChunks();renderSlots2();(function(){
+function fillCfg(){  $('#cBase').value=cfg.baseUrl; $('#cKey').value=cfg.apiKey; $('#cModel').value=cfg.model;  $('#cTemp').value=cfg.temp; $('#cMax').value=cfg.maxTokens; $('#cEndpoint').value=cfg.endpoint||'';  $('#cStream').checked=!!cfg.stream; $('#cExtra').value=cfg.extraRules||''; $('#cSheet').value=cfg.charSheet||'';  $('#cGod').checked=!!cfg.godMode; $('#cGodText').value=cfg.godText||GOD_DEFAULT;}function readCfg(){  cfg.baseUrl=$('#cBase').value.trim()||DEFAULT_CFG.baseUrl;  cfg.apiKey=$('#cKey').value.trim();  cfg.model=$('#cModel').value.trim()||'deepseek-chat';  cfg.temp=Number($('#cTemp').value)||0.9;  cfg.maxTokens=Number($('#cMax').value)||4096;  cfg.endpoint=$('#cEndpoint').value.trim();  cfg.stream=$('#cStream').checked;  cfg.extraRules=$('#cExtra').value;  cfg.charSheet=$('#cSheet').value;  cfg.godMode=$('#cGod').checked;  cfg.godText=$('#cGodText').value||GOD_DEFAULT;  saveCfg(); updateStatus();}$('#btnDrawer').onclick=function(){ $('#drawer').classList.add('open'); $('#backdrop').classList.add('on'); };$('#btnClose').onclick=function(){ $('#drawer').classList.remove('open'); $('#backdrop').classList.remove('on'); };$('#backdrop').onclick=function(){ $('#drawer').classList.remove('open'); $('#backdrop').classList.remove('on'); };$$('.drawer .tabs button[data-tab]').forEach(function(b){  b.onclick=function(){    var self=this;    $$('.drawer .tabs button[data-tab]').forEach(function(x){ x.classList.remove('on'); });    this.classList.add('on');    $$('.tabpane').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-pane')===self.getAttribute('data-tab')); });  };});$('#btnSaveCfg').onclick=function(){ readCfg(); flash('设置已保存'); };$('#cGodText').onchange=readCfg; $('#cExtra').onchange=readCfg; $('#cSheet').onchange=readCfg;$('#btnTest').onclick=async function(){  readCfg();  if(!cfg.apiKey){ flash('先填 API Key'); return; }  var btn=this; btn.disabled=true; btn.textContent='测试中…';  try{    var res=await fetch(endpoint(),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},      body:JSON.stringify({model:cfg.model,messages:[{role:'user',content:'回复两个字：连通'}],max_tokens:16,stream:false})});    var t=await res.text();    if(res.ok) flash('连接成功 ✓');    else flash('失败 '+res.status+'：'+t.slice(0,60));  }catch(e){ flash('连接异常：'+e.message); }  btn.disabled=false; btn.textContent='测试连接';};$$('.modes button').forEach(function(b){  b.onclick=function(){    $$('.modes button').forEach(function(x){ x.classList.remove('on'); });    this.classList.add('on'); mode=this.getAttribute('data-mode');    $('#input').placeholder = mode==='act'?'写下你的行动、台词…（Ctrl+Enter 发送）'      : mode==='inner'?'心声（NPC 听不见，仅用来让 GM 理解你的意图）':'旁白/OOC（游戏外的提问、规则调整、存读档）';  };});$('#btnSend').onclick=function(){ send(); };$('#btnStop').onclick=function(){ if(controller) controller.abort(); };$('#input').addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){ e.preventDefault(); send(); } });$('#btnClear').onclick=function(){ if(confirm('清空当前对话（不影响已保存的档）？')){ state={msgs:[],summary:'',title:''}; renderAll(); saveAuto(); } };$('#btnNew').onclick=function(){  if(!confirm(cfg.autoSave?'开始新游戏？当前进度会先自动存档，然后清空。':'开始新游戏？当前对话会被清空（自动存档已关闭，没手动保存的进度会丢失）。')) return;  state={msgs:[],summary:'',title:''}; renderAll(); saveAuto();  send('开始新游戏。请按规则书的角色创建流程，从第 1 步（身份）开始，一步一步问我，每次只问一步，不要替我填写任何角色内容。','ooc');};$('#btnSum').onclick=summarize;async function summarize(){  if(busy) return;  if(state.msgs.length<4){ flash('对话太短，无需压缩'); return; }  if(!cfg.apiKey){ flash('先填 API Key'); return; }  busy=true; flash('正在压缩历史…');  var convo=state.msgs.map(function(m){ return (m.role==='user'?'【玩家】':'【GM】')+m.text; }).join('\n\n');  try{    var res=await fetch(endpoint(),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},      body:JSON.stringify({model:cfg.model,temperature:0.3,max_tokens:1500,stream:false,messages:[        {role:'system',content:'你是跑团档案员。把下面的跑团记录压缩成不超过 700 字的中文摘要，必须保留：游戏内时间地点、关键事件、NPC 与玩家关系的档位变化、未完成的承诺与约定、金钱与物品变动、玩家身体与状态。只输出摘要正文，不要评论。'},        {role:'user',content:(state.summary?'已有摘要：\n'+state.summary+'\n\n新增记录：\n':'')+convo}      ]})});    var j=await res.json();    var txt=(j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content)||'';    if(!txt) throw new Error('模型未返回摘要');    state.summary=txt.trim();    state.msgs=state.msgs.slice(-2);    saveAuto(); renderAll();    pushMsg({role:'assistant',kind:'sys',text:'前情已压缩为摘要（保留最近 2 条对话）：\n\n'+state.summary});  }catch(e){ flash('压缩失败：'+e.message); }  busy=false;}$('#fRules').onchange=function(){  var f=this.files[0]; if(!f) return;  var fr=new FileReader();  fr.onload=function(){    cfg.rulesRaw=repairRules(fr.result);    chunks=chunkRules(cfg.rulesRaw);    cfg.selected=autoSelect(); cfg.useBuiltin=true;    saveCfg(); renderChunks(); flash('解析出 '+chunks.length+' 个模块，默认勾选核心规则');  };  fr.readAsText(f,'utf-8');};$('#btnAll').onclick=function(){ cfg.selected={}; chunks.forEach(function(c,i){ cfg.selected[i]=true; }); saveCfg(); renderChunks(); };$('#btnNone').onclick=function(){ cfg.selected={}; saveCfg(); renderChunks(); };$('#btnCore').onclick=function(){ cfg.selected=autoSelect(); saveCfg(); renderChunks(); };$('#btnDrop').onclick=function(){ cfg.rulesRaw=''; cfg.selected={}; chunks=[]; saveCfg(); renderChunks(); flash('已清除载入的规则书'); };$('#btnUseBuiltin').onclick=function(){ cfg.selected={}; cfg.useBuiltin=true; saveCfg(); renderChunks(); flash('将使用内置精简规则'); };$('#btnPreview').onclick=function(){  var box=$('#previewBox');  box.style.display='block';  var s=buildSystem();  box.textContent=s;  flash('系统提示词共 '+s.length+' 字');};$('#btnSaveAs').onclick=function(){  var name=prompt('存档名：',state.title||('存档 '+new Date().toLocaleTimeString()));  if(!name) return;  var o=allSaves(); state.title=name; o[name]=snapshot(); setSaves(o); flash('已存档：'+name);};function downloadJSON(obj,name){  var blob=new Blob([JSON.stringify(obj)],{type:'application/json'});  var a=document.createElement('a');  a.href=URL.createObjectURL(blob); a.download=name; a.click();  setTimeout(function(){ URL.revokeObjectURL(a.href); },4000);}$('#btnExport').onclick=function(){  var backup={    kind:'aetheria-backup', ver:1, t:Date.now(),    cfg:{      baseUrl:cfg.baseUrl, model:cfg.model, temp:cfg.temp, maxTokens:cfg.maxTokens,      endpoint:cfg.endpoint, stream:cfg.stream, useBuiltin:cfg.useBuiltin,      extraRules:cfg.extraRules, charSheet:cfg.charSheet, godMode:cfg.godMode, godText:cfg.godText,      rulesRaw:cfg.rulesRaw, selected:cfg.selected    },    slots:allSaves()  };  downloadJSON(backup,'aetheria-backup-'+new Date().toISOString().slice(0,10)+'.json');  flash('已导出全量备份（含规则书与存档，不含 Key）');};$('#fImport').onchange=function(){  var f=this.files[0]; if(!f) return;  var fr=new FileReader();  fr.onload=function(){    try{      var j=JSON.parse(fr.result);      var o=allSaves(), inc=j.slots||(j.kind?{}:j);      Object.keys(inc).forEach(function(k){ o[k]=inc[k]; });      setSaves(o);      if(j.cfg){        ['baseUrl','model','temp','maxTokens','endpoint','stream','useBuiltin',         'extraRules','charSheet','godMode','godText','rulesRaw','selected']        .forEach(function(k){ if(j.cfg[k]!==undefined) cfg[k]=j.cfg[k]; });        saveCfg(); fillCfg();        chunks = cfg.rulesRaw ? chunkRules(cfg.rulesRaw) : [];        renderChunks(); updateStatus();      }      flash('恢复完成：点「读取」选要玩的档'+(cfg.apiKey?'':'；别忘了重填 API Key'));    }catch(e){ flash('恢复失败：文件格式不对'); }  };  fr.readAsText(f,'utf-8');};$('#fImport').style.width='auto';var _btnRoll=document.getElementById('btnRoll'); if(_btnRoll) _btnRoll.onclick=function(){  var item=$('#dItem').value.trim()||'判定';  var mod=parseInt($('#dMod').value||'0',10)||0;  var dc=$('#dDC').value.trim();  var r=1+Math.floor(Math.random()*20);  var total=r+mod;  var line='（判定：'+item+'｜d20='+r+'｜加值='+(mod>=0?'+':'')+mod+'｜合计='+total+'｜难度'+(dc?('='+dc):'=？')+'）';  $('#rollOut').textContent=line+(r===20?'  ← 天然 20':(r===1?'  ← 天然 1':''));  var box=$('#input');  box.value=(box.value?box.value+'\n':'')+line;  box.focus();};var _btnInsJudge=document.getElementById('btnInsJudge'); if(_btnInsJudge) _btnInsJudge.onclick=function(){  var box=$('#input');  box.value=(box.value?box.value+'\n':'')+'（判定：事项｜d20=｜加值=｜合计=｜难度= → 结果）';  box.focus();};buildQuick();buildPanelGrid();fillCfg();fillLook();applyLook();if(cfg.rulesRaw){ chunks=chunkRules(cfg.rulesRaw); if(!Object.keys(cfg.selected||{}).length) cfg.selected=autoSelect(); }renderChunks();renderSlots2();(function(){
   if(!chunks.length) return;
   var i, bad=false, ks=Object.keys(cfg.selected||{});
   if(!ks.length) bad=true;
   for(i=0;i<ks.length;i++){ if(Number(ks[i]) >= chunks.length){ bad=true; break; } }
   if(bad){ cfg.selected=autoSelect(); saveCfg(); renderChunks(); }
-})();(function boot(){var o=allSaves();var isNoticeMsg=function(m){return m&&m.kind==='sys'&&/^已恢复上次的自动存档/.test(m.text||'');};if(o['__auto']&&o['__auto'].msgs&&o['__auto'].msgs.length){var keep=[];for(var bi=0;bi<o['__auto'].msgs.length;bi++){ if(!isNoticeMsg(o['__auto'].msgs[bi])) keep.push(o['__auto'].msgs[bi]); }state={msgs:keep,summary:o['__auto'].summary||'',title:o['__auto'].title||''};renderAll();if(keep.length>1){ pushMsg({role:'assistant',kind:'sys',text:'已恢复上次的自动存档（'+keep.length+' 条）。若要重新开始，点上方「新游戏」。'}); }}else{ pushMsg({role:'assistant',kind:'sys',text:'欢迎来到艾瑟瑞亚。请先在右上「设置 / 规则」填写接口与 Key，并在「规则书」页上传规则书 txt；完成后点「新游戏」开始创建角色。'}); }})();})();</script></body></html>
+})();(function boot(){var o=allSaves();var isNoticeMsg=function(m){return m&&m.kind==='sys'&&/^(已恢复上次的自动存档|已载入上次的进度)/.test(m.text||'');};if(o['__auto']&&o['__auto'].msgs&&o['__auto'].msgs.length){var keep=[];for(var bi=0;bi<o['__auto'].msgs.length;bi++){ if(!isNoticeMsg(o['__auto'].msgs[bi])) keep.push(o['__auto'].msgs[bi]); }state={msgs:keep,summary:o['__auto'].summary||'',title:o['__auto'].title||''};renderAll();if(keep.length>1){ pushMsg({role:'assistant',kind:'sys',text:'已载入上次的进度（'+keep.length+' 条）。若要重新开始，点上方「新游戏」。'}); }}else{ pushMsg({role:'assistant',kind:'sys',text:'欢迎来到艾瑟瑞亚。请先在右上「设置 / 规则」填写接口与 Key，并在「规则书」页上传规则书 txt；完成后点「新游戏」开始创建角色。'}); if(!cfg.autoSave) flash('自动存档已关闭：玩完记得点「保存到当前档」或「另存为新档」'); }})();})();</script></body></html>
