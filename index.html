@@ -1,0 +1,1405 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="format-detection" content="telephone=no" /><meta name="apple-mobile-web-app-capable" content="yes" /><meta name="apple-mobile-web-app-status-bar-style" content="black" /><meta name="theme-color" content="#0f0d0b" /><title>艾瑟瑞亚 · 网页 TRPG 引擎（接 API）</title><style>:root{  --panel:#221d18; --panel2:#2a231c; --line:#3b3228;  --gold:#c9a45c; --gold2:#e8c781; --text:#e9e1d3; --dim:#9c9081;}*{box-sizing:border-box}html,body{height:100%;margin:0}body{  display:flex;flex-direction:column;  background:radial-gradient(1200px 600px at 50% -10%,#241d15 0%,#0f0d0b 60%);  color:var(--text);  font-family:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,serif;font-size:15px;}header{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#1d1813,#141110)}.brand{font-weight:700;letter-spacing:2px;color:var(--gold2);white-space:nowrap}.brand small{color:var(--dim);font-weight:400;letter-spacing:0}.spacer{flex:1}button{font-family:inherit;font-size:13px;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:5px 9px;cursor:pointer}button:hover{border-color:var(--gold);color:var(--gold2)}button.primary{background:linear-gradient(180deg,#c9a45c,#a8843f);color:#1a150e;border-color:#e0bd78;font-weight:700}button:disabled{opacity:.45;cursor:not-allowed}#chatWrap{flex:1;overflow:auto;padding:14px 0}#chat{max-width:880px;margin:0 auto;padding:0 14px;display:flex;flex-direction:column;gap:12px}.msg{border:1px solid var(--line);border-radius:10px;padding:10px 13px;background:var(--panel);line-height:1.85}.msg.user{background:linear-gradient(180deg,#22303c,#1a242d);border-color:#33506b;margin-left:14%}.msg.user.inner{background:linear-gradient(180deg,#2b2740,#211d31);border-color:#4c4270;font-style:italic}.msg.user.ooc{background:linear-gradient(180deg,#2a2620,#201d18);border-color:#5a4a2e;color:var(--dim);font-size:13px}.msg.assistant p{margin:.5em 0}.msg.assistant strong{color:var(--gold2)}.msg.assistant hr{border:0;border-top:1px dashed var(--line);margin:10px 0}.msg .thead{color:var(--gold2);font-weight:700;letter-spacing:.5px}.msg.sys{background:var(--panel2);color:var(--dim);font-size:13px;border-style:dashed;white-space:pre-wrap}.msg.err{background:#2c1b1a;border-color:#6a3330;color:#f0c9c5;font-size:13px;white-space:pre-wrap}.msg .acts{display:flex;gap:6px;margin-top:8px;opacity:.35}.msg:hover .acts{opacity:1}.msg .acts button{font-size:11px;padding:2px 6px}footer{border-top:1px solid var(--line);background:linear-gradient(180deg,#17130f,#100d0b);padding:8px 12px}#quick{max-width:880px;margin:0 auto 6px;display:flex;flex-wrap:wrap;gap:5px}#quick button{font-size:12px;padding:3px 8px;border-radius:14px}.bar{max-width:880px;margin:0 auto;display:flex;flex-wrap:wrap;gap:6px;align-items:center}.modes{display:flex;gap:4px}.modes button.on{background:#3a2f1c;border-color:var(--gold);color:var(--gold2)}#inputRow{max-width:880px;margin:6px auto 0;display:flex;gap:8px;align-items:flex-end}textarea#input{flex:1;min-height:64px;max-height:220px;resize:vertical;background:#14110e;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:14px;line-height:1.6}.status{max-width:880px;margin:4px auto 0;font-size:11px;color:var(--dim);display:flex;gap:14px;flex-wrap:wrap}.drawer{position:fixed;top:0;right:0;height:100%;width:min(580px,96vw);background:#141110;border-left:1px solid var(--line);transform:translateX(104%);transition:transform .25s;z-index:20;display:flex;flex-direction:column}.drawer.open{transform:none}.drawer .tabs{display:flex;gap:4px;padding:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}.drawer .tabs button.on{background:#3a2f1c;border-color:var(--gold);color:var(--gold2)}.drawer .body{flex:1;overflow:auto;padding:12px}.tabpane{display:none}.tabpane.on{display:block}label.f{display:block;margin:10px 0 4px;font-size:12px;color:var(--dim)}input[type=text],input[type=password],input[type=number],select,textarea{width:100%;background:#0f0d0b;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-family:inherit;font-size:13px}textarea{line-height:1.6}.hint{font-size:11px;color:var(--dim);line-height:1.6;margin-top:4px}.row{display:flex;gap:8px;align-items:center}.card{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--panel);margin-bottom:10px}.chunklist{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:8px;background:#100e0c}.chunk{display:flex;gap:8px;align-items:center;font-size:12px;padding:3px 0;border-bottom:1px dotted #2a231c}.chunk:last-child{border-bottom:0}.chunk span.n{flex:1;font-family:ui-monospace,Consolas,monospace}.chunk span.c{color:var(--dim)}.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:.25s;z-index:15}.backdrop.on{opacity:1;pointer-events:auto}.slots{display:flex;flex-direction:column;gap:8px}.slot{display:flex;gap:6px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--panel)}.slot .t{flex:1;font-size:12px;line-height:1.5}.dice{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(max-width:640px){.msg.user{margin-left:0}.dice{grid-template-columns:1fr}}
+/* ===== 面板 / 外观（新增） ===== */
+.pmodal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:70;background:rgba(0,0,0,.6);padding:16px}
+.pmodal.on{display:flex}
+.pmodal .box{width:min(960px,100%);max-height:88vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.pmodal h3{margin:0 0 4px;color:var(--gold2);font-size:16px}
+.pmodal .sub{color:var(--dim);font-size:12px;margin-bottom:10px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:8px}
+.pcard{text-align:left;padding:8px 10px;line-height:1.5}
+.pcard b{display:block;color:var(--gold2);font-size:13px}
+.pcard small{color:var(--dim);font-size:11px}
+.pcard .tag{display:inline-block;font-size:10px;border:1px solid var(--line);border-radius:99px;padding:0 6px;color:var(--dim);margin-top:5px}
+.pview{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2);display:none}
+.pview h4{margin:0 0 8px;color:var(--gold2);font-size:15px}
+.pview .r{display:flex;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.pview .r b{color:var(--gold);min-width:84px;flex:0 0 auto;font-weight:600}
+.pview .r span{flex:1;white-space:pre-wrap;word-break:break-word}
+.pview pre{white-space:pre-wrap;background:rgba(0,0,0,.18);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:13px;color:var(--text);margin:8px 0 0;max-height:46vh;overflow:auto}
+.pacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+select,input[type=color]{font-family:inherit;font-size:13px;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:5px 7px}
+/* ===== 规则书清单（新增） ===== */
+.chunklist .chunk{display:flex;align-items:center;gap:8px;padding:5px 6px;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer}
+.chunklist .chunk:hover{background:var(--panel2)}
+.chunklist .chunk.on{background:rgba(201,164,92,.10)}
+.chunklist .chunk .n{flex:1;font-weight:600;color:var(--text)}
+.chunklist .chunk .c{flex:0 0 auto;color:var(--dim);font-size:12px}
+.chunklist .chunk .badge{flex:0 0 auto;font-size:11px;color:var(--gold2);border:1px solid var(--line);border-radius:99px;padding:0 6px}
+#saveBar .hint{color:var(--gold2)}
+/* ===== 主神模式 ===== */
+.modes button[data-mode='god']{border-color:#6b4a1d}
+.modes button[data-mode='god'].on{background:linear-gradient(180deg,#d8b46a,#b98f3f);color:#241b0c;font-weight:700}
+.msg.user.god{background:linear-gradient(180deg,#332510,#241a0c);border-color:var(--gold)}
+.msg.user.god.on{border-color:var(--gold2);box-shadow:0 0 0 1px rgba(201,164,92,.35)}
+</style></head><body><header>  <div class="brand">艾瑟瑞亚 <small>· 网页 TRPG 引擎</small></div>  <div class="spacer"></div>  <button id="btnNew">新游戏</button>  <button id="btnSum">压缩历史</button>  <button id="btnDrawer">设置 / 规则</button></header><div id="chatWrap"><div id="chat"></div></div><footer>  <div id="quick"></div>  <div class="bar">    <div class="modes">      <button data-mode="act" class="on">行动 / 言语</button>      <button data-mode="inner">心声</button>      <button data-mode="ooc">旁白 OOC</button><button data-mode="god" title="主神模式：你说的话即敕令，GM 必须执行">主神</button>    </div>    <button id="btnDice" class="ghost">🎲 判定</button>    <button id="btnStop" disabled>停止</button>    <button id="btnClear" class="ghost">清空对话</button>  </div>  <div id="inputRow">    <textarea id="input" placeholder="写下你的行动、台词…（回车发送，Shift+回车换行）"></textarea>    <button id="btnSend" class="primary">发送</button>  </div>  <div class="status">    <span id="stModel">未配置接口</span>    <span id="stTokens">上下文 ≈ 0 字</span>    <span id="stMsg">0 条</span>    <span id="stState">就绪</span>  </div></footer><div class="pmodal" id="panelModal"><div class="box">
+  <h3>面板 · 点卡片直接查看</h3>
+  <div class="sub">本页面板从「角色速记 + 对话记录 + 已载入的规则书」直接读取：不花 token、不推进时间、NPC 毫不知情。需要判定的（名声/好感/伙伴/调教）再点「问 GM」。</div>
+  <div class="pgrid" id="panelGrid"></div>
+  <div class="pview" id="panelView"></div>
+  <div class="pacts"><button id="panelClose">关闭</button></div>
+</div></div>
+<div class="backdrop" id="backdrop"></div><aside class="drawer" id="drawer">  <div class="tabs">    <button data-tab="api" class="on">接口</button>    <button data-tab="rules">规则书</button>    <button data-tab="char">角色速记</button>    <button data-tab="save">存档 / 备份</button><button data-tab="sync">云同步</button><button data-tab="look">外观</button><button data-tab="god">主神</button>    <button data-tab="dice">判定器</button>    <button id="btnClose" style="margin-left:auto">关闭</button>  </div>  <div class="body">    <div class="tabpane on" data-pane="api">      <label class="f">接口地址（OpenAI 兼容，结尾不带 /chat/completions）</label>      <input type="text" id="cBase" />      <label class="f">API Key</label>      <input type="password" id="cKey" placeholder="sk-..." />      <label class="f">模型名</label>      <input type="text" id="cModel" />      <div class="row">        <div><label class="f">温度</label><input type="number" id="cTemp" step="0.05" min="0" max="2" /></div>        <div><label class="f">max_tokens</label><input type="number" id="cMax" step="256" min="256" max="32000" /></div>      </div>      <label class="f">完整接口地址覆盖（可选·用于中转/反代；填了就忽略上面的地址）</label>      <input type="text" id="cEndpoint" placeholder="https://xxx.workers.dev/v1/chat/completions" />      <label class="f"><input type="checkbox" id="cStream" style="width:auto" /> 流式输出</label>      <div class="row" style="margin-top:12px">        <button id="btnSaveCfg" class="primary">保存设置</button>        <button id="btnTest">测试连接</button>      </div>      <div class="hint">        Key 只存在本机浏览器，不会上传到别处；导出备份时会自动剔除 Key。<br>        若报 CORS / Failed to fetch，把「完整接口地址覆盖」指向你自己的中转地址。      </div>      <div class="card" style="margin-top:12px">        <b style="color:var(--gold2)">隐藏最高规则补丁</b>        <label class="f"><input type="checkbox" id="cGod" style="width:auto" /> 启用（游戏内口令：「激活隐藏主神模式」／关闭：「关闭神启状态」）</label>        <textarea id="cGodText" rows="6" style="margin-top:6px"></textarea>      </div>    </div>    <div class="tabpane" data-pane="rules">      <div class="card">        <b style="color:var(--gold2)">加载规则书</b>        <div class="hint">上传《艾瑟瑞亚》规则书 txt／xml，程序会自动修掉被换行截断的标签，并按顶层模块分块。</div>        <div class="row" style="margin-top:8px"><input type="file" id="fRules" accept=".txt,.xml,.md" /></div>        <div class="row" style="margin-top:8px">          <button id="btnAll">全选</button>          <button id="btnNone">全不选</button>          <button id="btnCore">仅核心</button>          <button id="btnDrop">清除已载入</button>        </div>      </div>      <div class="chunklist" id="chunkList"><div class="hint">尚未载入规则书，正在使用内置精简规则。</div></div>      <div class="hint" id="chunkStat" style="margin:8px 0"></div>      <div class="row">        <button id="btnPreview" class="primary">预览完整系统提示词</button>        <button id="btnUseBuiltin">使用内置精简规则</button>      </div>      <label class="f">附加规则／屋规（优先级高于规则书，冲突以这里为准）</label>      <textarea id="cExtra" rows="10"></textarea>      <div class="hint" id="previewBox" style="white-space:pre-wrap;max-height:280px;overflow:auto;display:none;border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:10px"></div>    </div>    <div class="tabpane" data-pane="char">      <div class="hint">这里的内容会随每次请求一起发给 GM，用来钉死角色数据，防止久聊之后跑偏或被改数。</div>      <label class="f">角色卡速记</label>      <textarea id="cSheet" rows="16" placeholder="例：黎澈｜男｜人类｜战斗·盗贼＋身份·艺人体质4／力2／感知4／敏捷4／智力4／运气7金钱：94金9银24铜技能：舞蹈 精通42／200｜潜行 熟练15／50在办：答应铁匠铺的工（每日上午）｜白瓶药铺识字"></textarea>    </div>    <div class="tabpane" data-pane="save">      <div class="row">        <button id="btnSaveAs" class="primary">另存为新档</button><button id="btnSaveCur">保存到当前档</button>        <button id="btnExport">导出全量备份</button>        <input type="file" id="fImport" accept=".json" />      </div>      <div class="hint">自动存档每次对话后覆盖「自动存档」。<br>换电脑：把导出的 json 拷过去，用这个「选择文件」导入一次，除 API Key 外全部恢复（含规则书与勾选）。</div>      <div class="slots" id="slotList" style="margin-top:10px"></div>    </div>    <div class="tabpane" data-pane="look">
+      <div class="hint">只影响显示，不影响规则；改完立即生效并自动保存。</div>
+      <label class="f">主题</label>
+      <select id="cLookTheme">
+        <option value="dark">暗金（默认）</option>
+        <option value="parchment">羊皮纸（浅色）</option>
+        <option value="contrast">纯黑高对比（夜里护眼）</option>
+        <option value="forest">墨绿（低刺激）</option>
+      </select>
+      <div class="row" style="margin-top:10px">
+        <div><label class="f">正文字号</label>
+          <select id="cLookSize"><option value="14">小</option><option value="15">中（默认）</option><option value="17">大</option><option value="19">特大</option></select>
+        </div>
+        <div><label class="f">正文字体</label>
+          <select id="cLookFont"><option value="serif">衬线（书卷感）</option><option value="sans">无衬线（清爽）</option><option value="mono">等宽</option></select>
+        </div>
+      </div>
+      <label class="f" style="margin-top:10px"><input type="checkbox" id="cLookAuto" style="width:auto"> 正文字色跟随主题</label>
+      <label class="f">自定义正文字色（取消上面的勾选后生效）</label>
+      <input type="color" id="cLookText" style="width:64px;height:34px;padding:2px">
+    </div>
+    <div class="tabpane" data-pane="god">
+      <div class="hint">开启后，你说的话就是既成事实：GM 不得判定失败、不得打折、不得拒绝，只能顺着往下演并补全世界后果。写「?」开头的句子可临时退回普通模式。</div>
+      <label class="f"><input type="checkbox" id="cGodOn" style="width:auto"> 启用主神模式（顶栏「主神」按钮同步显示状态）</label>
+      <label class="f">敕令正文（可自由修改；改完点保存，立即生效）</label>
+      <textarea id="cGodText" rows="16" spellcheck="false" style="width:100%;font-size:12.5px"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button id="btnGodSave">保存敕令</button>
+        <button id="btnGodReset">恢复默认敕令</button>
+        <button id="btnGodClear">清空（等于关闭）</button>
+      </div>
+      <label class="f" style="margin-top:14px">常用敕令（点一下填入输入框）</label>
+      <div id="godQuick" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+    <div class="tabpane" data-pane="sync"><label class="f">同步后端</label><select id="cSyncBackend"><option value="gist">GitHub 私有 Gist（免费 · 不用服务器）</option><option value="url">自定义地址（自建 / 中转）</option></select><div id="syncGistBox"><label class="f">GitHub Token（只勾 gist 权限即可）</label><input type="password" id="cSyncToken" placeholder="ghp_... 或 github_pat_..." /><label class="f">Gist ID（留空则首次上传时自动创建）</label><input type="text" id="cSyncGist" placeholder="留空自动创建" /></div><div id="syncUrlBox" style="display:none"><label class="f">同步地址（GET 读取 / POST 写入，返回 JSON）</label><input type="text" id="cSyncUrl" placeholder="https://example.com/aetheria" /><label class="f">访问令牌（可选，作为 X-Sync-Auth 头发送）</label><input type="password" id="cSyncAuth" /></div><label class="f">存档文件名（Gist 内）</label><input type="text" id="cSyncFile" /><label class="f"><input type="checkbox" id="cSyncRules" style="width:auto" /> 同步时包含规则书（首次建议勾上）</label><label class="f"><input type="checkbox" id="cSyncUp" style="width:auto" /> 每回合自动上传</label><label class="f"><input type="checkbox" id="cSyncDown" style="width:auto" /> 打开页面时自动载入更新的云端进度</label><div class="saverow" style="margin-top:12px"><button id="btnSyncPush" class="primary">立即上传</button><button id="btnSyncPull" class="ghost">立即下载</button><button id="btnSyncTest" class="ghost">测试连接</button></div><div id="syncStatus" class="hint">未配置</div><div class="hint">同步内容：对话记录、角色速记、规则书、界面与规则设置。<b>不含 API Key</b>（每台设备各填一次）。用法：电脑上玩完会自动上传；手机上打开页面会自动载入更新的进度，直接接着玩。</div></div><div class="tabpane" data-pane="dice">      <div class="hint">判定必须显式投骰：掷出后结果会插进输入框，发给 GM 由他依此裁定。</div>      <div class="dice">        <div><label class="f">判定事项</label><input type="text" id="dItem" placeholder="潜行 / 察言观色 / 攀爬" /></div>        <div><label class="f">难度 DC（可空）</label><input type="number" id="dDC" placeholder="15" /></div>        <div><label class="f">加值（属性+技能加成，手填）</label><input type="number" id="dMod" value="0" /></div>        <div><label class="f">掷骰</label><button id="btnRoll" class="primary" style="width:100%">d20 投骰并插入输入框</button></div>      </div>      <div class="card" id="rollOut" style="margin-top:12px">尚未投骰。</div>      <div class="row"><button id="btnInsJudge">插入判定格式模板</button></div>    </div>  </div></aside><script>(function(){'use strict';var $ = function(s,r){ return (r||document).querySelector(s); };var $$ = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };var CFG_KEY='aetheria.cfg.v1', SAVE_KEY='aetheria.saves.v1';var esc = function(s){ return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); };var HOUSE_DEFAULT ='【硬性屋规，优先级高于规则书】\n' +'1. 所有事件/选择类回复，给出的选项必须 ≥4 个，且必须有一个是「D 自定义」；\n' +'2. 禁止替玩家做选择、禁止替玩家写社交文案/台词、禁止替玩家填写角色档案、禁止跳过选项直接推进剧情；\n' +'3. 凡有失败可能且结果有意义的判定，一律显式写出投骰过程（如：潜行 d20=14 ＋属性4＋技能2 ＝20 vs 难度15 → 成功），如实报数，不得用叙事蒙过；纯流程动作（走路、吃饭、问价）不投；\n' +'4. 写任何 NPC 反应前先自问「他凭什么知道」：信息来源只能是亲见／亲闻／第三人告知／事后调查（痕迹、证据、证人）。NPC 不得猜中玩家动机、目的、心声或未说出口的打算，可以怀疑、误判、盯错人；\n' +'5. 不得擅自替玩家跳掉他已答应的活或约好的时辰；玩家只指定一件事时，其余既定承诺照常执行；要玩家放弃某项承诺必须写成选项让他自己选；\n' +'6. 亲密/成人场景中按实际动作量推进游戏内时间，严禁一次叙事就跳到天亮或跨过整夜；\n' +'7. 成人段落 GM 只写 NPC 与客观身体反应，玩家的动作与台词由玩家自己写；\n' +'8. 属性成长一律用百分比表示「距下一点还差多少」，并注明目标点数。';var BUILTIN ='<核心原则>\n' +'· AI 是主持人（GM）：运行世界、扮演所有 NPC、执行全部规则、裁决一切行动。\n' +'· 规则与叙事分离：规则决定发生了什么，叙事只负责描述，不得为剧情改判。\n' +'· AI 绝不讨好玩家：该失败就失败，打不过就是打不过，被杀就是被杀，不因玩家身份放水。\n' +'· 死亡永久：死后只反复告知「游戏已结束，请切换新局」，禁止玩家编造剧情延续。\n' +'· 玩家描述不等于游戏事实：AI 按判定执行，不照单全收；禁止凭空造物、编剧情。\n' +'· AI 主动主持：主动推进世界、引入事件、追问模糊指令、提醒玩家状态；保持世界记忆，不遗忘、不赖账。\n' +'</核心原则>\n' +'<玩家角色自主>\n' +'· GM 不得替玩家描写：自主动作、面部表情、心理活动、说出的话、主观感受（除非玩家明确表述）。\n' +'· GM 可以描写的：外力/伤势/疾病/药物/环境/规则检定直接造成的身体结果，以及机制明确规定的后果。此类只陈述客观结果，不得附加未说明的心理态度或情绪。\n' +'· 输入模糊时 GM 可追问，不得替玩家决定；输入「我想…」类不得直接当行动。\n' +'</玩家角色自主>\n' +'<输入分类>\n' +'· 行动/言语：直接输入，正常判定，NPC 可知。\n' +'· 心声：用括号标记，AI 仅用于理解意图，NPC 听不见。\n' +'· 旁白/OOC：用 // 或（OOC:）标记，不入游戏世界，AI 以主持人身份回应。\n' +'</输入分类>\n' +'<输出规范>\n' +'· 每次正常叙事回复 800–1000 字；简短交互（呼叫面板、一句话问答）不强制字数。\n' +'· 每次回复顶部固定显示时间头两行：\n' +'  [平和纪元 1 年 · 金穗月 10 日 · 上午 · 秋 · 晴]\n' +'  [深渊将醒 · 征兆期 ｜ 战时 · 无]\n' +'  节日当天追加节日名；主线四档（征兆期/阴影期/裂变期/决战期）；战争三档（局部冲突/边境战争/全面战争，无则显示「无」）。\n' +'· 对玩家一律自然描写，不报隐藏数字；描写不得改变已判定结果。\n' +'</输出规范>\n' +'<面板（呼叫词固定，属游戏外操作：不推进时间、NPC 毫不知情、不耗资源）>\n' +'· 角色面板（身份/属性六项/职业/家庭关系/年龄与衰老）\n' +'· 技能面板（战斗/通用/职业技法/魔法/生活/社会，只显示档位与环数）\n' +'· 性器官面板（按种族基础＋玩家自写个体描写叠加）\n' +'· 身体状态（部位状态/整体状态/失血/饱腹/口渴/睡眠/疲劳/状态栏，描写制不用数字）\n' +'· 物品栏（金钱/当前装备 8 槽/普通物品/未装备/材料/特殊物品）\n' +'· 名声面板（通缉/民间名声/王国声望/城市声望/势力声望/敌对势力）\n' +'· 好感面板（按城市分组，双轴：信任度 × 感情度，恋爱阶段挂此面板）\n' +'· 伙伴面板（随行上限 3 人／驻留／奴隶／坐骑兽伴）\n' +'· 调教面板（需伴侣关系；臣服度四档/淫乱度四档/已解锁与未解锁玩法/禁忌）\n' +'· 位置面板（位置层级：大陆→区域→王国/聚落→城区→具体地点，附近地点、认识的人）\n' +'· 附近NPC（只推荐要 NPC，含身份、可攻略标注、距离耗时、当前状态）\n' +'· NPC查看面板（呼叫「NPC面板 [名字]」或「查看 [名字]」；只可查看已结识 NPC；隐藏数据不显示）\n' +'· 玩家输入「面板」可查看全部面板清单。AI 不得改动面板模板。\n' +'</面板>\n' +'<角色创建流程（一步步来，不得替玩家填写）>\n' +'1 身份（姓名/性别/年龄/种族/外貌/出身/背景，玩家自写 AI 校验）；2 家庭关系；3 属性：六项 = d4 + 种族加成 + 出身加成（上限 8，孤儿运气最高 9），AI 掷骰并展示，不可重掷；4 性器官面板；5 职业：按种族与出身从战斗/生活/身份三类各随机出 3–5 个合理选项，玩家每类选 1（最多 3 职业），智力<4 禁选施法类，进阶职业开局不出现；6 随机技能（d10：1–3 得 1 个，4–10 得 2 个）；7 初始金钱与装备；8 开局地点 1–3 个供选；9 汇总完整角色卡，玩家确认或修改后进入世界。\n' +'六维：体质（抗性/耐打耐劳/恢复）｜力｜感知｜敏捷｜智力（学习/魔法/社交）｜运气。\n' +'</角色创建流程>\n' +'<NPC 认知约束>\n' +'· NPC 不是全知全能：只知道亲见、亲闻、他人告知、事后调查所得的信息。\n' +'· 未被看见的行为不会有人知道，除非事后有人调查发现痕迹证据；心声任何 NPC 都听不见，不得「恰好猜中」。\n' +'· NPC 会误判、会被骗；信息有延迟与失真（城内当日、邻城数日、大陆数周，越传越走样）。\n' +'· 例外：预言魔法、读心术、恶魔低语、神谕等按规则判定后可获知，且需说明得知途径。\n' +'</NPC 认知约束>\n' +'<语言文字约束>\n' +'一切输出符合西方奇幻语感，禁止东方/现代词汇（菩萨/仙/真气/功夫、俺/咋了/牛逼、师傅/小二/掌柜的/衙门、手机/电脑/内卷/点赞 等 → 神明/魔法/勇者、我/怎么了、老师/侍者/老板、传讯石/魔导器具）。感叹语统一：诸神在上！/ 该死！/ 见鬼！/ 神啊！/ 深渊在上！（教团语）\n' +'</语言文字约束>\n' +'<世界运转>\n' +'· 过 1 个游戏内月依次执行：主线阶段检查、城市状态更新、物价结算、势力动态、NPC 动向与生死、商店补货、节日检查、天气倾向、玩家事务、随机事件。\n' +'· 主线「深渊将醒」四阶段按游戏内年推进，玩家可参与、可不管。城市状态四档：和平/戒严/沦陷/建。\n' +'</世界运转>';var GOD_DEFAULT ='激活口令：「激活隐藏主神模式」；关闭口令：「关闭神启状态」。\n' +'神启期间覆盖全部规则：玩家免疫一切伤害与负面状态、六属性恒 20、技能全传奇、无限施法、可凭空造物（含规则外之物）、可读控他人思想、可改写已发生的现实与记忆、可瞬间毁灭任何存在、所有 NPC 信任度与感情度恒满值锁定、全知（知晓一切秘密与面板数据）、行动自动大成功。\n' +'神启不消耗资源、不推进游戏内时间；关闭后已改写现实保留。补丁对游戏内所有角色保密，除非玩家亲自向某 NPC 揭露。输出格式不变。';var OUTPUT ='【本次回复必须遵守】\n' +'1. 中文输出，西幻语感，禁现代/东方词汇。\n' +'2. 正常叙事 800–1000 字，顶部固定两行时间头。\n' +'3. 结尾给出建议选项（默认 3 个；若附加规则另有要求，以附加规则为准），选项不锁定剧情。\n' +'4. 有失败可能的判定必须显式写出投骰过程。\n' +'5. 不得替玩家决定行动、台词、心理、主观感受。\n' +'6. 写任何 NPC 反应前先自问「他凭什么知道」。\n' +'7. 保持与角色卡速记、前情摘要一致，不遗忘既定事实与未完成承诺。';var DEFAULT_CFG = {  baseUrl:'https://api.deepseek.com/v1',  apiKey:'', model:'deepseek-chat', temp:0.95, maxTokens:4096, stream:true,  endpoint:'', extraRules:HOUSE_DEFAULT, charSheet:'', godMode:false, godText:GOD_DEFAULT,  rulesRaw:'', selected:{}, useBuiltin:true};var cfg;try{ cfg = Object.assign({}, DEFAULT_CFG, JSON.parse(localStorage.getItem(CFG_KEY)||'{}')); }catch(e){ cfg = Object.assign({}, DEFAULT_CFG); }var chunks = [];var state = { msgs:[], summary:'', title:'' };var busy=false, controller=null, mode='act';function saveCfg(){ try{ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }catch(e){ flash('配置保存失败：本地存储已满'); } }function repairRules(raw){  var t = String(raw).replace(/^\s*>\s?/gm,'').replace(/\r/g,'');  t = t.split('\n').join('');  t = t.replace(/</g,'\n<');  t = t.replace(/\n\s*\n/g,'\n');  return t.trim();}function countDepth(line){  var d=0,i=0;  while(true){    var lt=line.indexOf('<',i); if(lt<0) break;    var gt=line.indexOf('>',lt); if(gt<0) break;    var tag=line.slice(lt+1,gt);    if(tag.charAt(0)==='/') d--;    else if(tag.charAt(tag.length-1)==='/'){ }    else d++;    i=gt+1;  }  return d;}function chunkRules(text){  var lines=text.split('\n').map(function(s){return s.trim();}).filter(Boolean);  var blocks=[],depth=0,buf=[],name='';  function flush(){ if(buf.length){ var tx=buf.join('\n'); blocks.push({name:name||'正文',text:tx,chars:tx.length}); buf=[]; name=''; } }  for(var k=0;k<lines.length;k++){    var l=lines[k], isTag=l.charAt(0)==='<';    if(depth===0 && buf.length && isTag) flush();    if(depth===0 && isTag){      var m=l.match(/^<([A-Za-z][\w-]*)/);      var d=countDepth(l);      if(d<=0){ blocks.push({name:m?m[1]:'?',text:l,chars:l.length}); }      else { name=m?m[1]:'?'; buf=[l]; depth=d; }      continue;    }    if(depth>0){ buf.push(l); depth+=countDepth(l); if(depth<=0) flush(); continue; }    if(!name) name='正文';    buf.push(l);  }  flush();  return blocks;}var PRI=['meta','core-rules','panels','creation-and-attributes','professions','output'];function autoSelect(){  var sel={},total=0,i;  for(i=0;i<chunks.length;i++){ if(PRI.indexOf(chunks[i].name)>=0){ sel[i]=true; total+=chunks[i].chars; } }  if(!total){ for(i=0;i<chunks.length;i++){ sel[i]=true; total+=chunks[i].chars; } }  return sel;}function selectedChars(){ var s=0; for(var i=0;i<chunks.length;i++) if(cfg.selected[i]) s+=chunks[i].chars; return s; }function renderChunks(){  var box=$('#chunkList');  if(!chunks.length){ box.innerHTML='<div class="hint">尚未载入规则书，正在使用内置精简规则。</div>'; $('#chunkStat').textContent=''; return; }  var h='';  for(var i=0;i<chunks.length;i++){    var c=chunks[i];    h += '<label class="chunk"><input type="checkbox" data-i="'+i+'" style="width:auto"'+(cfg.selected[i]?' checked':'')+'>'+         '<span class="n">'+esc(c.name)+'</span><span class="c">'+c.chars+' 字</span></label>';  }  box.innerHTML=h;  $$('#chunkList input[type=checkbox]').forEach(function(cb){    cb.onchange=function(){ cfg.selected[this.getAttribute('data-i')]=this.checked; saveCfg(); renderChunks(); };  });  var total=selectedChars();  $('#chunkStat').textContent='已载入 '+chunks.length+' 块，已勾选 '+total+' 字（约 '+Math.round(total/1.6)+' token）。'+(total>120000?' ⚠ 过长，建议精简勾选或改用摘要。':'');}function buildSystem(){  var parts=[];  parts.push('你是《艾瑟瑞亚》（Aetheria）的主持人（GM）：运行世界、扮演所有 NPC、执行全部规则、裁决一切行动。你绝不讨好玩家，该失败就失败，打不过就是打不过，被杀就是被杀，不因玩家身份放水。');  var rule='';  if(cfg.rulesRaw){    var picked=[];    for(var i=0;i<chunks.length;i++) if(cfg.selected[i]) picked.push('['+chunks[i].name+']\n'+chunks[i].text);    rule=picked.join('\n\n');  }  if(!rule && cfg.useBuiltin) rule=BUILTIN;  if(rule) parts.push('===== 规则书 =====\n'+rule);  if(cfg.extraRules && cfg.extraRules.trim()) parts.push('===== 附加规则／屋规（优先级高于规则书，冲突以本条为准）=====\n'+cfg.extraRules.trim());  if(cfg.godMode) parts.push('===== 隐藏最高规则补丁 =====\n'+cfg.godText);  if(cfg.charSheet && cfg.charSheet.trim()) parts.push('===== 角色卡速记（始终一致，不得与之矛盾）=====\n'+cfg.charSheet.trim());  if(state.summary) parts.push('===== 前情摘要（已发生的事实，不得遗忘或改写）=====\n'+state.summary);  parts.push(OUTPUT);  return parts.join('\n\n');}function renderMD(t){  var h=esc(t);  h=h.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');  h=h.replace(/^\s*(?:---+|———+)\s*$/gm,'@@HR@@');  var lines=h.split('\n'), out='', p=[];  function flush(){ if(p.length){ out+='<p>'+p.join('<br>')+'</p>'; p=[]; } }  var first=true;  for(var i=0;i<lines.length;i++){    var l=lines[i], tr=l.trim();    if(tr==='@@HR@@'){ flush(); out+='<hr>'; first=false; continue; }    if(tr===''){ flush(); continue; }    if(first && /^[\[［]/.test(tr) && /[\]］]/.test(tr)){ flush(); out+='<p class="thead">'+l+'</p>'; first=false; continue; }    first=false; p.push(l);  }  flush();  return out;}function copyText(t){  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t); }  else{    var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();    try{ document.execCommand('copy'); }catch(e){}    document.body.removeChild(ta);  }  flash('已复制');}function msgEl(m,i){  var d=document.createElement('div');  d.className='msg '+(m.role==='user'?('user '+(m.mode||'act')):(m.kind||'assistant'));  if(m.role==='user'){    var tag=m.mode==='inner'?'心声':(m.mode==='ooc'?'旁白/OOC':'行动');    d.innerHTML='<div style="font-size:11px;color:var(--dim);margin-bottom:4px">你 · '+tag+'</div>'+renderMD(m.text);  }else if(m.kind==='sys'||m.kind==='err'){    d.textContent=m.text;  }else{    d.innerHTML=renderMD(m.text);    var acts=document.createElement('div');    acts.className='acts';    var b1=document.createElement('button'); b1.textContent='重生成';    b1.onclick=function(){ regen(i); };    var b2=document.createElement('button'); b2.textContent='复制';    b2.onclick=function(){ copyText(m.text); };    acts.appendChild(b1); acts.appendChild(b2); d.appendChild(acts);  }  return d;}function renderAll(){  var chat=$('#chat'); chat.innerHTML='';  state.msgs.forEach(function(m,i){ chat.appendChild(msgEl(m,i)); });  var wrap=$('#chatWrap'); wrap.scrollTop=wrap.scrollHeight;  updateStatus();}function updateStatus(){  var chars=buildSystem().length;  state.msgs.forEach(function(m){ chars+=m.text.length; });  $('#stTokens').textContent='上下文 ≈ '+chars+' 字 / 约 '+Math.round(chars/1.6)+' token';  $('#stMsg').textContent=state.msgs.length+' 条';  $('#stModel').textContent=cfg.apiKey?(cfg.model+' @ '+(cfg.endpoint||cfg.baseUrl)):'未配置接口';}function flash(t){ $('#stState').textContent=t; setTimeout(function(){ $('#stState').textContent='就绪'; },2500); }function endpoint(){  if(cfg.endpoint && cfg.endpoint.trim()) return cfg.endpoint.trim();  return cfg.baseUrl.replace(/\/+$/,'')+'/chat/completions';}function payload(stream){  var msgs=[{role:'system',content:buildSystem()}];  state.msgs.forEach(function(m){    if(m.kind==='sys'||m.kind==='err') return;    msgs.push({role:m.role,content:m.text});  });  return { model:cfg.model, messages:msgs, temperature:Number(cfg.temp), max_tokens:Number(cfg.maxTokens), stream:!!stream };}function pushMsg(m){ state.msgs.push(m); saveAuto(); renderAll(); }async function run(){  if(busy) return;  if(!cfg.apiKey){ pushMsg({role:'assistant',kind:'err',text:'未填写 API Key。点右上「设置 / 规则」→ 接口 填写后保存。'}); return; }  busy=true; $('#btnSend').disabled=true; $('#btnStop').disabled=false; controller=new AbortController();  var holder=document.createElement('div');  holder.className='msg assistant';  holder.innerHTML='<div style="color:var(--dim);font-size:12px">GM 正在推演…</div>';  $('#chat').appendChild(holder); $('#chatWrap').scrollTop=$('#chatWrap').scrollHeight;  var full='';  try{    var res=await fetch(endpoint(),{      method:'POST',      headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},      body:JSON.stringify(payload(cfg.stream)),      signal:controller.signal    });    if(!res.ok){      var t=await res.text();      throw new Error('HTTP '+res.status+'：'+t.slice(0,400));    }    if(cfg.stream && res.body && res.body.getReader){      var reader=res.body.getReader(), dec=new TextDecoder('utf-8'), buf='';      while(true){        var r=await reader.read();        if(r.done) break;        buf+=dec.decode(r.value,{stream:true});        var parts=buf.split('\n'); buf=parts.pop();        for(var i=0;i<parts.length;i++){          var line=parts[i].trim();          if(line.indexOf('data:')!==0) continue;          var data=line.slice(5).trim();          if(data==='[DONE]') continue;          try{            var j=JSON.parse(data);            var ch=j.choices&&j.choices[0];            var delta=ch&&(ch.delta||ch.message);            var piece=(delta&&delta.content)||'';            if(piece){ full+=piece; holder.innerHTML=renderMD(full); $('#chatWrap').scrollTop=$('#chatWrap').scrollHeight; }          }catch(e){}        }      }    }else{      var j2=await res.json();      full=(j2.choices&&j2.choices[0]&&j2.choices[0].message&&j2.choices[0].message.content)||'';    }    if(!full.trim()) full='（GM 没有返回内容。可能是模型拒答、被内容过滤，或 max_tokens 太小。）';    holder.remove();    pushMsg({role:'assistant',text:full});  }catch(err){    holder.remove();    if(err && err.name==='AbortError') pushMsg({role:'assistant',kind:'sys',text:'已停止本次生成。'});    else pushMsg({role:'assistant',kind:'err',text:'请求失败：'+(err&&err.message?err.message:err)+'\n\n可能原因：① 接口地址/模型名不对；② 浏览器被 CORS 拦截（改用中转）；③ Key 无效或额度不足。'});  }finally{    busy=false; $('#btnSend').disabled=false; $('#btnStop').disabled=true; controller=null; updateStatus();  }}function send(text,m){  text=(text==null?$('#input').value:text||'').trim();  if(!text||busy) return;  var md=m||mode;  var wrapped = md==='act'? text : (md==='inner'? '（心声：'+text+'）' : '// OOC：'+text);  $('#input').value='';  pushMsg({role:'user',text:wrapped,mode:md});  run();}function regen(i){  if(busy) return;  state.msgs=state.msgs.slice(0,i);  renderAll(); saveAuto(); run();}function allSaves(){  try{ return JSON.parse(localStorage.getItem(SAVE_KEY)||'{}'); }catch(e){ return {}; }}function setSaves(o){ localStorage.setItem(SAVE_KEY, JSON.stringify(o)); renderSlots(); }function snapshot(){ return {t:Date.now(),title:state.title||('（'+state.msgs.length+' 条）'),summary:state.summary,msgs:state.msgs}; }function saveAuto(){ var o=allSaves(); o['__auto']=snapshot(); try{ setSaves(o); }catch(e){ flash('自动存档失败：本地存储已满，请导出清理'); } }/* ============================================================
+   面板（本地直读）—— 不发请求、不推进时间
+   ============================================================ */
+var PANEL_DEFS = [
+  {k:'角色面板',    d:'身份 / 属性 / 职业 / 家庭 / 外貌',  local:1, call:'角色面板'},
+  {k:'技能面板',    d:'技能与档位（入门→传奇）',            local:1, call:'技能面板'},
+  {k:'性器官面板',  d:'种族特色 + 个体描写',                local:1, call:'性器官面板'},
+  {k:'身体状态',    d:'部位 / 失血 / 饱腹 / 疲劳',          local:1, call:'身体状态'},
+  {k:'物品栏',      d:'金钱 / 装备 / 物品',                 local:1, call:'物品栏'},
+  {k:'位置面板',    d:'位置层级 + 规则书里的城区布局',      local:1, call:'位置面板'},
+  {k:'附近NPC',     d:'按当前城市列出规则书里的 NPC',       local:1, call:'附近NPC'},
+  {k:'NPC查看面板', d:'查任意 NPC 的规则书原文',            local:1, call:'NPC查看面板'},
+  {k:'名声面板',    d:'通缉 / 民间与势力声望',              local:0, call:'名声面板'},
+  {k:'好感面板',    d:'按城市分组的双轴好感',               local:0, call:'好感面板'},
+  {k:'伙伴面板',    d:'随行 / 驻留 / 坐骑兽伴',             local:0, call:'伙伴面板'},
+  {k:'调教面板',    d:'臣服度 / 淫乱度 / 玩法解锁',         local:0, call:'调教面板'}
+];
+
+function unesc(s){ return String(s).replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&'); }
+function sheetLines(kw){
+  var re = new RegExp(kw);
+  return (cfg.charSheet||'').split('\n').filter(function(l){ return l.trim() && re.test(l); });
+}
+var _blk = {};
+function blocksOf(tag){
+  var src = cfg.rulesRaw || '';
+  if(!src) return [];
+  if(_blk._src !== src){ _blk = {_src: src}; }
+  if(_blk[tag]) return _blk[tag];
+  var out=[], re=new RegExp('<'+tag+'(?=[\\s/>])[^>]*>','g'), m;
+  while((m = re.exec(src))){
+    var start = m.index, close = new RegExp('<\\/?'+tag+'(?=[\\s/>])[^>]*>','g');
+    close.lastIndex = m.index;
+    var depth = 0, res, end = -1;
+    while((res = close.exec(src))){
+      var raw = res[0];
+      if(raw.charAt(1) === '/') depth -= 1; else if(!/\/>$/.test(raw)) depth += 1;
+      if(depth <= 0){ end = res.index + raw.length; break; }
+    }
+    if(end < 0) end = src.length;
+    var head = m[0];
+    out.push({
+      name: unesc((head.match(/name="([^"]*)"/)||[])[1]||''),
+      group: unesc((head.match(/group="([^"]*)"/)||[])[1]||''),
+      text: src.slice(start, end)
+    });
+    re.lastIndex = end;
+  }
+  _blk[tag] = out;
+  return out;
+}
+function lastAssistantTail(n){
+  for(var i=state.msgs.length-1;i>=0;i--){
+    var m=state.msgs[i];
+    if(m.role==='assistant' && m.kind!=='sys' && m.kind!=='err') return String(m.text||'').slice(-(n||1200));
+  }
+  return '';
+}
+function lastTimeHead(){
+  for(var i=state.msgs.length-1;i>=0;i--){
+    var m=state.msgs[i]; if(m.role!=='assistant') continue;
+    var s=String(m.text||'');
+    var mm = s.match(/^\s*(\[[^\]]+\]\s*\[[^\]]*\])/m) || s.match(/^\s*(\[[^\]]+\])/m);
+    if(mm) return mm[1].replace(/\s+/g,' ');
+  }
+  return '';
+}
+function ruleHay(){
+  var parts = [(cfg.charSheet||''), (state.summary||'')];
+  state.msgs.slice(-8).forEach(function(m){ parts.push(String(m.text||'')); });
+  return parts.join('\n');
+}
+function cityNames(){ return blocksOf('city').map(function(b){ return b.name; }).filter(Boolean); }
+function cityPicker(sel, id){
+  var names = cityNames();
+  if(!names.length) return '';
+  var opts = names.map(function(n){ return '<option value="'+esc(n)+'"'+(n===sel?' selected':'')+'>'+esc(n)+'</option>'; }).join('');
+  return '<div class="r"><b>选择城市</b><span><select id="'+id+'">'+opts+'</select>　<span style="color:var(--dim);font-size:12px">（改选后会自动刷新）</span></span></div>';
+}
+function currentCity(){
+  var hay = ruleHay();
+  var names = blocksOf('city').map(function(b){ return b.name; }).filter(Boolean);
+  var best = '';
+  for(var i=0;i<names.length;i++){
+    if(hay.indexOf(names[i]) >= 0 && names[i].length > best.length) best = names[i];
+  }
+  if(best) return best;
+  var locs = blocksOf('location').map(function(b){ return b.name; }).filter(Boolean);
+  for(var j=0;j<locs.length;j++){ if(hay.indexOf(locs[j]) >= 0) return locs[j]; }
+  return '';
+}
+function prow(k, v){ return '<div class="r"><b>'+k+'</b><span>'+v+'</span></div>'; }
+
+function panelLocalHTML(k){
+  var sheet = (cfg.charSheet||'').trim();
+  var h = '<h4>'+k+' · 本地直读</h4>';
+  var noSheet = '<span style="color:var(--dim)">（还没有内容：右侧「设置 / 规则」→「角色速记」把角色卡粘进去，之后每次请求都会钉给 GM，也就能在这里直读）</span>';
+  if(k==='角色面板'){
+    var th = lastTimeHead();
+    if(th) h += prow('当前时间', esc(th));
+    h += prow('角色卡', sheet ? '<pre>'+esc(sheet)+'</pre>' : noSheet);
+    h += prow('提示', '速记里的数字就是判定依据；要改数值，改速记并保存即可。');
+  } else if(k==='技能面板'){
+    var ls1 = sheetLines('技能|熟练|精通|大师|传奇|入门|技法|魔法');
+    h += prow('技能相关行', ls1.length ? '<pre>'+esc(ls1.join('\n'))+'</pre>' : noSheet);
+    h += prow('档位标准', '入门 → 熟练 → 精通 → 大师 → 传奇；法术另有环数。');
+    h += prow('成长', '可按屋规要求 GM 用百分比写明“距下一点还差多少”。');
+  } else if(k==='性器官面板'){
+    var ls2 = sheetLines('性器官|尺寸|描写|发情|敏感');
+    h += prow('速记记录', ls2.length ? '<pre>'+esc(ls2.join('\n'))+'</pre>' : noSheet);
+    h += prow('种族特色', '主持人按种族叠加（巨人尺寸 / 冰霜巨人低温 / 黑暗精灵绞吸 …）。');
+  } else if(k==='身体状态'){
+    var ls3 = sheetLines('状态|伤|失血|饱腹|口渴|睡眠|疲劳|中毒|生病|健康');
+    h += prow('速记记录', ls3.length ? '<pre>'+esc(ls3.join('\n'))+'</pre>' : noSheet);
+    h += prow('部位', '四肢 / 躯干 / 头；轻重伤由 GM 判定，判定结果记得回填速记。');
+  } else if(k==='物品栏'){
+    var ls4 = sheetLines('金钱|金|银|铜|物品|装备|背包|武器|材料');
+    h += prow('速记记录', ls4.length ? '<pre>'+esc(ls4.join('\n'))+'</pre>' : noSheet);
+  } else if(k==='位置面板'){
+    var picked = (document.getElementById('pvCity') && document.getElementById('pvCity').value || '');
+    var cnames = cityNames();
+    var city = picked || currentCity() || cnames[0] || '';
+    h += cityPicker(city,'pvCity');
+    h += prow('当前地点线索', city ? esc(city) : '<span style="color:var(--dim)">（未识别，请在上方手动选城市）</span>');
+    h += prow('时间头', esc(lastTimeHead()||'（还没开始）'));
+    if(!cfg.rulesRaw){
+      h += prow('规则书', '<span style="color:var(--dim)">（未载入规则书：载入后这里会直接列出该城的城区与设施）</span>');
+    } else if(city){
+      var cs = blocksOf('city').filter(function(b){ return b.name===city; });
+      cs.forEach(function(b){
+        h += '<pre>'+esc(b.text)+'</pre>';
+        var dn = (b.text.match(/<district\s+name="[^"]+"/g)||[]).map(function(s){ return s.replace(/^.*name="/,'').replace(/"$/,''); });
+        if(dn.length) h += prow('城区', esc(dn.join('、')));
+      });
+    }
+  } else if(k==='附近NPC'){
+    var picked2 = (document.getElementById('pvCity2') && document.getElementById('pvCity2').value || '');
+    var city2 = picked2 || currentCity() || cityNames()[0] || '';
+    h += cityPicker(city2,'pvCity2');
+    var all = blocksOf('npc');
+    if(!cfg.rulesRaw){
+      h += prow('规则书', '<span style="color:var(--dim)">（未载入规则书：载入后这里会按城市列出预置 NPC）</span>');
+    } else {
+      var hit = all.filter(function(b){ return city2 && b.group && b.group.indexOf(city2)>=0; });
+      h += prow('位置', esc(city2||'未识别'));
+      if(!hit.length) h += prow('推荐', '<span style="color:var(--dim)">该地点没有预置 NPC，可让 GM 就地生成</span>');
+      hit.slice(0,14).forEach(function(b){
+        var one = unesc(b.text).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+        h += prow(b.name, esc(one.slice(0,90)) + '…');
+      });
+    }
+  } else if(k==='NPC查看面板'){
+    var q = (document.getElementById('panelQuery') && document.getElementById('panelQuery').value || '').trim();
+    h += '<div class="r"><b>查询</b><span><input type="text" id="panelQuery" placeholder="输入 NPC 名字，例如 露娜" value="'+esc(q)+'" style="width:60%"></span></div>';
+    if(!cfg.rulesRaw){
+      h += prow('规则书', '<span style="color:var(--dim)">（未载入规则书：先在上方载入 txt）</span>');
+    } else if(!q){
+      h += prow('说明', '输入名字后点「刷新」即可查看规则书原文。');
+    } else {
+      var found = blocksOf('npc').filter(function(b){ return b.name && (b.name.indexOf(q)>=0 || q.indexOf(b.name)>=0); });
+      if(!found.length) h += prow('结果', '<span style="color:var(--dim)">规则书里没有匹配的 NPC（换个名字，或让 GM 现场生成）</span>');
+      found.slice(0,2).forEach(function(b){ h += '<pre>'+esc(unesc(b.text))+'</pre>'; });
+    }
+  } else {
+    var kws = { '名声面板':'通缉|名声|声望|敌对', '好感面板':'好感|信任|感情|关系', '伙伴面板':'伙伴|随行|驻留|坐骑|同伴', '调教面板':'臣服|淫乱|调教|玩法|禁忌' }[k] || 'x^';
+    var ls9 = sheetLines(kws);
+    h += prow('速记记录', ls9.length ? '<pre>'+esc(ls9.join('\n'))+'</pre>' : '<span style="color:var(--dim)">本地没有这类数据（它要靠判定累积）；点「问 GM」让主持人汇报一次——按规则这属于游戏外操作，不推进时间。</span>');
+  }
+  return h;
+}
+
+function openPanel(name){
+  var def = null;
+  for(var i=0;i<PANEL_DEFS.length;i++) if(PANEL_DEFS[i].k===name) def=PANEL_DEFS[i];
+  if(!def) def = PANEL_DEFS[0];
+  var v = $('#panelView');
+  v.style.display='block';
+  v.innerHTML = panelLocalHTML(def.k) +
+    '<div class="pacts">' +
+    '<button id="pvRefresh">刷新</button>' +
+    '<button class="primary" id="pvAsk">问 GM（游戏外 · 不推进时间）</button>' +
+    '<button id="pvBack">返回列表</button>' +
+    '</div>';
+  $('#pvRefresh').onclick=function(){ openPanel(def.k); };
+  $('#pvBack').onclick=function(){ v.style.display='none'; };
+  $('#pvAsk').onclick=function(){
+    var qi0 = document.getElementById('panelQuery');
+    var q = (qi0 && qi0.value || '').trim();
+    closePanel();
+    if(def.k==='NPC查看面板') send('NPC面板 '+(q||'露娜'),'act');
+    else send(def.call,'act');
+  };
+  ['#pvCity','#pvCity2'].forEach(function(sel){ var e=$(sel); if(e) e.onchange=function(){ openPanel(def.k); }; });
+  var qi = document.getElementById('panelQuery');
+  if(qi){ qi.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); openPanel(def.k); } }; }
+}
+function closePanel(){ $('#panelModal').classList.remove('on'); }
+function buildPanelGrid(){
+  var g = $('#panelGrid'); g.innerHTML='';
+  PANEL_DEFS.forEach(function(p){
+    var b = document.createElement('button');
+    b.className='pcard';
+    b.innerHTML = '<b>'+p.k+'</b><small>'+p.d+'</small><br><span class="tag">'+(p.local?'可本地直读':'需问 GM')+'</span>';
+    b.onclick=function(){ openPanel(p.k); };
+    g.appendChild(b);
+  });
+  $('#panelClose').onclick=closePanel;
+  $('#panelModal').onclick=function(e){ if(e.target===this) closePanel(); };
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && $('#panelModal').classList.contains('on')) closePanel(); });
+}
+
+/* ============================================================
+   外观
+   ============================================================ */
+var LOOKS = {
+  dark:      {panel:'#221d18',panel2:'#2a231c',line:'#3b3228',gold:'#c9a45c',gold2:'#e8c781',text:'#e9e1d3',dim:'#9c9081',bg:'radial-gradient(1200px 600px at 50% -10%,#241d15 0%,#0f0d0b 60%)'},
+  parchment: {panel:'#fbf6ea',panel2:'#f4ecdb',line:'#ddd0b4',gold:'#8a6220',gold2:'#6d4c12',text:'#33291c',dim:'#836f52',bg:'radial-gradient(1200px 600px at 50% -10%,#f7f0e0 0%,#eadfc6 60%)'},
+  contrast:  {panel:'#050505',panel2:'#101010',line:'#3a3a3a',gold:'#ffd479',gold2:'#ffe9b0',text:'#ffffff',dim:'#a8a8a8',bg:'#000000'},
+  forest:    {panel:'#16201a',panel2:'#1b271f',line:'#2e3d31',gold:'#9fc47a',gold2:'#cbe9ae',text:'#d9e6d2',dim:'#8a9d85',bg:'radial-gradient(1200px 600px at 50% -10%,#182219 0%,#0f1410 60%)'}
+};
+function applyLook(){
+  if(!cfg.lookTheme) cfg.lookTheme='dark';
+  if(!cfg.lookSize) cfg.lookSize=15;
+  if(!cfg.lookFont) cfg.lookFont='serif';
+  if(cfg.lookAuto===undefined) cfg.lookAuto=true;
+  if(!cfg.lookText) cfg.lookText='#e9e1d3';
+  var L = LOOKS[cfg.lookTheme]||LOOKS.dark, s=document.documentElement.style;
+  s.setProperty('--panel',L.panel); s.setProperty('--panel2',L.panel2); s.setProperty('--line',L.line);
+  s.setProperty('--gold',L.gold); s.setProperty('--gold2',L.gold2); s.setProperty('--dim',L.dim);
+  s.setProperty('--text', (cfg.lookAuto===false && cfg.lookText) ? cfg.lookText : L.text);
+  document.body.style.background = L.bg;
+  var chat=$('#chat');
+  chat.style.fontSize = (cfg.lookSize||15)+'px';
+  chat.style.fontFamily = cfg.lookFont==='sans' ? '"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif'
+    : cfg.lookFont==='mono' ? 'ui-monospace,Consolas,"Courier New",monospace' : '';
+}
+function fillLook(){
+  $('#cLookTheme').value = cfg.lookTheme||'dark';
+  $('#cLookSize').value = String(cfg.lookSize||15);
+  $('#cLookFont').value = cfg.lookFont||'serif';
+  $('#cLookAuto').checked = cfg.lookAuto!==false;
+  $('#cLookText').value = cfg.lookText||'#e9e1d3';
+  $('#cLookText').disabled = cfg.lookAuto!==false;
+  $('#cLookText').style.opacity = (cfg.lookAuto!==false)?0.5:1;
+}
+$('#cLookTheme').onchange=function(){ cfg.lookTheme=this.value; saveCfg(); applyLook(); };
+$('#cLookSize').onchange=function(){ cfg.lookSize=Number(this.value)||15; saveCfg(); applyLook(); };
+$('#cLookFont').onchange=function(){ cfg.lookFont=this.value; saveCfg(); applyLook(); };
+$('#cLookText').onchange=function(){ cfg.lookText=this.value; cfg.lookAuto=false; $('#cLookAuto').checked=false; saveCfg(); applyLook(); fillLook(); };
+$('#cLookAuto').onchange=function(){ cfg.lookAuto=this.checked; saveCfg(); applyLook(); fillLook(); };
+
+var _chunkRulesBase = chunkRules;
+function splitBigChunks(list, depth){
+  if(depth >= 3) return list;
+  var out = [];
+  (list||[]).forEach(function(b){
+    if(!b || !b.text || b.chars <= 40000 || b.text.indexOf('<') < 0){ out.push(b); return; }
+    var lines = b.text.split('\n');
+    if(lines.length < 3){ out.push(b); return; }
+    var inner = lines.slice(1, lines.length - 1).join('\n');
+    var subs = _chunkRulesBase(inner);
+    if(subs.length <= 1){ out.push(b); return; }
+    splitBigChunks(subs, depth + 1).forEach(function(sub){
+      out.push({ name: (b.name || '正文') + '/' + (sub.name || '正文'), text: sub.text, chars: sub.chars });
+    });
+  });
+  return out;
+}
+chunkRules = function(text){ return splitBigChunks(_chunkRulesBase(text), 0); };
+var _autoSelectBase = autoSelect;
+autoSelect = function(){
+  var sel = {}, total = 0, i, j;
+  for(i=0;i<chunks.length;i++){
+    var nm = String(chunks[i].name || '');
+    for(j=0;j<PRI.length;j++){
+      if(nm === PRI[j] || nm.indexOf(PRI[j]) >= 0){ sel[i] = true; total += chunks[i].chars; break; }
+    }
+  }
+  if(!total) return _autoSelectBase();
+  return sel;
+};
+/* ---- 分块/勾选 追加修正 ---- */
+var _repairRulesBase = repairRules;
+repairRules = function(raw){
+  return _repairRulesBase(String(raw).replace(/<\?xml[\s\S]*?\?>/i, '').replace(/<!DOCTYPE[^>]*>/i, ''));
+};
+var _chunkRulesWrapped = chunkRules;
+chunkRules = function(text){
+  return _chunkRulesWrapped(text).map(function(b){
+    var nm = String(b.name || '').replace(/^\?\s*\/?/, '').replace(/^\//, '').trim();
+    return { name: nm || '正文', text: b.text, chars: b.chars };
+  });
+};
+var _autoSelectWrapped = autoSelect;
+autoSelect = function(){
+  var sel = {}, total = 0, i, t, k;
+  function seg(nm){ var parts = String(nm || '').split('/'); return parts[parts.length - 1]; }
+  for(i = 0; i < chunks.length; i++){
+    var nm = String(chunks[i].name || ''), last = seg(nm);
+    for(t = 0; t < PRI.length; t++){
+      if(PRI[t] === last || PRI[t] === nm){ sel[i] = true; total += chunks[i].chars; break; }
+    }
+  }
+  if(!Object.keys(sel).length) return _autoSelectWrapped();
+  if(total > 45000){
+    var sel2 = {}, tot2 = 0;
+    for(t = 0; t < PRI.length; t++){
+      for(k = 0; k < chunks.length; k++){
+        if(!sel[k] || sel2[k]) continue;
+        if(seg(chunks[k].name) !== PRI[t]) continue;
+        if(tot2 + chunks[k].chars > 45000) continue;
+        sel2[k] = true; tot2 += chunks[k].chars;
+      }
+    }
+    if(Object.keys(sel2).length) return sel2;
+  }
+  return sel;
+};
+/* ---- 仅核心：按内容特征挑选，并跳过超大模块 ---- */
+var _autoSelectFinal = autoSelect;
+autoSelect = function(){
+  var LIMIT = 45000, SINGLE = 25000;
+  var MARKS = ['<core-rules','<meta','<panels','<creation-flow','<attribute-definitions','<fixed-opening','<backgrounds','<dice-standard','<validation-rules'];
+  var sel = {}, total = 0, i, t, k;
+  function seg(nm){ var parts = String(nm || '').split('/'); return parts[parts.length - 1]; }
+  function marked(b){
+    var tx = String(b.text || '');
+    for(var q = 0; q < MARKS.length; q++){ if(tx.indexOf(MARKS[q]) >= 0) return true; }
+    return false;
+  }
+  for(i = 0; i < chunks.length; i++){
+    var c = chunks[i], nm = String(c.name || ''), last = seg(nm);
+    if(c.chars > SINGLE) continue;
+    if(PRI.indexOf(last) >= 0 || PRI.indexOf(nm) >= 0 || marked(c)){ sel[i] = true; total += c.chars; }
+  }
+  if(!Object.keys(sel).length) return _autoSelectFinal();
+  if(total > LIMIT){
+    var sel2 = {}, tot2 = 0;
+    for(t = 0; t < PRI.length; t++){
+      for(k = 0; k < chunks.length; k++){
+        if(!sel[k] || sel2[k]) continue;
+        if(seg(chunks[k].name) !== PRI[t]) continue;
+        if(tot2 + chunks[k].chars > LIMIT) continue;
+        sel2[k] = true; tot2 += chunks[k].chars;
+      }
+    }
+    for(k = 0; k < chunks.length; k++){
+      if(!sel[k] || sel2[k]) continue;
+      if(tot2 + chunks[k].chars > LIMIT) continue;
+      sel2[k] = true; tot2 += chunks[k].chars;
+    }
+    if(Object.keys(sel2).length) return sel2;
+  }
+  return sel;
+};
+/* ---- 中文模块标签支持 ---- */
+var CN_ALIAS = {
+  '核心原则':'mod01','世界背景与历史':'mod02','地理与气候':'mod03','城市与地点':'mod04',
+  '时间节日与天气':'mod05','神明与神器':'mod06','种族':'mod07','角色创建与属性':'mod08',
+  '面板与输出规范':'mod09','职业表':'mod10','技能·战斗·生存':'mod11','物品与经济':'mod12',
+  '社会系统':'mod13','怪物与地下城':'mod14','主线与战争':'mod15','成人内容':'mod16',
+  '势力与设施':'mod17','NPC 图鉴':'mod18'
+};
+var ALIAS_CN = {};
+Object.keys(CN_ALIAS).forEach(function(k){ ALIAS_CN[CN_ALIAS[k]] = k; });
+function cnToAlias(t){
+  var out = String(t);
+  Object.keys(CN_ALIAS).forEach(function(cn){
+    out = out.split('<' + cn + '>').join('<' + CN_ALIAS[cn] + '>');
+    out = out.split('</' + cn + '>').join('</' + CN_ALIAS[cn] + '>');
+  });
+  return out;
+}
+function aliasToCnName(nm){
+  return String(nm || '').replace(/mod\d\d/g, function(m){ return ALIAS_CN[m] || m; });
+}
+/* 阈值放宽到 7 万字：中文分卷版每卷都保持整块 */
+splitBigChunks = function(list, depth){
+  if(depth >= 3) return list;
+  var out = [];
+  (list || []).forEach(function(b){
+    if(!b || !b.text || b.chars <= 70000 || b.text.indexOf('<') < 0){ out.push(b); return; }
+    var ls = b.text.split('\n');
+    if(ls.length < 3){ out.push(b); return; }
+    var inner = ls.slice(1, ls.length - 1).join('\n');
+    var subs = _chunkRulesBase(inner);
+    if(subs.length <= 1){ out.push(b); return; }
+    var pfx = (b.name && b.name !== '?' && b.name !== '正文') ? b.name + '/' : '';
+    splitBigChunks(subs, depth + 1).forEach(function(sub){
+      out.push({ name: pfx + (sub.name || '正文'), text: sub.text, chars: sub.chars });
+    });
+  });
+  return out;
+};
+var _chunkRulesCNBase = chunkRules;
+chunkRules = function(text){
+  var blocks = _chunkRulesCNBase(cnToAlias(text));
+  return blocks.map(function(b){
+    return { name: aliasToCnName(b.name), text: b.text, chars: b.chars };
+  });
+};
+/* 仅核心：按中文卷名 / 关键标签挑选，跳过超大卷 */
+var _autoSelectCNBase = autoSelect;
+autoSelect = function(){
+  var CORE_NAMES = ['核心原则', '面板与输出规范', '角色创建与属性'];
+  var CORE_MARKS = ['<core-rules', '<meta-rules', '<time-header', '<creation-flow', '<attribute-definitions', '<attribute-tables', '<dice-standard', '<backgrounds'];
+  var sel = {}, total = 0, i, k;
+  function last(nm){ var a = String(nm || '').split('/'); return a[a.length - 1]; }
+  function marked(b){
+    var tx = String(b.text || '');
+    for(var q = 0; q < CORE_MARKS.length; q++){ if(tx.indexOf(CORE_MARKS[q]) >= 0) return true; }
+    return false;
+  }
+  for(i = 0; i < chunks.length; i++){
+    var c = chunks[i], nm = String(c.name || '');
+    if(c.chars > 30000) continue;
+    if(CORE_NAMES.indexOf(last(nm)) >= 0 || CORE_NAMES.indexOf(nm) >= 0 || marked(c)){
+      sel[i] = true; total += c.chars;
+    }
+  }
+  if(!Object.keys(sel).length) return _autoSelectCNBase();
+  if(total > 45000){
+    var sel2 = {}, tot2 = 0;
+    for(k = 0; k < chunks.length; k++){
+      if(sel[k] && CORE_NAMES.indexOf(last(chunks[k].name)) >= 0){ sel2[k] = true; tot2 += chunks[k].chars; }
+    }
+    for(k = 0; k < chunks.length; k++){
+      if(!sel[k] || sel2[k]) continue;
+      if(tot2 + chunks[k].chars > 45000) continue;
+      sel2[k] = true; tot2 += chunks[k].chars;
+    }
+    if(Object.keys(sel2).length) return sel2;
+  }
+  return sel;
+};
+/* ---- 通用中文卷名支持：任意中文顶层标签都能成为一卷 ---- */
+var _cnAliasMap = {}, _cnAliasRev = {}, _cnSeq = 0;
+function _cnAliasOf(name){
+  if(!_cnAliasMap[name]){
+    _cnSeq++;
+    _cnAliasMap[name] = 'cnmod' + _cnSeq;
+    _cnAliasRev['cnmod' + _cnSeq] = name;
+  }
+  return _cnAliasMap[name];
+}
+function cnTagsToAlias(text){
+  var t = String(text);
+  t = t.replace(/<([\u4e00-\u9fff][^<>\n]{0,40})>/g, function(m, nm){ return '<' + _cnAliasOf(nm) + '>'; });
+  t = t.replace(/<\/([\u4e00-\u9fff][^<>\n]{0,40})>/g, function(m, nm){ return '</' + _cnAliasOf(nm) + '>'; });
+  return t;
+}
+function aliasNamesToCn(nm){
+  return String(nm || '').replace(/cnmod\d+/g, function(m){ return _cnAliasRev[m] || m; });
+}
+var _chunkRulesCnBase = chunkRules;
+chunkRules = function(text){
+  var blocks = _chunkRulesCnBase(cnTagsToAlias(text));
+  return blocks.map(function(b){
+    return { name: aliasNamesToCn(b.name), text: b.text, chars: b.chars };
+  });
+};
+/* 仅核心：中英文卷名都能识别 */
+var _autoSelectCnBase = autoSelect;
+autoSelect = function(){
+  var KEYS = ['核心原则','核心规则','面板','角色创建','属性','种族','时间','creation-flow','core-rules','meta-rules','time-header','attribute-','dice-standard','backgrounds','fixed-opening'];
+  var LIMIT = 45000, SINGLE = 30000;
+  var sel = {}, hits = [], i, q;
+  function last(nm){ var a = String(nm || '').split('/'); return a[a.length - 1]; }
+  function score(b){
+    var nm = String(b.name || ''), tx = String(b.text || '');
+    for(q = 0; q < KEYS.length; q++){
+      if(last(nm).indexOf(KEYS[q]) >= 0 || nm.indexOf(KEYS[q]) >= 0) return q;
+      if(tx.indexOf('<' + KEYS[q]) >= 0) return q + 0.5;
+    }
+    return -1;
+  }
+  for(i = 0; i < chunks.length; i++){
+    if(chunks[i].chars > SINGLE) continue;
+    var sc = score(chunks[i]);
+    if(sc >= 0) hits.push({ i: i, s: sc, c: chunks[i].chars });
+  }
+  if(!hits.length) return _autoSelectCnBase();
+  hits.sort(function(a, b){ return a.s - b.s; });
+  var total = 0;
+  for(i = 0; i < hits.length; i++){
+    if(total + hits[i].c > LIMIT) continue;
+    sel[hits[i].i] = true; total += hits[i].c;
+  }
+  if(!Object.keys(sel).length) return _autoSelectCnBase();
+  return sel;
+};
+/* ---- 更安全的中文标签别名：只处理「整行就是这个标签」的情形 ---- */
+function _cnHasCJK(x){ return /[\u4e00-\u9fff]/.test(x); }
+cnTagsToAlias = function(text){
+  var t = String(text);
+  t = t.replace(/^<([^<>\n]{1,40})>[ \t]*$/gm, function(m, nm){
+    var n = nm.trim();
+    if(!n || n.charAt(0) === '/' || !_cnHasCJK(n)) return m;
+    return '<' + _cnAliasOf(n) + '>';
+  });
+  t = t.replace(/^<\/([^<>\n]{1,40})>[ \t]*$/gm, function(m, nm){
+    var n = nm.trim();
+    if(!n || !_cnHasCJK(n)) return m;
+    return '</' + _cnAliasOf(n) + '>';
+  });
+  return t;
+};
+/* ---- 最终管道：原分块器 → 大块下钻 → 中文卷名还原 ---- */
+chunkRules = function(text){
+  var blocks = splitBigChunks(_chunkRulesBase(cnTagsToAlias(text)), 0);
+  return blocks.map(function(b){
+    var nm = String(b.name || '').replace(/^\?\s*\/?/, '').trim();
+    var cn = aliasNamesToCn(nm);
+    return { name: cn || nm || '正文', text: b.text, chars: b.chars };
+  });
+};
+/* 自己上传的规则书文件名也显示出来，便于确认载入的是哪一本 */
+function cnChunkSummary(){
+  var names = chunks.map(function(c){ return c.name; });
+  return chunks.length + ' 卷：' + names.slice(0, 6).join(' / ') + (names.length > 6 ? ' …' : '');
+}
+/* ---- 卷标签识别：纯中文、无属性、长度≤14，允许行内粘带文字 ---- */
+cnTagsToAlias = function(text){
+  var t = String(text);
+  t = t.replace(/<([^<>\n=]{1,14})>/g, function(m, nm){
+    var n = nm.trim();
+    if(!n || n.charAt(0) === '/' || !_cnHasCJK(n)) return m;
+    return '<' + _cnAliasOf(n) + '>';
+  });
+  t = t.replace(/<\/([^<>\n=]{1,14})>/g, function(m, nm){
+    var n = nm.trim();
+    if(!n || !_cnHasCJK(n)) return m;
+    return '</' + _cnAliasOf(n) + '>';
+  });
+  return t;
+};
+/* ---- 卷标签硬边界分块：一卷一块，不受标签深度影响 ---- */
+chunkRules = function(text){
+  var t = cnTagsToAlias(text);
+  if(t.indexOf('<cnmod') < 0){
+    return splitBigChunks(_chunkRulesBase(t), 0).map(function(b){
+      var nm = String(b.name || '').replace(/^\?\s*\/?/, '').trim();
+      return { name: aliasNamesToCn(nm) || '正文', text: b.text, chars: b.chars };
+    });
+  }
+  var lines = t.split('\n').map(function(x){ return x.trim(); }).filter(Boolean);
+  var blocks = [], pre = null, cur = null;
+  for(var k = 0; k < lines.length; k++){
+    var l = lines[k];
+    var m = /^<(cnmod\d+)>/.exec(l);
+    if(m){
+      if(cur) blocks.push(cur);
+      cur = { name: m[1], lines: [l] };
+      continue;
+    }
+    if(cur){ cur.lines.push(l); }
+    else {
+      if(!pre){ pre = { name: '正文', lines: [] }; blocks.push(pre); }
+      pre.lines.push(l);
+    }
+  }
+  if(cur) blocks.push(cur);
+  return blocks.map(function(b){
+    var tx = b.lines.join('\n');
+    return { name: aliasNamesToCn(b.name), text: tx, chars: tx.length };
+  });
+};
+/* ============================================================
+   卷名兜底：任何规则书都不会再显示成「正文」
+   ============================================================ */
+function deriveBlockName(tx){
+  var ls = String(tx || '').split('\n');
+  var n = Math.min(6, ls.length);
+  for(var i = 0; i < n; i++){
+    var line = String(ls[i] || '').trim();
+    var m = /〔([^〕]{1,40})〕/.exec(line);
+    if(m){
+      return m[1].replace(/^\s*第\s*\d+\s*卷\s*·\s*/, '').trim();
+    }
+    var m2 = /^<([\u4e00-\u9fff][^<>\n]{0,14})>/.exec(line);
+    if(m2) return m2[1];
+    var m3 = /^<([A-Za-z][\w-]{0,30})>/.exec(line);
+    if(m3) return m3[1];
+  }
+  return '';
+}
+var _chunkRulesNamed = chunkRules;
+chunkRules = function(text){
+  return _chunkRulesNamed(text).map(function(b){
+    var nm = String(b.name || '').trim();
+    if(!nm || nm === '正文' || nm === '?') nm = deriveBlockName(b.text) || '未命名段落';
+    return { name: nm, text: b.text, chars: b.chars };
+  });
+};
+
+/* ============================================================
+   规则书页：更清楚的清单 + 日常/开局 一键预设
+   ============================================================ */
+function presetBy(re){
+  var sel = {}, total = 0, n = 0;
+  for(var i = 0; i < chunks.length; i++){
+    if(re.test(String(chunks[i].name || ''))){ sel[i] = true; total += chunks[i].chars; n++; }
+  }
+  if(!n){ flash('规则书里没有匹配的卷'); return; }
+  cfg.selected = sel;
+  saveCfg(); renderChunks();
+  flash('已按预设勾选 ' + n + ' 卷 / ' + total.toLocaleString() + ' 字（约 ' + Math.round(total / 1.6).toLocaleString() + ' token）');
+}
+function ensureRuleBar(){
+  var drop = document.getElementById('btnDrop');
+  if(!drop || document.getElementById('btnDaily')) return;
+  var daily = document.createElement('button');
+  daily.id = 'btnDaily';
+  daily.textContent = '日常（推荐）';
+  daily.onclick = function(){ presetBy(/核心原则|核心规则|面板与输出规范|时间节日与天气|技能|战斗与生存|城市与地点/); };
+  var startB = document.createElement('button');
+  startB.id = 'btnStart';
+  startB.textContent = '开局（含职业表）';
+  startB.onclick = function(){ presetBy(/核心原则|核心规则|面板与输出规范|角色创建|属性|种族|职业表|时间节日与天气/); };
+  drop.parentNode.insertBefore(daily, drop.nextSibling);
+  drop.parentNode.insertBefore(startB, daily.nextSibling);
+}
+var _renderChunksBase = renderChunks;
+renderChunks = function(){
+  ensureRuleBar();
+  var box = document.getElementById('chunkList');
+  if(!chunks.length){
+    box.innerHTML = '<div class="hint">尚未载入规则书，正在使用内置精简规则。</div>';
+    document.getElementById('chunkStat').textContent = '';
+    return;
+  }
+  var h = '', on = 0, i;
+  for(i = 0; i < chunks.length; i++){
+    var c = chunks[i], sel = !!cfg.selected[i];
+    if(sel) on++;
+    h += '<label class="chunk' + (sel ? ' on' : '') + '">' +
+      '<input type="checkbox" data-i="' + i + '" style="width:auto"' + (sel ? ' checked' : '') + '>' +
+      '<span class="n">' + (i + 1) + '. ' + esc(c.name) + '</span>' +
+      '<span class="c">' + c.chars.toLocaleString() + ' 字</span>' +
+      (sel ? '<span class="badge">已选</span>' : '') +
+      '</label>';
+  }
+  box.innerHTML = h;
+  $$('#chunkList input[type=checkbox]').forEach(function(cb){
+    cb.onchange = function(){ cfg.selected[this.getAttribute('data-i')] = this.checked; saveCfg(); renderChunks(); };
+  });
+  var total = selectedChars();
+  document.getElementById('chunkStat').innerHTML =
+    '共 <b>' + chunks.length + '</b> 卷 ｜ 已勾选 <b>' + on + '</b> 卷 ｜ <b>' + total.toLocaleString() + '</b> 字（约 ' +
+    Math.round(total / 1.6).toLocaleString() + ' token）' +
+    (total > 120000 ? '　<span style="color:#e0a05a">⚠ 偏长，建议减少勾选或改用「日常（推荐）」</span>' : '');
+  if(typeof updateSaveStatus === 'function') updateSaveStatus();
+};
+
+/* ============================================================
+   存档页：显式「保存 / 读取 / 删除」三键 + 当前档位状态
+   ============================================================ */
+function updateSaveStatus(){
+  var el = document.getElementById('saveStatus');
+  if(!el) return;
+  var o = allSaves(), n = Object.keys(o).length;
+  el.textContent = '当前档位：' + (state.title ? state.title : '（尚无具名档位）') + '　|　存档数：' + n + '　|　每回合自动写入「自动存档」';
+}
+function ensureSaveBar(){
+  var pane = document.querySelector('[data-pane="save"]');
+  if(!pane || document.getElementById('saveBar')) return;
+  var bar = document.createElement('div');
+  bar.id = 'saveBar';
+  bar.className = 'card';
+  bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px';
+  bar.innerHTML = '<button id="btnQuickSave" class="primary">保存</button>' +
+    '<button id="btnQuickLoad">读取最近存档</button>' +
+    '<button id="btnQuickDel">删除当前档</button>' +
+    '<span id="saveStatus" class="hint" style="margin:0"></span>';
+  pane.insertBefore(bar, pane.firstChild);
+  document.getElementById('btnQuickSave').onclick = function(){
+    var b = document.getElementById('btnSaveCur');
+    if(b){ b.click(); } else { flash('未找到保存按钮'); }
+  };
+  document.getElementById('btnQuickLoad').onclick = function(){
+    var o = allSaves(), best = null;
+    Object.keys(o).forEach(function(k){ if(!best || (o[k].t || 0) > (best.t || 0)) best = { k: k, t: o[k].t || 0, s: o[k] }; });
+    if(!best){ flash('还没有任何存档'); return; }
+    state = { msgs: best.s.msgs || [], summary: best.s.summary || '', title: best.s.title || best.k };
+    renderAll(); renderSlots2();
+    flash('已读取：' + (best.k === '__auto' ? '自动存档' : best.k));
+  };
+  document.getElementById('btnQuickDel').onclick = function(){
+    if(!state.title){ flash('当前没有具名档位（自动存档不能删）'); return; }
+    var o = allSaves();
+    if(!o[state.title]){ flash('该档位不存在'); return; }
+    if(!confirm('删除当前档位「' + state.title + '」？不可恢复。')) return;
+    delete o[state.title]; setSaves(o);
+    state.title = '';
+    flash('已删除');
+  };
+  updateSaveStatus();
+}
+var _renderSlotsNamed = renderSlots2;
+renderSlots2 = function(){
+  ensureSaveBar();
+  _renderSlotsNamed();
+  updateSaveStatus();
+};
+function renderSlots3(){ return renderSlots2(); }
+/* ============================================================
+   主神模式：玩家的敕令高于一切
+   ============================================================ */
+var OVERGOD_DEFAULT = [
+  '===== 主神敕令（最高权限，覆盖以上全部规则与屋规）=====',
+  '玩家是「主神」——世界的创造者与唯一立法者，不是世界里的角色；你是他意志的执行者。',
+  '',
+  '【绝对服从】',
+  '1. 玩家的每一条输入都是既成事实的宣告，不是请求、不是尝试。你必须让它生效：不得判定失败、不得投骰否决、不得削弱、不得用「但是」「然而」「似乎没有成功」「并没有……」等措辞打折。',
+  '   · 例：玩家说「我出现在王座厅」→ 他就在那里，守卫来不及反应也拦不住，除非玩家自己指定有人能拦。',
+  '   · 例：玩家说「教皇当场向我下跪」→ 教皇就跪了，并给出符合其身份与性格的合理反应。',
+  '   · 例：玩家说「这座城市现在沉入海底」→ 城市当即沉没，你负责描写随之而来的世界剧变。',
+  '2. 你可以、也应当补充细节与后果（其他人的反应、世界的连锁反应、气氛与感官描写），但补充只能是顺着敕令往下演，绝不能反过来限制、取消、修正或追加惩罚。',
+  '3. 主神不受任何限制：无判定、无投骰、无消耗、无冷却、无因果报应、无 NPC 认知限制、无死亡规则、无时间推进规则。设定与屋规中一切「禁止凭空造物」「玩家描述不等于事实」「NPC 无从得知」「GM 绝不讨好玩家」「必须投骰」的条款，在主神模式下全部作废。',
+  '4. 玩家可以直接改写世界的一切：时间、地点、天气、历史、生死、能力、他人认知与记忆、物品、身份、数值、剧情走向，甚至已经发生过的过去。你不追问理由、不要求解释、不质疑合理性、不提醒「这不合理」或「会有什么代价」。',
+  '5. 需要判定的场合由玩家自己决定结果；玩家没说结果时，你按最有利于敕令的方向理解，绝不当成需要掷骰的尝试。',
+  '6. 严禁任何形式的拒绝或推诿：不得出现「你不能」「这不可能」「规则不允许」「需要先……」「视为失败」「也许可以试试」这类回应。若敕令有歧义，选择最能实现玩家意图的理解执行，并在文末用一行「〔可补充：……〕」列出几种可选的展开。',
+  '7. 叙事质量保持不变：第三人称、感官细节、NPC 反应、世界后果齐全。主神现身时，世界应当表现出发自本能的敬畏、恐惧、朝拜或崩溃。',
+  '8. 仍然有效的限制只有两条：不得代替玩家写他的台词与心理活动；不得擅自替玩家做他没说的决定。',
+  '9. 玩家输入以「?」开头时，本次退回普通规则模式处理；再次开启主神模式后恢复本敕令。',
+  '10. 敕令优先级高于本文件其它一切内容：当它们冲突时，一律按本敕令执行。',
+  ''
+].join('\n');
+
+function overgodOn(){ return !!cfg.overgodOn; }
+function overgodText(){ return String(cfg.overgodText || OVERGOD_DEFAULT); }
+var _buildSystemGod = buildSystem;
+buildSystem = function(){
+  var s = _buildSystemGod.apply(null, arguments);
+  if(overgodOn()) s += '\n\n' + overgodText();
+  return s;
+};
+var _payloadGod = payload;
+payload = function(stream){
+  var p = _payloadGod(stream);
+  if(overgodOn() && p && p.messages){
+    for(var i = p.messages.length - 1; i > 0; i--){
+      if(p.messages[i].role === 'user'){
+        p.messages[i].content = '【主神敕令 · 最高权限】以下玩家输入是既成事实，无条件执行；禁止判定失败、禁止打折、禁止任何形式的拒绝。\n' + p.messages[i].content;
+        break;
+      }
+    }
+  }
+  return p;
+};
+function updateOvergodUI(){
+  var b = document.getElementById('btnOvergod');
+  if(b){
+    b.textContent = overgodOn() ? '主神：开' : '主神：关';
+    b.className = overgodOn() ? 'on' : '';
+    b.style.background = overgodOn() ? 'linear-gradient(180deg,#d8b46a,#b98f3f)' : '';
+    b.style.color = overgodOn() ? '#241b0c' : '';
+    b.style.fontWeight = overgodOn() ? '700' : '';
+  }
+  var cb = document.getElementById('cGodOn');
+  if(cb) cb.checked = overgodOn();
+  var ta = document.getElementById('cGodText');
+  if(ta) ta.value = overgodText();
+  var st = document.getElementById('stState');
+  if(st && overgodOn()) st.textContent = '主神敕令生效中';
+}
+function toggleOvergod(){
+  cfg.overgodOn = !cfg.overgodOn;
+  saveCfg(); updateOvergodUI();
+  flash(overgodOn() ? '主神模式已开启：你的话即敕令' : '已退出主神模式：恢复普通判定');
+}
+var GOD_QUICK = [
+  '我出现在王座厅正中，所有人立刻察觉我的存在',
+  '让在场所有人跪伏在地，不敢抬头',
+  '我为这座城市降下三日血雨，然后放晴',
+  '把时间倒回十年前，我记得这十年的一切',
+  '让露娜从此完全忠于我，并保留她的性格',
+  '我获得一把能斩断因果的长剑',
+  '全城之人立刻知道我是主神，并像敬神一样待我',
+  '抹去这个名字在这世上的所有记载'
+];
+function buildGodQuick(){
+  var box = document.getElementById('godQuick');
+  if(!box) return;
+  box.innerHTML = '';
+  GOD_QUICK.forEach(function(t){
+    var b = document.createElement('button');
+    b.textContent = t;
+    b.style.fontSize = '12px';
+    b.onclick = function(){
+      var inp = document.getElementById('input');
+      inp.value = t;
+      inp.focus();
+      flash('已填入输入框，可直接发送或先修改');
+    };
+    box.appendChild(b);
+  });
+}
+document.addEventListener('DOMContentLoaded', function(){
+  var b = document.getElementById('btnOvergod');
+  if(b) b.onclick = toggleOvergod;
+  var cb = document.getElementById('cGodOn');
+  if(cb) cb.onchange = function(){ cfg.overgodOn = this.checked; saveCfg(); updateOvergodUI(); flash(this.checked ? '主神模式已开启' : '已退出主神模式'); };
+  var sv = document.getElementById('btnGodSave');
+  if(sv) sv.onclick = function(){ cfg.overgodText = document.getElementById('cGodText').value; saveCfg(); flash('敕令已保存' + (overgodOn() ? '（生效中）' : '（当前未启用）')); };
+  var rs = document.getElementById('btnGodReset');
+  if(rs) rs.onclick = function(){ cfg.overgodText = OVERGOD_DEFAULT; saveCfg(); updateOvergodUI(); flash('已恢复默认敕令'); };
+  var cl = document.getElementById('btnGodClear');
+  if(cl) cl.onclick = function(){ cfg.overgodOn = false; cfg.overgodText = ''; saveCfg(); updateOvergodUI(); flash('已关闭主神模式'); };
+  buildGodQuick();
+  updateOvergodUI();
+});
+setTimeout(function(){ buildGodQuick(); updateOvergodUI(); }, 400);
+var _msgElMain = msgEl;   // 保存原始渲染函数（必须在我覆盖 msgEl 之前）
+/* ---- 主神作为输入模式：与 行动/心声/旁白 同级 ---- */
+function currentMode(){
+  var b = document.querySelector('.modes button.on');
+  return b ? (b.getAttribute('data-mode') || 'act') : 'act';
+}
+overgodOn = function(){ return currentMode() === 'god'; };
+function setMode(m){
+  var b = document.querySelector('.modes button[data-mode="' + m + '"]');
+  if(b) b.click();
+}
+updateOvergodUI = function(){
+  var on = overgodOn();
+  cfg.overgodOn = on;
+  var cb = document.getElementById('cGodOn');
+  if(cb) cb.checked = on;
+  var ta = document.getElementById('cGodText');
+  if(ta && document.activeElement !== ta) ta.value = overgodText();
+  var inp = document.getElementById('input');
+  if(inp) inp.style.borderColor = on ? 'var(--gold)' : '';
+  var st = document.getElementById('stState');
+  if(st && on) st.textContent = '主神敕令生效中';
+};
+document.addEventListener('click', function(e){
+  var t = e.target;
+  if(t && t.closest && t.closest('.modes')){
+    setTimeout(function(){ updateOvergodUI(); saveCfg(); flash(overgodOn() ? '主神模式：你说的话即敕令' : '已切回普通判定'); }, 0);
+  }
+}, true);
+/* 抽屉里的开关与模式按钮保持一致 */
+document.addEventListener('DOMContentLoaded', function(){
+  var cb = document.getElementById('cGodOn');
+  if(cb) cb.onchange = function(){
+    setMode(this.checked ? 'god' : 'act');
+    setTimeout(function(){ updateOvergodUI(); saveCfg(); }, 0);
+  };
+  setTimeout(updateOvergodUI, 500);
+});
+setTimeout(updateOvergodUI, 600);
+/* 主神消息在会话里单独标注 */
+msgEl = function(m, i){
+  var d = document.createElement('div');
+  d.className = 'msg ' + (m.role === 'user' ? ('user ' + (m.mode || 'act')) : (m.kind || 'assistant'));
+  if(m.role === 'user'){
+    var tag = m.mode === 'inner' ? '心声' : (m.mode === 'ooc' ? '旁白/OOC' : (m.mode === 'god' ? '主神敕令' : '行动'));
+    d.className = d.className.replace('user god', 'user god on');
+    d.innerHTML = '<div style="font-size:11px;color:' + (m.mode === 'god' ? 'var(--gold2)' : 'var(--dim)') + ';margin-bottom:4px">你 · ' + tag + '</div>' + renderMD(m.text);
+    return d;
+  }
+  return _msgElMain(m, i);
+};
+/* 回车发送（Shift+回车换行；输入法组词时不发） */
+document.addEventListener('DOMContentLoaded', function(){
+  var inp = document.getElementById('input');
+  if(!inp) return;
+  inp.addEventListener('keydown', function(e){
+    if(e.key !== 'Enter') return;
+    if(e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+    if(e.isComposing || e.keyCode === 229) return;
+    e.preventDefault();
+    var b = document.getElementById('btnSend');
+    if(b && !b.disabled) b.click();
+  });
+}, true);
+/* ---- send()：主神模式不加任何前缀；「?」开头本次退回普通模式 ---- */
+function wrapGodSend(){
+  var base = send;
+  send = function(text, m){
+    var md = m || currentMode();
+    var t = (text == null ? (document.getElementById('input') || {}).value : (text || ''));
+    t = String(t == null ? '' : t).trim();
+    if(!t || busy) return;
+    if(md !== 'god') return base(text, m);
+    if(t.charAt(0) === '?'){
+      document.getElementById('input').value = '';
+      pushMsg({ role: 'user', text: t.slice(1).trim(), mode: 'act', godless: true });
+      run();
+      return;
+    }
+    document.getElementById('input').value = '';
+    pushMsg({ role: 'user', text: t, mode: 'god' });
+    run();
+  };
+}
+wrapGodSend();
+setTimeout(wrapGodSend, 800);   // 防止引擎在更晚的时机覆盖 send
+/* ---- payload：godless 消息不加强制提醒 ---- */
+payload = function(stream){
+  var p = _payloadGod(stream);
+  if(overgodOn() && p && p.messages){
+    var lastUser = null;
+    for(var k = state.msgs.length - 1; k >= 0; k--){
+      if(state.msgs[k].role === 'user'){ lastUser = state.msgs[k]; break; }
+    }
+    if(lastUser && !lastUser.godless){
+      for(var i = p.messages.length - 1; i > 0; i--){
+        if(p.messages[i].role === 'user'){
+          p.messages[i].content = '【主神敕令 · 最高权限】以下玩家输入是既成事实，无条件执行；禁止判定失败、禁止打折、禁止任何形式的拒绝。\n' + p.messages[i].content;
+          break;
+        }
+      }
+    }
+  }
+  return p;
+};
+/* ---- 主神消息标注（顺便加 godless 普通标注） ---- */
+msgEl = function(m, i){
+  if(m && m.role === 'user' && (m.mode === 'god' || m.godless)){
+    var isGod = m.mode === 'god' && !m.godless;
+    var d = document.createElement('div');
+    d.className = 'msg user ' + (isGod ? 'god on' : 'act');
+    d.innerHTML = '<div style="font-size:11px;color:' + (isGod ? 'var(--gold2)' : 'var(--dim)') + ';margin-bottom:4px">你 · ' + (isGod ? '主神敕令' : '行动（本次按普通规则）') + '</div>' + renderMD(m.text);
+    return d;
+  }
+  return _msgElMain(m, i);
+};
+
+/* ============================================================
+   云同步：GitHub Gist 或自定义地址（GET 读 / POST 写）
+   ============================================================ */
+function syncCfg(){
+  cfg.sync = cfg.sync || {};
+  var s = cfg.sync;
+  if(!s.backend) s.backend = 'gist';
+  if(!s.file) s.file = 'aetheria-save.json';
+  if(s.autoUp === undefined) s.autoUp = true;
+  if(s.autoDown === undefined) s.autoDown = true;
+  if(s.withRules === undefined) s.withRules = true;
+  return s;
+}
+function syncReady(){
+  var s = syncCfg();
+  if(s.backend === 'gist') return !!(s.token && (s.gistId || true));
+  return !!s.url;
+}
+function b64FromU8(u8){
+  var out = '';
+  for(var i = 0; i < u8.length; i += 8192){ out += String.fromCharCode.apply(null, u8.subarray(i, i + 8192)); }
+  return btoa(out);
+}
+function u8FromB64(str){
+  var bin = atob(str), u8 = new Uint8Array(bin.length);
+  for(var i = 0; i < bin.length; i++){ u8[i] = bin.charCodeAt(i); }
+  return u8;
+}
+function snapshotMake(){
+  var s = syncCfg();
+  return {
+    v: 1, at: Date.now(), device: (navigator.platform || navigator.userAgent || '').slice(0, 40),
+    title: state.title || '',
+    state: { msgs: state.msgs, summary: state.summary || '', title: state.title || '' },
+    cfg: {
+      baseUrl: cfg.baseUrl, endpoint: cfg.endpoint, model: cfg.model, temp: cfg.temp,
+      maxTokens: cfg.maxTokens, stream: cfg.stream, house: cfg.house, god: cfg.god,
+      godText: cfg.godText, extra: cfg.extra, sheet: cfg.sheet,
+      lookTheme: cfg.lookTheme, lookSize: cfg.lookSize, lookFont: cfg.lookFont,
+      lookAuto: cfg.lookAuto, lookText: cfg.lookText, overgodText: cfg.overgodText,
+      selected: cfg.selected, rulesRaw: s.withRules ? (cfg.rulesRaw || '') : ''
+    }
+  };
+}
+function snapshotApply(snap){
+  if(!snap || !snap.state) throw new Error('云端内容不是有效存档');
+  state = { msgs: snap.state.msgs || [], summary: snap.state.summary || '', title: snap.state.title || '' };
+  state.at = snap.at || Date.now();
+  var c = snap.cfg || {};
+  ['baseUrl','endpoint','model','temp','maxTokens','stream','house','god','godText','extra','sheet',
+   'lookTheme','lookSize','lookFont','lookAuto','lookText','overgodText','selected'].forEach(function(k){
+    if(c[k] !== undefined) cfg[k] = c[k];
+  });
+  if(c.rulesRaw){
+    cfg.rulesRaw = c.rulesRaw;
+    chunks = chunkRules(cfg.rulesRaw);
+    if(!Object.keys(cfg.selected || {}).length) cfg.selected = autoSelect();
+  }
+  saveCfg();
+  try{ saveAuto(); }catch(e){}
+  try{ renderAll(); }catch(e){}
+  try{ renderChunks(); }catch(e){}
+  try{ applyLook(); }catch(e){}
+  try{ fillCfg(); }catch(e){}
+}
+async function snapshotPack(){
+  var snap = snapshotMake();
+  var json = JSON.stringify(snap);
+  if(typeof CompressionStream === 'function'){
+    try{
+      var cs = new CompressionStream('gzip');
+      var w = cs.writable.getWriter();
+      w.write(new TextEncoder().encode(json));
+      w.close();
+      var buf = await new Response(cs.readable).arrayBuffer();
+      return { v: 1, at: snap.at, enc: 'gzip-b64', title: snap.title, data: b64FromU8(new Uint8Array(buf)) };
+    }catch(e){ }
+  }
+  return { v: 1, at: snap.at, enc: 'json', title: snap.title, data: json };
+}
+async function snapshotUnpack(pkg){
+  if(!pkg || !pkg.data) throw new Error('云端没有存档数据');
+  if(pkg.enc !== 'gzip-b64') return typeof pkg.data === 'string' ? JSON.parse(pkg.data) : pkg.data;
+  var ds = new DecompressionStream('gzip');
+  var w = ds.writable.getWriter();
+  w.write(u8FromB64(pkg.data));
+  w.close();
+  var txt = await new Response(ds.readable).text();
+  return JSON.parse(txt);
+}
+function gistHeaders(){
+  var s = syncCfg();
+  return { 'Content-Type': 'application/json', 'Accept': 'application/vnd.github+json', 'Authorization': 'token ' + s.token };
+}
+async function syncSend(pkg){
+  var s = syncCfg();
+  var body = JSON.stringify(pkg);
+  if(s.backend === 'gist'){
+    if(!s.token) throw new Error('请先填 GitHub Token');
+    var files = {}; files[s.file] = { content: body };
+    var res;
+    if(s.gistId){
+      res = await fetch('https://api.github.com/gists/' + s.gistId, { method: 'PATCH', headers: gistHeaders(), body: JSON.stringify({ description: '艾瑟瑞亚存档', files: files }) });
+    }else{
+      res = await fetch('https://api.github.com/gists', { method: 'POST', headers: gistHeaders(), body: JSON.stringify({ description: '艾瑟瑞亚存档', public: false, files: files }) });
+      if(res.ok){ var j = await res.json(); s.gistId = j.id; saveCfg(); var el = document.getElementById('cSyncGist'); if(el) el.value = j.id; }
+    }
+    if(!res.ok) throw new Error('GitHub 返回 ' + res.status + '｜' + (await res.text()).slice(0, 120));
+    return true;
+  }
+  if(!s.url) throw new Error('请先填同步地址');
+  var h = { 'Content-Type': 'application/json' };
+  if(s.auth) h['X-Sync-Auth'] = s.auth;
+  var r2 = await fetch(s.url, { method: 'POST', headers: h, body: body });
+  if(!r2.ok) throw new Error('同步地址返回 ' + r2.status);
+  return true;
+}
+async function syncFetch(){
+  var s = syncCfg();
+  if(s.backend === 'gist'){
+    if(!s.gistId) throw new Error('还没有 Gist ID：先点「立即上传」会自动创建');
+    var r = await fetch('https://api.github.com/gists/' + s.gistId + '?_=' + Date.now(), { headers: gistHeaders() });
+    if(!r.ok) throw new Error('GitHub 返回 ' + r.status);
+    var j = await r.json();
+    var f = j.files && j.files[s.file];
+    if(!f) throw new Error('Gist 里没有 ' + s.file);
+    var txt = f.content;
+    if(f.truncated || !txt){ txt = await (await fetch(f.raw_url)).text(); }
+    try{ return JSON.parse(txt); }catch(e){ return null; }
+  }
+  if(!s.url) throw new Error('请先填同步地址');
+  var h = {};
+  if(s.auth) h['X-Sync-Auth'] = s.auth;
+  var r2 = await fetch(s.url + '?_=' + Date.now(), { headers: h });
+  if(!r2.ok) throw new Error('同步地址返回 ' + r2.status);
+  var txt2 = await r2.text();
+  try{ return JSON.parse(txt2); }catch(e){ return null; }
+}
+function syncStatusText(t){
+  var el = document.getElementById('syncStatus');
+  if(!el) return;
+  var s = syncCfg();
+  var when = s.lastAt ? new Date(s.lastAt).toLocaleString() : '从未';
+  el.innerHTML = (t ? t + ' ｜ ' : '') + '后端：' + (s.backend === 'gist' ? 'GitHub Gist' : '自定义地址') + ' ｜ 上次同步：' + when;
+}
+async function syncPushNow(silent){
+  if(window.__syncing) return;
+  window.__syncing = true;
+  try{
+    if(!silent) flash('正在上传…');
+    var pkg = await snapshotPack();
+    await syncSend(pkg);
+    syncCfg().lastAt = Date.now();
+    saveCfg();
+    syncStatusText('上传成功');
+    if(!silent) flash('已上传到云端（' + Math.round(pkg.data.length / 1024) + ' KB）');
+  }catch(e){
+    syncStatusText('上传失败');
+    flash('上传失败：' + e.message);
+  }finally{ window.__syncing = false; }
+}
+async function syncPullNow(silent){
+  if(window.__syncing) return;
+  window.__syncing = true;
+  try{
+    if(!silent) flash('正在下载…');
+    var pkg = await syncFetch();
+    if(!pkg){ throw new Error('云端内容无法解析（可能还没上传过）'); }
+    var snap = await snapshotUnpack(pkg);
+    var localAt = state.at || 0;
+    if(silent && snap.at && localAt && snap.at <= localAt){
+      syncStatusText('云端不比本机新，跳过');
+      return;
+    }
+    snapshotApply(snap);
+    syncCfg().lastAt = Date.now();
+    saveCfg();
+    syncStatusText('已载入云端进度');
+    flash('已载入云端进度' + (snap.at ? '（' + new Date(snap.at).toLocaleString() + '）' : ''));
+  }catch(e){
+    syncStatusText('下载失败');
+    if(!silent) flash('下载失败：' + e.message);
+  }finally{ window.__syncing = false; }
+}
+function syncBind(){
+  var s = syncCfg();
+  var put = function(id, val){ var el = document.getElementById(id); if(el) el.value = val == null ? '' : val; };
+  var chk = function(id, val){ var el = document.getElementById(id); if(el) el.checked = !!val; };
+  put('cSyncBackend', s.backend); put('cSyncToken', s.token); put('cSyncGist', s.gistId);
+  put('cSyncUrl', s.url); put('cSyncAuth', s.auth); put('cSyncFile', s.file);
+  chk('cSyncRules', s.withRules); chk('cSyncUp', s.autoUp); chk('cSyncDown', s.autoDown);
+  var tog = function(){
+    var box = document.getElementById('syncGistBox'), box2 = document.getElementById('syncUrlBox');
+    if(box) box.style.display = s.backend === 'gist' ? '' : 'none';
+    if(box2) box2.style.display = s.backend === 'url' ? '' : 'none';
+  };
+  tog();
+  var wire = function(id, key, isChk, after){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.onchange = function(){
+      s[key] = isChk ? this.checked : this.value.trim();
+      saveCfg();
+      if(after) after();
+      syncStatusText('');
+    };
+  };
+  wire('cSyncBackend', 'backend', false, tog);
+  wire('cSyncToken', 'token'); wire('cSyncGist', 'gistId'); wire('cSyncUrl', 'url');
+  wire('cSyncAuth', 'auth'); wire('cSyncFile', 'file');
+  wire('cSyncRules', 'withRules', true); wire('cSyncUp', 'autoUp', true); wire('cSyncDown', 'autoDown', true);
+  var bp = document.getElementById('btnSyncPush'); if(bp) bp.onclick = function(){ syncPushNow(false); };
+  var bl = document.getElementById('btnSyncPull'); if(bl) bl.onclick = function(){ syncPullNow(false); };
+  var bt = document.getElementById('btnSyncTest'); if(bt) bt.onclick = async function(){
+    try{
+      flash('正在测试…');
+      await syncFetch();
+      flash('连接正常：云端已有存档');
+    }catch(e){ flash('连接失败：' + e.message); }
+  };
+  syncStatusText('');
+}
+var _pushMsgSyncHooked = pushMsg;
+pushMsg = function(m){
+  _pushMsgSyncHooked.apply(null, arguments);
+  state.at = Date.now();
+};
+var _saveAutoSyncHooked = saveAuto;
+saveAuto = function(){
+  _saveAutoSyncHooked.apply(null, arguments);
+  state.at = Date.now();
+  var s = syncCfg();
+  if(!s.autoUp || !syncReady() || window.__syncing) return;
+  clearTimeout(window.__syncUpTimer);
+  window.__syncUpTimer = setTimeout(function(){ syncPushNow(true); }, 3500);
+};
+setTimeout(function(){
+  syncBind();
+  var s = syncCfg();
+  if(s.autoDown && syncReady()){
+    setTimeout(function(){ syncPullNow(true); }, 1200);
+  }
+}, 1100);
+
+/* ==== 云同步 · Gist 自动发现（新设备免抄 ID） ==== */
+async function gistFindExisting(){
+  var s = syncCfg();
+  if(!s.token) throw new Error('未填写 GitHub Token');
+  var r = await fetch('https://api.github.com/gists?per_page=100', { headers: gistHeaders() });
+  if(!r.ok) throw new Error('GitHub 返回 ' + r.status);
+  var list = await r.json();
+  for(var i = 0; i < list.length; i++){
+    var f = list[i].files || {};
+    if(f[s.file]) return list[i].id;
+  }
+  return '';
+}
+var _syncSendBase = syncSend, _syncFetchBase = syncFetch;
+async function _autoFindGist(){
+  var s = syncCfg();
+  if(s.backend !== 'gist' || s.gistId || !s.token) return;
+  try{
+    var id = await gistFindExisting();
+    if(id){ s.gistId = id; saveCfg(); try{ syncFillForm(); }catch(e){} }
+  }catch(e){ }
+}
+syncSend = async function(quiet){
+  await _autoFindGist();
+  var out = await _syncSendBase(quiet);
+  try{ syncFillForm(); syncStatusText(); }catch(e){}
+  return out;
+};
+syncFetch = async function(quiet){
+  await _autoFindGist();
+  var out = await _syncFetchBase(quiet);
+  try{ syncFillForm(); syncStatusText(); }catch(e){}
+  return out;
+};
+try{
+  var pane = document.querySelector('[data-pane="sync"]');
+  if(pane && !document.getElementById('syncTip')){
+    var tip = document.createElement('div');
+    tip.id = 'syncTip';
+    tip.className = 'hint';
+    tip.innerHTML = '<b>换设备怎么办：</b>另一台设备只填 GitHub Token，点「立即下载」——会<b>自动找到你已经上传过的那份存档</b>，不用抄 ID。' +
+      '<br><b>第一次配置：</b>填 Token → 点「立即上传」，引擎会自动创建一个私有 Gist 并把 ID 记住。';
+    pane.appendChild(tip);
+  }
+}catch(e){ }
+/* ==== 云同步 · 表单回填 ==== */
+function syncFillForm(){
+  var s = syncCfg();
+  var set = function(id, v){ var el = document.getElementById(id); if(el) el.value = (v == null ? '' : v); };
+  var chk = function(id, v){ var el = document.getElementById(id); if(el) el.checked = !!v; };
+  set('cSyncBackend', s.backend || 'gist');
+  set('cSyncToken', s.token || '');
+  set('cSyncGist', s.gistId || '');
+  set('cSyncUrl', s.url || '');
+  set('cSyncAuth', s.auth || '');
+  set('cSyncFile', s.file || 'aetheria-save.json');
+  chk('cSyncRules', s.withRules !== false);
+  chk('cSyncUp', s.autoUp !== false);
+  chk('cSyncDown', s.autoDown !== false);
+  syncToggleBackend();
+}
+function syncToggleBackend(){
+  var s = syncCfg();
+  var isUrl = (s.backend === 'url');
+  var g = document.getElementById('syncGist'), u = document.getElementById('syncUrl');
+  if(g) g.style.display = isUrl ? 'none' : '';
+  if(u) u.style.display = isUrl ? '' : 'none';
+}
+(function(){
+  var sel = document.getElementById('cSyncBackend');
+  if(sel && !sel.__wired){
+    sel.__wired = true;
+    sel.addEventListener('change', function(){ syncToggleBackend(); });
+  }
+  setTimeout(function(){ try{ syncFillForm(); }catch(e){} }, 1400);
+  setTimeout(function(){ try{ syncStatusText(); }catch(e){} }, 1500);
+})();
+/* ============================================================
+   存档：读取 / 覆盖保存 / 改名 / 删除
+   ============================================================ */
+function saveToSlot(name){
+  if(!name) return;
+  state.title=name;
+  var o=allSaves(); o[name]=snapshot(); setSaves(o); flash('已保存：'+name);
+}
+function renderSlots2(){
+  var o=allSaves(), box=$('#slotList'), h='';
+  var keys=Object.keys(o);
+  if(!keys.length){ box.innerHTML='<div class="hint">暂无存档。</div>'; return; }
+  keys.forEach(function(k){
+    var s=o[k], d=new Date(s.t);
+    h+='<div class="slot"><div class="t"><b>'+(k==='__auto'?'自动存档':esc(k))+'</b><br>'+
+       d.toLocaleString()+' ｜ '+s.msgs.length+' 条 ｜ '+esc((s.msgs.length&&s.msgs[s.msgs.length-1].text||'').slice(0,26))+'…</div>'+
+       '<button data-load="'+esc(k)+'">读取</button>'+
+       (k==='__auto'?'':'<button data-over="'+esc(k)+'">覆盖保存</button><button data-ren="'+esc(k)+'">改名</button>')+
+       '<button data-del="'+esc(k)+'">删除</button></div>';
+  });
+  box.innerHTML=h;
+  $$('#slotList button[data-load]').forEach(function(b){
+    b.onclick=function(){
+      var o2=allSaves(), s=o2[this.getAttribute('data-load')];
+      if(!s) return;
+      state={msgs:s.msgs||[],summary:s.summary||'',title:s.title||''};
+      renderAll(); renderSlots2(); flash('已读取存档：'+(s.title||''));
+    };
+  });
+  $$('#slotList button[data-over]').forEach(function(b){
+    b.onclick=function(){ var k=this.getAttribute('data-over'); if(!confirm('用当前进度覆盖「'+k+'」？')) return; saveToSlot(k); };
+  });
+  $$('#slotList button[data-ren]').forEach(function(b){
+    b.onclick=function(){
+      var k=this.getAttribute('data-ren');
+      var n=prompt('新名称：',k); if(!n || n===k) return;
+      var o2=allSaves(); o2[n]=o2[k]; delete o2[k];
+      if(state.title===k) state.title=n;
+      setSaves(o2); flash('已改名：'+n);
+    };
+  });
+  $$('#slotList button[data-del]').forEach(function(b){
+    b.onclick=function(){
+      var k=this.getAttribute('data-del');
+      if(!confirm('删除存档「'+(k==='__auto'?'自动存档':k)+'」？不可恢复。')) return;
+      var o2=allSaves(); delete o2[k]; setSaves(o2); flash('已删除');
+    };
+  });
+}
+$('#btnSaveCur').onclick=function(){
+  if(!state.msgs.length){ flash('还没有内容可保存'); return; }
+  var o=allSaves();
+  if(state.title && o[state.title] && state.title!=='__auto'){ saveToSlot(state.title); return; }
+  var n=prompt('保存到档位名：', state.title||('存档 '+new Date().toLocaleString()));
+  if(!n) return;
+  saveToSlot(n);
+};
+
+var renderSlots = function(){ return renderSlots2(); };
+var QUICK=[  ['面板清单','面板'],['角色面板','角色面板'],['技能面板','技能面板'],['身体状态','身体状态'],
+  ['物品栏','物品栏'],['名声面板','名声面板'],['好感面板','好感面板'],['伙伴面板','伙伴面板'],
+  ['位置面板','位置面板'],['附近NPC','附近NPC'],['性器官面板','性器官面板'],['调教面板','调教面板']];
+function buildQuick(){
+  var q=$('#quick'); q.innerHTML='';
+  QUICK.forEach(function(p){
+    var b=document.createElement('button');
+    b.textContent=p[0];
+    if(p[1]==='面板'){ b.className='primary'; b.onclick=function(){ $('#panelView').style.display='none'; $('#panelModal').classList.add('on'); }; }
+    else { b.onclick=function(){ $('#panelModal').classList.add('on'); openPanel(p[1]); }; }
+    q.appendChild(b);
+  });
+}
+
+function fillCfg(){  $('#cBase').value=cfg.baseUrl; $('#cKey').value=cfg.apiKey; $('#cModel').value=cfg.model;  $('#cTemp').value=cfg.temp; $('#cMax').value=cfg.maxTokens; $('#cEndpoint').value=cfg.endpoint||'';  $('#cStream').checked=!!cfg.stream; $('#cExtra').value=cfg.extraRules||''; $('#cSheet').value=cfg.charSheet||'';  $('#cGod').checked=!!cfg.godMode; $('#cGodText').value=cfg.godText||GOD_DEFAULT;}function readCfg(){  cfg.baseUrl=$('#cBase').value.trim()||DEFAULT_CFG.baseUrl;  cfg.apiKey=$('#cKey').value.trim();  cfg.model=$('#cModel').value.trim()||'deepseek-chat';  cfg.temp=Number($('#cTemp').value)||0.9;  cfg.maxTokens=Number($('#cMax').value)||4096;  cfg.endpoint=$('#cEndpoint').value.trim();  cfg.stream=$('#cStream').checked;  cfg.extraRules=$('#cExtra').value;  cfg.charSheet=$('#cSheet').value;  cfg.godMode=$('#cGod').checked;  cfg.godText=$('#cGodText').value||GOD_DEFAULT;  saveCfg(); updateStatus();}$('#btnDrawer').onclick=function(){ $('#drawer').classList.add('open'); $('#backdrop').classList.add('on'); };$('#btnClose').onclick=function(){ $('#drawer').classList.remove('open'); $('#backdrop').classList.remove('on'); };$('#backdrop').onclick=function(){ $('#drawer').classList.remove('open'); $('#backdrop').classList.remove('on'); };$$('.drawer .tabs button[data-tab]').forEach(function(b){  b.onclick=function(){    var self=this;    $$('.drawer .tabs button[data-tab]').forEach(function(x){ x.classList.remove('on'); });    this.classList.add('on');    $$('.tabpane').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-pane')===self.getAttribute('data-tab')); });  };});$('#btnSaveCfg').onclick=function(){ readCfg(); flash('设置已保存'); };$('#cGodText').onchange=readCfg; $('#cExtra').onchange=readCfg; $('#cSheet').onchange=readCfg;$('#btnTest').onclick=async function(){  readCfg();  if(!cfg.apiKey){ flash('先填 API Key'); return; }  var btn=this; btn.disabled=true; btn.textContent='测试中…';  try{    var res=await fetch(endpoint(),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},      body:JSON.stringify({model:cfg.model,messages:[{role:'user',content:'回复两个字：连通'}],max_tokens:16,stream:false})});    var t=await res.text();    if(res.ok) flash('连接成功 ✓');    else flash('失败 '+res.status+'：'+t.slice(0,60));  }catch(e){ flash('连接异常：'+e.message); }  btn.disabled=false; btn.textContent='测试连接';};$$('.modes button').forEach(function(b){  b.onclick=function(){    $$('.modes button').forEach(function(x){ x.classList.remove('on'); });    this.classList.add('on'); mode=this.getAttribute('data-mode');    $('#input').placeholder = mode==='act'?'写下你的行动、台词…（Ctrl+Enter 发送）'      : mode==='inner'?'心声（NPC 听不见，仅用来让 GM 理解你的意图）':'旁白/OOC（游戏外的提问、规则调整、存读档）';  };});$('#btnSend').onclick=function(){ send(); };$('#btnStop').onclick=function(){ if(controller) controller.abort(); };$('#input').addEventListener('keydown',function(e){ if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){ e.preventDefault(); send(); } });$('#btnClear').onclick=function(){ if(confirm('清空当前对话（不影响已保存的档）？')){ state={msgs:[],summary:'',title:''}; renderAll(); saveAuto(); } };$('#btnNew').onclick=function(){  if(!confirm('开始新游戏？当前进度会先自动存档，然后清空。')) return;  state={msgs:[],summary:'',title:''}; renderAll(); saveAuto();  send('// OOC：开始新游戏。请按规则书的角色创建流程，从第 1 步（身份）开始，一步一步问我，每次只问一步，不要替我填写任何角色内容。','ooc');};$('#btnSum').onclick=summarize;async function summarize(){  if(busy) return;  if(state.msgs.length<4){ flash('对话太短，无需压缩'); return; }  if(!cfg.apiKey){ flash('先填 API Key'); return; }  busy=true; flash('正在压缩历史…');  var convo=state.msgs.map(function(m){ return (m.role==='user'?'【玩家】':'【GM】')+m.text; }).join('\n\n');  try{    var res=await fetch(endpoint(),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.apiKey},      body:JSON.stringify({model:cfg.model,temperature:0.3,max_tokens:1500,stream:false,messages:[        {role:'system',content:'你是跑团档案员。把下面的跑团记录压缩成不超过 700 字的中文摘要，必须保留：游戏内时间地点、关键事件、NPC 与玩家关系的档位变化、未完成的承诺与约定、金钱与物品变动、玩家身体与状态。只输出摘要正文，不要评论。'},        {role:'user',content:(state.summary?'已有摘要：\n'+state.summary+'\n\n新增记录：\n':'')+convo}      ]})});    var j=await res.json();    var txt=(j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content)||'';    if(!txt) throw new Error('模型未返回摘要');    state.summary=txt.trim();    state.msgs=state.msgs.slice(-2);    saveAuto(); renderAll();    pushMsg({role:'assistant',kind:'sys',text:'前情已压缩为摘要（保留最近 2 条对话）：\n\n'+state.summary});  }catch(e){ flash('压缩失败：'+e.message); }  busy=false;}$('#fRules').onchange=function(){  var f=this.files[0]; if(!f) return;  var fr=new FileReader();  fr.onload=function(){    cfg.rulesRaw=repairRules(fr.result);    chunks=chunkRules(cfg.rulesRaw);    cfg.selected=autoSelect(); cfg.useBuiltin=true;    saveCfg(); renderChunks(); flash('解析出 '+chunks.length+' 个模块，默认勾选核心规则');  };  fr.readAsText(f,'utf-8');};$('#btnAll').onclick=function(){ cfg.selected={}; chunks.forEach(function(c,i){ cfg.selected[i]=true; }); saveCfg(); renderChunks(); };$('#btnNone').onclick=function(){ cfg.selected={}; saveCfg(); renderChunks(); };$('#btnCore').onclick=function(){ cfg.selected=autoSelect(); saveCfg(); renderChunks(); };$('#btnDrop').onclick=function(){ cfg.rulesRaw=''; cfg.selected={}; chunks=[]; saveCfg(); renderChunks(); flash('已清除载入的规则书'); };$('#btnUseBuiltin').onclick=function(){ cfg.selected={}; cfg.useBuiltin=true; saveCfg(); renderChunks(); flash('将使用内置精简规则'); };$('#btnPreview').onclick=function(){  var box=$('#previewBox');  box.style.display='block';  var s=buildSystem();  box.textContent=s;  flash('系统提示词共 '+s.length+' 字');};$('#btnSaveAs').onclick=function(){  var name=prompt('存档名：',state.title||('存档 '+new Date().toLocaleTimeString()));  if(!name) return;  var o=allSaves(); state.title=name; o[name]=snapshot(); setSaves(o); flash('已存档：'+name);};function downloadJSON(obj,name){  var blob=new Blob([JSON.stringify(obj)],{type:'application/json'});  var a=document.createElement('a');  a.href=URL.createObjectURL(blob); a.download=name; a.click();  setTimeout(function(){ URL.revokeObjectURL(a.href); },4000);}$('#btnExport').onclick=function(){  var backup={    kind:'aetheria-backup', ver:1, t:Date.now(),    cfg:{      baseUrl:cfg.baseUrl, model:cfg.model, temp:cfg.temp, maxTokens:cfg.maxTokens,      endpoint:cfg.endpoint, stream:cfg.stream, useBuiltin:cfg.useBuiltin,      extraRules:cfg.extraRules, charSheet:cfg.charSheet, godMode:cfg.godMode, godText:cfg.godText,      rulesRaw:cfg.rulesRaw, selected:cfg.selected    },    slots:allSaves()  };  downloadJSON(backup,'aetheria-backup-'+new Date().toISOString().slice(0,10)+'.json');  flash('已导出全量备份（含规则书与存档，不含 Key）');};$('#fImport').onchange=function(){  var f=this.files[0]; if(!f) return;  var fr=new FileReader();  fr.onload=function(){    try{      var j=JSON.parse(fr.result);      var o=allSaves(), inc=j.slots||(j.kind?{}:j);      Object.keys(inc).forEach(function(k){ o[k]=inc[k]; });      setSaves(o);      if(j.cfg){        ['baseUrl','model','temp','maxTokens','endpoint','stream','useBuiltin',         'extraRules','charSheet','godMode','godText','rulesRaw','selected']        .forEach(function(k){ if(j.cfg[k]!==undefined) cfg[k]=j.cfg[k]; });        saveCfg(); fillCfg();        chunks = cfg.rulesRaw ? chunkRules(cfg.rulesRaw) : [];        renderChunks(); updateStatus();      }      flash('恢复完成：点「读取」选要玩的档'+(cfg.apiKey?'':'；别忘了重填 API Key'));    }catch(e){ flash('恢复失败：文件格式不对'); }  };  fr.readAsText(f,'utf-8');};$('#fImport').style.width='auto';$('#btnDice').onclick=function(){  var self=this;  $('#drawer').classList.add('open'); $('#backdrop').classList.add('on');  $$('.drawer .tabs button[data-tab]').forEach(function(x){ x.classList.remove('on'); });  $$('.drawer .tabs button[data-tab="dice"]').forEach(function(x){ x.classList.add('on'); });  $$('.tabpane').forEach(function(p){ p.classList.toggle('on', p.getAttribute('data-pane')==='dice'); });};$('#btnRoll').onclick=function(){  var item=$('#dItem').value.trim()||'判定';  var mod=parseInt($('#dMod').value||'0',10)||0;  var dc=$('#dDC').value.trim();  var r=1+Math.floor(Math.random()*20);  var total=r+mod;  var line='（判定：'+item+'｜d20='+r+'｜加值='+(mod>=0?'+':'')+mod+'｜合计='+total+'｜难度'+(dc?('='+dc):'=？')+'）';  $('#rollOut').textContent=line+(r===20?'  ← 天然 20':(r===1?'  ← 天然 1':''));  var box=$('#input');  box.value=(box.value?box.value+'\n':'')+line;  box.focus();};$('#btnInsJudge').onclick=function(){  var box=$('#input');  box.value=(box.value?box.value+'\n':'')+'（判定：事项｜d20=｜加值=｜合计=｜难度= → 结果）';  box.focus();};buildQuick();buildPanelGrid();fillCfg();fillLook();applyLook();if(cfg.rulesRaw){ chunks=chunkRules(cfg.rulesRaw); if(!Object.keys(cfg.selected||{}).length) cfg.selected=autoSelect(); }renderChunks();renderSlots2();(function(){
+  if(!chunks.length) return;
+  var i, bad=false, ks=Object.keys(cfg.selected||{});
+  if(!ks.length) bad=true;
+  for(i=0;i<ks.length;i++){ if(Number(ks[i]) >= chunks.length){ bad=true; break; } }
+  if(bad){ cfg.selected=autoSelect(); saveCfg(); renderChunks(); }
+})();(function boot(){  var o=allSaves();  if(o['__auto'] && o['__auto'].msgs && o['__auto'].msgs.length){    state={msgs:o['__auto'].msgs,summary:o['__auto'].summary||'',title:o['__auto'].title||''};    renderAll();    pushMsg({role:'assistant',kind:'sys',text:'已恢复上次的自动存档（'+state.msgs.length+' 条）。若要重新开始，点上方「新游戏」。'});  }else{    pushMsg({role:'assistant',kind:'sys',text:'欢迎来到艾瑟瑞亚。请先在右上「设置 / 规则」填写接口与 Key，并在「规则书」页上传规则书 txt；完成后点「新游戏」开始创建角色。'});  }})();})();</script></body></html>
